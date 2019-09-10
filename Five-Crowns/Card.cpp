@@ -1,9 +1,9 @@
 #include "Card.h"
 
 
-
-Card::Card()
-{
+Card::Card(string face, string suit) {
+	this->face = face;
+	this->suit = suit;
 }
 
 string Card::getFace() {
@@ -14,13 +14,6 @@ string Card::getSuit() {
 	return suit;
 }
 
-void Card::setFace(string face) {
-	this->face = face;
-}
-
-void Card::setSuit(string suit) {
-	this->suit = suit;
-}
 
 void Card::printCard() {
 	cout << "Face: " << this->face << " " << "Suit: " << this->suit << endl;

@@ -12,15 +12,11 @@ private:
 	string suit;
 
 public:
-	Card();
+	Card(string face="N", string suit="N");
 	
 	string getFace();
 
 	string getSuit();
-
-	void setFace(string face);
-
-	void setSuit(string suit);
 
 	void printCard();
 
