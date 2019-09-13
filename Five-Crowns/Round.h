@@ -13,14 +13,17 @@ private:
 	int roundNumber;
 	//two players
 	Player *playersList[2];
-	int playerIndex;
+	int next_player_index;
 	Human human_player;
 	Computer computer_player;
 	Deck deck;
+	string next_player;
+	int total_players_num;
 	
 
 public:
 	Round(int roundNumber);
+	void roundDetails();
 	void printRoundDetails();
 	void startRound();
 	~Round();

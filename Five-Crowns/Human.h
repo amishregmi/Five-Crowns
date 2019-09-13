@@ -6,11 +6,13 @@ class Human : public Player
 {
 public:
 	Human();
-	void addCardToHand(Card);
-	void printCurrentHard();
+	//void addCardToHand(Card);
+	//void printCurrentHard();
+	void dropCard();
+	void pickCard();
 	~Human();
 
-private:
-	vector<Card> human_hand;
+//private:
+	//vector<Card> human_hand;
 };
 

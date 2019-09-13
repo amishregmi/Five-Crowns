@@ -6,6 +6,8 @@ Human::Human()
 {
 }
 
+/*
+
 void Human::addCardToHand(Card card) {
 	human_hand.push_back(card);
 }
@@ -17,6 +19,15 @@ void Human::printCurrentHard() {
 		it->printCard();
 	}
 	cout << endl;
+}
+*/
+
+void Human::pickCard() {
+
+}
+
+void Human::dropCard() {
+
 }
 
 Human::~Human()

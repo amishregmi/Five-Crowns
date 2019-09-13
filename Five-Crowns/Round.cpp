@@ -5,10 +5,12 @@
 Round::Round(int roundNumber = 0)
 {
 	this->roundNumber = roundNumber;
-	this->playerIndex = 0;
+	//Determine next_player_index by coin toss.
+	this->next_player_index = 0;
 	this->playersList[0] = &human_player;
 	this->playersList[1] = &computer_player;
-	
+	this->next_player = "user";
+	this->total_players_num = 2;
 }
 
 void Round::startRound() {
@@ -18,50 +20,37 @@ void Round::startRound() {
 
 	if (!dealtCards.empty()) {
 		for (size_t i = 0; i < (dealtCards.size() - 1); i += 2) {
-			human_player.addCardToHand(dealtCards[i]);
-			computer_player.addCardToHand(dealtCards[i+1]);
+			//human_player.addCardToHand(dealtCards[i]);
+			//computer_player.addCardToHand(dealtCards[i+1]);
+			playersList[next_player_index]->addCardToHand(dealtCards[i]);
+			next_player_index = (next_player_index + 1) % total_players_num;
+			playersList[next_player_index]->addCardToHand(dealtCards[i + 1]);
 		}
 	}
 	
 }
 
 void Round::printRoundDetails() {
-	cout << "The current round is: ";
-	cout << roundNumber << endl;
-
-	//Initial details:
-	cout << "Initial draw pile is: " << endl;
+	cout << "The current round number is: " << roundNumber << endl;
+	cout << "-----------------------------------" << endl;
+	//cout << "The draw pile before dealing cards is: " << endl;
 	deck.printDrawPile();
-
-	cout << "Initial discard pile is: " << endl;
 	deck.printDiscardPile();
-	
-	cout << "Initial human hand is: " << endl;
-	human_player.printCurrentHard();
-
-	cout << "Initial computer hand is: " << endl;
-	computer_player.printCurrentHard();
-
-	
-	cout << "DEAL FOR FIRST ROUND " << endl;
-
-	//Take this return val.
+	//human_player.printCurrentHard();
+	//computer_player.printCurrentHard();
+	playersList[next_player_index]->printCurrentHand(next_player);
+	next_player = "Computer";
+	next_player_index = (next_player_index + 1) % total_players_num;
+	playersList[next_player_index]->printCurrentHand(next_player);
+	next_player = "user";
+}
 
 
+
+void Round::roundDetails() {
+	printRoundDetails();
 	startRound();
-
-	cout << "New draw pile is: " << endl;
-	deck.printDrawPile();
-
-	cout << "New discard pile is: " << endl;
-	deck.printDiscardPile();
-
-	cout << "New human hand is: " << endl;
-	human_player.printCurrentHard();
-
-	cout << "New computer hand is: " << endl;
-	computer_player.printCurrentHard();
-
+	printRoundDetails();
 
 }
 

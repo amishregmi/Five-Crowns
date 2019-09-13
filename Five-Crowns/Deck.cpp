@@ -30,12 +30,16 @@ Deck::Deck()
 		}
 	}
 
-	//auto range = default_random_engine{};
-	//shuffle(begin(drawPile), end(drawPile), range);
+	
+	unsigned seed = chrono::system_clock::now().time_since_epoch().count();
+	default_random_engine e(seed);
+
+	shuffle(drawPile.begin(), drawPile.end(), e);
 }
 
 
 vector<Card> Deck::dealCards(int roundNumber) {
+	cout << "Dealing cards for roundNumber: " << roundNumber << endl;
 	vector<Card> cardstodeal;
 	int total_cards_per_player = (2 + roundNumber)*2;
 	for (int i = 0; i < total_cards_per_player; i++) {
@@ -56,6 +60,7 @@ void Deck::printDrawPile() {
 	for (it = drawPile.begin(); it != drawPile.end(); ++it) {
 		it->printCard();
 	}
+	cout << endl;
 }
 
 void Deck::printDiscardPile() {
@@ -66,6 +71,7 @@ void Deck::printDiscardPile() {
 	for (it = discardPile.begin(); it != discardPile.end(); ++it) {
 		it->printCard();
 	}
+	cout << endl;
 }
 
 Deck::~Deck()

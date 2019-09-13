@@ -6,10 +6,10 @@ class Computer: public Player
 {
 public:
 	Computer();
-	void addCardToHand(Card);
-	void printCurrentHard();
+	void dropCard();
+	void pickCard();
 	~Computer();
-private:
-	vector<Card> computer_hand;
+//private:
+	//vector<Card> computer_hand;
 };
 
