@@ -1,8 +1,16 @@
 #pragma once
-class Human
+#include "Player.h"
+#include "Card.h"
+
+class Human : public Player 
 {
 public:
 	Human();
+	void addCardToHand(Card);
+	void printCurrentHard();
 	~Human();
+
+private:
+	vector<Card> human_hand;
 };
 

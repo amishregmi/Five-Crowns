@@ -1,16 +1,13 @@
 #include<iostream>
-#include "Deck.h"
+#include "Game.h"
+
 
 using namespace std;
 
 int main() {
 
-	cout << "Inside main() method in Source.cpp" << endl;
-
-	Deck drawPile;
-
-	drawPile.printDrawPile();
-
+	Game game;
+	game.callRound(1);
 	system("pause");
 	return 0;
 }

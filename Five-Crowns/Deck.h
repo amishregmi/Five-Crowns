@@ -1,7 +1,8 @@
 #pragma once
-#include<deque>
 #include "Card.h"
+#include<vector>
 #include<algorithm>
+#include<random>
 
 class Deck
 {
@@ -12,12 +13,15 @@ public:
 
 	void printDrawPile();
 
+	void printDiscardPile();
+
+	vector<Card> dealCards(int);
 
 	~Deck();
 
 private:
-	deque<Card> drawPile;
-	deque<Card> discardPile;
+	vector<Card> drawPile;
+	vector<Card> discardPile;
 
 };
 
