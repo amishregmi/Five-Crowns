@@ -16,7 +16,7 @@ string Card::getSuit() {
 
 
 void Card::printCard() {
-	cout << "Face: " << this->face << " " << "Suit: " << this->suit << endl;
+	cout <<  this->face <<  this->suit << "  ";
 }
 
 Card::~Card()

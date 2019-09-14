@@ -1,5 +1,8 @@
 #include "Deck.h"
 
+vector<Card> Deck::drawPile;
+vector<Card> Deck::discardPile;
+
 
 
 Deck::Deck()
@@ -56,8 +59,8 @@ void Deck::printDrawPile() {
 	cout << "Total number in Draw Pile is: " << drawPile.size() << endl;
 	cout << " ----------------------------- " << endl;
 	cout << "The draw Pile is: " << endl;
-	vector<Card> ::iterator it;
-	for (it = drawPile.begin(); it != drawPile.end(); ++it) {
+	//vector<Card> ::iterator it;
+	for (auto it = drawPile.rbegin(); it != drawPile.rend(); ++it) {
 		it->printCard();
 	}
 	cout << endl;
@@ -67,12 +70,37 @@ void Deck::printDiscardPile() {
 	cout << "Total number in Discard Pile is: " << discardPile.size() << endl;
 	cout << " ----------------------------- " << endl;
 	cout << "The discard Pile is: " << endl;
-	vector<Card> ::iterator it;
-	for (it = discardPile.begin(); it != discardPile.end(); ++it) {
+	//vector<Card> ::iterator it;
+	for (auto it = discardPile.rbegin(); it != discardPile.rend(); ++it) {
 		it->printCard();
 	}
 	cout << endl;
 }
+
+void Deck::showTopDiscardCard() {
+	cout << "Top discard card is: ";
+	Card topDiscardCard = discardPile.back();
+	topDiscardCard.printCard();
+}
+
+Card Deck::takeTopDiscardCard() {
+	Card topDiscardCard = discardPile.back();
+	discardPile.pop_back();
+	return topDiscardCard;
+}
+
+void Deck::showTopDrawCard() {
+	Card topDrawCard = drawPile.back();
+	cout << "Top draw card is: ";
+	topDrawCard.printCard();
+}
+
+Card Deck::takeTopDrawCard() {
+	Card topDrawCard = drawPile.back();
+	drawPile.pop_back();
+	return topDrawCard;
+}
+
 
 Deck::~Deck()
 {

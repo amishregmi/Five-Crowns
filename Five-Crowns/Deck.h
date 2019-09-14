@@ -12,17 +12,24 @@ public:
 	
 	//void shuffleDrawPile();
 
-	void printDrawPile();
+	static void printDrawPile();
 
-	void printDiscardPile();
+	static void printDiscardPile();
 
 	vector<Card> dealCards(int);
 
+	static void showTopDiscardCard();
+
+	static Card takeTopDiscardCard();
+
+	static void showTopDrawCard();
+
+	static Card takeTopDrawCard();
+
 	~Deck();
 
-private:
-	vector<Card> drawPile;
-	vector<Card> discardPile;
-
+public:
+	static vector<Card> drawPile;
+	static vector<Card> discardPile;
 };
 

@@ -7,7 +7,7 @@ Game::Game()
 	human_player_points = 0;
 	computer_player_points = 0;
 	round_number = 1;
-
+	Deck::Deck();
 }
 
 void Game::callRound(int round_number = 0) {

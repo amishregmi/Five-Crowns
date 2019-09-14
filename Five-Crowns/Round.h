@@ -10,7 +10,6 @@ using namespace std;
 class Round
 {
 private:
-	int roundNumber;
 	//two players
 	Player *playersList[2];
 	int next_player_index;
@@ -19,12 +18,16 @@ private:
 	Deck deck;
 	string next_player;
 	int total_players_num;
-	
+	bool verify_go_out;
+	int roundNumber;
 
 public:
+	//static int roundNumber;
 	Round(int roundNumber);
+	int getRoundNumber();
 	void roundDetails();
 	void printRoundDetails();
+	void dealForRound();
 	void startRound();
 	~Round();
 };
