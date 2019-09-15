@@ -23,8 +23,10 @@ void Round::dealForRound() {
 			//human_player.addCardToHand(dealtCards[i]);
 			//computer_player.addCardToHand(dealtCards[i+1]);
 			playersList[next_player_index]->addCardToHand(dealtCards[i]);
+			playersList[next_player_index]->setCurrentRoundNum(roundNumber);
 			next_player_index = (next_player_index + 1) % total_players_num;
 			playersList[next_player_index]->addCardToHand(dealtCards[i + 1]);
+			playersList[next_player_index]->setCurrentRoundNum(roundNumber);
 			next_player_index = (next_player_index + 1) % total_players_num;
 		}
 	}
@@ -34,7 +36,7 @@ void Round::dealForRound() {
 
 void Round::printRoundDetails() {
 	cout << "Round Number: " << roundNumber << endl;
-	cout << "-----------------------------------" << endl;
+	cout << "-------------------------------------------------------------" << endl;
 	if (roundNumber == 1) {
 		Deck::printDrawPile();
 	}
@@ -45,6 +47,8 @@ void Round::printRoundDetails() {
 	next_player_index = (next_player_index + 1) % total_players_num;
 	playersList[next_player_index]->printCurrentHand();
 	next_player_index = (next_player_index + 1) % total_players_num;
+	cout << endl;
+	cout << endl;
 	//next_player = "user";
 }
 
@@ -69,20 +73,25 @@ void Round::printPlayersDetails() {
 void Round::startRound() {
 	while (!verify_go_out) {
 		
-		Deck::showTopDrawCard();
-		cout << endl;
+		//Deck::showTopDrawCard();
+		//cout << endl;
 
-		Deck::showTopDiscardCard();
-		cout << endl;
+		//Deck::showTopDiscardCard();
+		//cout << endl;
 		
 	
 		playersList[next_player_index]->pickCard();
 
-		//next_player_index = (next_player_index + 1) % total_players_num;
-		
 		printPlayersDetails();
-		
 
+		next_player_index = (next_player_index + 1) % total_players_num;
+		
+		playersList[next_player_index]->pickCard();
+
+		printPlayersDetails();
+
+		next_player_index = (next_player_index + 1) % total_players_num;
+		
 		verify_go_out = false;
 	
 	}

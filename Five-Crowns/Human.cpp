@@ -5,6 +5,8 @@ Human::Human()
 }
 
 void Human::pickCard() {
+	checkWildcards();
+	//cout << "Inside human pickCard() " << total_cards_in_hand << endl;
 	char draw_or_discard;
 	cout << "Enter a to take the top draw card and b to take the available discard card: ";
 	cin >> draw_or_discard;
@@ -17,19 +19,19 @@ void Human::pickCard() {
 
 	if (tolower(draw_or_discard) == 'a') {
 		//Take top draw card
-		cout << "Human selected card from draw pile" << endl;
+		//cout << "Human selected card from draw pile" << endl;
 		Card topDrawCard = Deck::takeTopDrawCard();
 		addCardToHand(topDrawCard);
-		total_cards_in_hand++;
 	}
 
 	else {
-		cout << "Human selected card from discard pile " << endl;
+		//cout << "Human selected card from discard pile " << endl;
 		Card topDiscardPile = Deck::takeTopDiscardCard();
 		addCardToHand(topDiscardPile);
-		total_cards_in_hand++;
 	}
 
+	//cout << "Total number of wildcards is: " << total_wildcards_num << endl;
+	//cout << "After human pickcard total cardss in hand " << total_cards_in_hand << endl;
 	dropCard();
 	
 }
@@ -38,6 +40,7 @@ void Human::pickCard() {
 
 void Human::dropCard() {
 	//cout << "The current player's hand is: " << endl;
+	//cout << "Beginning of dropCard " << total_cards_in_hand << endl;
 	printCurrentHand();
 	//Card(face, suit)
 	int del_index;
@@ -55,7 +58,12 @@ void Human::dropCard() {
 	current_player_hand.erase(current_player_hand.begin() + del_index);
 	total_cards_in_hand--;
 	Deck::discardPile.push_back(card_dropped);
-
+	current_player_hand_str.erase(current_player_hand_str.begin() + del_index);
+	cout << "The total number of wildcards is: " << getWildcardsNum() << endl;
+	cout << endl;
+	cout << endl;
+	//cout << "AFter human dropcard " << total_cards_in_hand << endl;
+	
 }
 
 Human::~Human()

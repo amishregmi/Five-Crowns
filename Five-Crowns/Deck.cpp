@@ -58,24 +58,23 @@ vector<Card> Deck::dealCards(int roundNumber) {
 
 
 void Deck::printDrawPile() {
-	cout << "Total number in Draw Pile is: " << drawPile.size() << endl;
-	cout << " ----------------------------- " << endl;
+	//cout << "Total number in Draw Pile is: " << drawPile.size() << endl;
 	cout << "The draw Pile is: ";
 	//vector<Card> ::iterator it;
 	for (auto it = drawPile.rbegin(); it != drawPile.rend(); ++it) {
 		it->printCard();
 	}
 	cout << endl;
+	cout << endl;
 }
 
 void Deck::printDiscardPile() {
-	cout << "Total number in Discard Pile is: " << discardPile.size() << endl;
-	cout << " ----------------------------- " << endl;
 	cout << "The discard Pile is: ";
 	//vector<Card> ::iterator it;
 	for (auto it = discardPile.rbegin(); it != discardPile.rend(); ++it) {
 		it->printCard();
 	}
+	cout << endl;
 	cout << endl;
 }
 

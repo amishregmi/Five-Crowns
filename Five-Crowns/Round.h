@@ -4,6 +4,7 @@
 #include "Human.h"
 #include "Computer.h"
 #include "Deck.h"
+#include <time.h>
 
 using namespace std;
 
@@ -24,7 +25,6 @@ private:
 public:
 //	static int roundNumber;
 	Round(int roundNumber);
-	static int getRoundNumber();
 	void roundDetails();
 	void printRoundDetails();
 	void dealForRound();
