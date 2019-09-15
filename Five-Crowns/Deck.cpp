@@ -7,6 +7,8 @@ vector<Card> Deck::discardPile;
 
 Deck::Deck()
 {
+	drawPile.clear();
+	discardPile.clear();
 	//S - spades, C - clubs, D - diamonds, H - hearts, T - tridents
 	string suits[] = { "S", "C", "D", "H", "T" };
 
@@ -58,7 +60,7 @@ vector<Card> Deck::dealCards(int roundNumber) {
 void Deck::printDrawPile() {
 	cout << "Total number in Draw Pile is: " << drawPile.size() << endl;
 	cout << " ----------------------------- " << endl;
-	cout << "The draw Pile is: " << endl;
+	cout << "The draw Pile is: ";
 	//vector<Card> ::iterator it;
 	for (auto it = drawPile.rbegin(); it != drawPile.rend(); ++it) {
 		it->printCard();
@@ -69,7 +71,7 @@ void Deck::printDrawPile() {
 void Deck::printDiscardPile() {
 	cout << "Total number in Discard Pile is: " << discardPile.size() << endl;
 	cout << " ----------------------------- " << endl;
-	cout << "The discard Pile is: " << endl;
+	cout << "The discard Pile is: ";
 	//vector<Card> ::iterator it;
 	for (auto it = discardPile.rbegin(); it != discardPile.rend(); ++it) {
 		it->printCard();

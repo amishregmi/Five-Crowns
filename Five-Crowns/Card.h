@@ -17,7 +17,13 @@ public:
 
 	string getSuit();
 
+	void setFace(string);
+
+	void setSuit(string);
+
 	void printCard();
+
+	string cardToString();
 
 	~Card();
 };

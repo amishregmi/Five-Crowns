@@ -1,3 +1,2 @@
-﻿  Deck.cpp
-c:\five-crowns\five-crowns\deck.cpp(37): warning C4244: 'initializing': conversion from 'std::chrono::system_clock::rep' to 'unsigned int', possible loss of data
+﻿  Round.cpp
   Five-Crowns.vcxproj -> C:\Five-Crowns\Five-Crowns\Debug\Five-Crowns.exe

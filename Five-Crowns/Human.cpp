@@ -1,26 +1,8 @@
 #include "Human.h"
 
-
-
 Human::Human()
 {
 }
-
-/*
-
-void Human::addCardToHand(Card card) {
-	human_hand.push_back(card);
-}
-
-void Human::printCurrentHard() {
-	cout << "Printing human hand" << endl;
-	vector<Card> ::iterator it;
-	for (it = human_hand.begin(); it != human_hand.end(); ++it) {
-		it->printCard();
-	}
-	cout << endl;
-}
-*/
 
 void Human::pickCard() {
 	char draw_or_discard;
@@ -40,21 +22,40 @@ void Human::pickCard() {
 		addCardToHand(topDrawCard);
 		total_cards_in_hand++;
 	}
+
 	else {
 		cout << "Human selected card from discard pile " << endl;
 		Card topDiscardPile = Deck::takeTopDiscardCard();
 		addCardToHand(topDiscardPile);
 		total_cards_in_hand++;
 	}
-	
+
 	dropCard();
 	
 }
 
+
+
 void Human::dropCard() {
-	cout << "The current player's hand is: " << endl;
+	//cout << "The current player's hand is: " << endl;
 	printCurrentHand();
-	
+	//Card(face, suit)
+	int del_index;
+	cout << "Enter the index of the card you want to delete: ";
+	cin >> del_index;
+
+	if (del_index > (total_cards_in_hand - 1)) {
+		do {
+			cout << "Invalid input. Please enter index within range: ";
+			cin >> del_index;
+		} while (del_index > (total_cards_in_hand - 1));
+	}
+
+	Card card_dropped = current_player_hand.at(del_index);
+	current_player_hand.erase(current_player_hand.begin() + del_index);
+	total_cards_in_hand--;
+	Deck::discardPile.push_back(card_dropped);
+
 }
 
 Human::~Human()

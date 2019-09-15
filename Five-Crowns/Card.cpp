@@ -19,6 +19,18 @@ void Card::printCard() {
 	cout <<  this->face <<  this->suit << "  ";
 }
 
+void Card::setFace(string face) {
+	face = face;
+}
+
+void Card::setSuit(string suit) {
+	suit = suit;
+}
+
+string Card::cardToString() {
+	return face + suit;
+}
+
 Card::~Card()
 {
 }

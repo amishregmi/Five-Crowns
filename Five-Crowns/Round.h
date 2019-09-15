@@ -22,13 +22,14 @@ private:
 	int roundNumber;
 
 public:
-	//static int roundNumber;
+//	static int roundNumber;
 	Round(int roundNumber);
-	int getRoundNumber();
+	static int getRoundNumber();
 	void roundDetails();
 	void printRoundDetails();
 	void dealForRound();
 	void startRound();
+	void printPlayersDetails();
 	~Round();
 };
 
