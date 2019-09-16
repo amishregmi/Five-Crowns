@@ -6,6 +6,7 @@ Human::Human()
 
 void Human::pickCard() {
 	checkWildcards();
+	checkJokercards();
 	//cout << "Inside human pickCard() " << total_cards_in_hand << endl;
 	char draw_or_discard;
 	cout << "Enter a to take the top draw card and b to take the available discard card: ";
@@ -60,14 +61,18 @@ void Human::dropCard() {
 	total_cards_in_hand--;
 	Deck::discardPile.push_back(card_dropped);
 	current_player_hand_str.erase(current_player_hand_str.begin() + del_index);
-	cout << "After dropping card, ";
-	printCurrentHand();
+	//cout << "After dropping card, ";
+	//printCurrentHand();
 	checkWildcards();
+	checkJokercards();
 	cout << "The total number of wildcards is: " << getWildcardsNum() << endl;
-	cout << endl;
-	cout << endl;
+	cout << "Total number of jokers is: " << getJokersNum() << endl;
 	//cout << "AFter human dropcard " << total_cards_in_hand << endl;
-	
+	cout << " Checking book: ";
+	cout << checkBook() << endl;
+	cout << endl;
+	cout << endl;
+
 }
 
 Human::~Human()

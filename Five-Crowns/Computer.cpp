@@ -48,12 +48,14 @@ void Computer::dropCard() {
 
 	printCurrentHand();
 
-	checkWildcards();
-	cout << "After dropping card, ";
-	printCurrentHand();
+	//checkWildcards();
+	//cout << "After dropping card, ";
+	//printCurrentHand();
+	checkJokercards();
 	checkWildcards();
 	//cout << "Total cards after dropCard " << total_cards_in_hand << endl;
 	cout << "The total number of wildcards is: " << getWildcardsNum() << endl;
+	cout << "The total number of jokers is: " << getJokersNum() << endl;
 	cout << endl;
 	cout << endl;
 }

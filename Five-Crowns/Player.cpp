@@ -17,6 +17,27 @@ void Player::addCardToHand(Card card){
 
 }
 
+void Player::checkJokercards() {
+	if (current_round_num != 0) {
+		total_jokers_num = 0;
+
+		for (vector<string>::iterator i = current_player_hand_str.begin(); i != current_player_hand_str.end(); ++i) {
+			string current_card = *i;
+			//((stoi(current_card) == 1 || stoi(current_card) == 2 || stoi(current_card) == 3))
+			if ((current_card.at(0) == 'J') && isdigit(current_card.at(1))) {
+				//cout << "Inside joker";
+				int number = current_card.at(1) - '0';
+
+				if (number > 0 && number < 4) {
+					cout << "Increasing Joker num" << endl;
+					total_jokers_num++;
+				}
+			}
+
+		}
+	}
+}
+
 void Player::checkWildcards() {
 	if (current_round_num != 0){
 		//cout << endl;
@@ -36,17 +57,23 @@ void Player::checkWildcards() {
 					total_wildcards_num++;
 				}
 			}
-			//((stoi(current_card) == 1 || stoi(current_card) == 2 || stoi(current_card) == 3))
-			if ((current_card.at(0) == 'J') && isdigit(current_card.at(1) )){
-				cout << "Inside joker";
-				int number = current_card.at(1) - '0';
-
-				if (number > 0 && number < 4) {
-					cout << "Increasing num" << endl;
-					total_wildcards_num++;
-				}				
-			}
 			
+			if (current_round_num == 8 && current_card.at(0) == 'X') {
+				total_wildcards_num++;
+			}
+
+			if (current_round_num == 9 && (current_card.at(0) == 'J' && !isdigit(current_card.at(1)))) {
+				total_wildcards_num++;
+			}
+
+			if (current_round_num == 10 && current_card.at(0) == 'Q') {
+				total_wildcards_num++;
+			}
+
+			if (current_round_num == 11 && current_card.at(0) == 'K') {
+				total_wildcards_num++;
+			}
+
 		}
 	}
 }
@@ -86,6 +113,43 @@ int Player::getWildcardsNum() {
 	return total_wildcards_num;
 }
 
+
+int Player::getJokersNum() {
+	return total_jokers_num;
+}
+
+
+bool Player::checkBook() {
+	int total_applicable_wildcards = getJokersNum() + getWildcardsNum();
+	cout << "Inside checkBook() total applicable wildcards is: " << total_applicable_wildcards << endl;
+	vector<int> face_numbers;
+	
+	for (vector<string>::iterator i = current_player_hand_str.begin(); i != current_player_hand_str.end(); ++i) {
+		string current_card = *i;
+		int number = current_card.at(0) - '0';
+		face_numbers.push_back(number);
+	}
+
+	sort(face_numbers.begin(), face_numbers.end());
+	int total_numb = face_numbers.size();
+	vector<int>::iterator it;
+
+	it = unique(face_numbers.begin(), face_numbers.begin() + total_numb);
+
+	face_numbers.resize(distance(face_numbers.begin(), it));
+
+	int size_of_unique = face_numbers.size();
+
+	if ((size_of_unique - total_applicable_wildcards * 2) <= 1) {
+		return true;
+	}
+		
+	return false;
+}
+
+bool Player::checkRun() {
+	return false;
+}
 
 Player::~Player()
 {
