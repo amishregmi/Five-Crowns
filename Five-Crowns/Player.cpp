@@ -19,13 +19,13 @@ void Player::addCardToHand(Card card){
 
 void Player::checkWildcards() {
 	if (current_round_num != 0){
-		cout << endl;
-		cout << "Current roundNumber inside checkWildCards is: " << current_round_num << endl;
+		//cout << endl;
+		//cout << "Current roundNumber inside checkWildCards is: " << current_round_num << endl;
 		total_wildcards_num = 0;
 
 		for (vector<string>::iterator i = current_player_hand_str.begin(); i != current_player_hand_str.end(); ++i) {
 			string current_card = *i;
-			//cout << "Current card is: " <<current_card << endl;
+			//cout << "   Current card is: " << current_card;
 			 
 			//Need to check wildcards for rounds 10, 11, 12, 13 for faces
 
@@ -38,10 +38,11 @@ void Player::checkWildcards() {
 			}
 			//((stoi(current_card) == 1 || stoi(current_card) == 2 || stoi(current_card) == 3))
 			if ((current_card.at(0) == 'J') && isdigit(current_card.at(1) )){
-
+				cout << "Inside joker";
 				int number = current_card.at(1) - '0';
 
 				if (number > 0 && number < 4) {
+					cout << "Increasing num" << endl;
 					total_wildcards_num++;
 				}				
 			}

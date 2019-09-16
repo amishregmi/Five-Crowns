@@ -44,7 +44,7 @@ Deck::Deck()
 
 
 vector<Card> Deck::dealCards(int roundNumber) {
-	cout << "Dealing cards for roundNumber: " << roundNumber << endl;
+	//cout << "Dealing cards for roundNumber: " << roundNumber << endl;
 	vector<Card> cardstodeal;
 	int total_cards_per_player = (2 + roundNumber)*2;
 	for (int i = 0; i < total_cards_per_player; i++) {

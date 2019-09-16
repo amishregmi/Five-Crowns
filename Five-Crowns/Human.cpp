@@ -41,6 +41,7 @@ void Human::pickCard() {
 void Human::dropCard() {
 	//cout << "The current player's hand is: " << endl;
 	//cout << "Beginning of dropCard " << total_cards_in_hand << endl;
+	cout << "Before dropping card, ";
 	printCurrentHand();
 	//Card(face, suit)
 	int del_index;
@@ -59,6 +60,9 @@ void Human::dropCard() {
 	total_cards_in_hand--;
 	Deck::discardPile.push_back(card_dropped);
 	current_player_hand_str.erase(current_player_hand_str.begin() + del_index);
+	cout << "After dropping card, ";
+	printCurrentHand();
+	checkWildcards();
 	cout << "The total number of wildcards is: " << getWildcardsNum() << endl;
 	cout << endl;
 	cout << endl;

@@ -36,8 +36,8 @@ void Round::dealForRound() {
 
 void Round::printRoundDetails() {
 	cout << "Round Number: " << roundNumber << endl;
-	cout << "-------------------------------------------------------------" << endl;
-	if (roundNumber == 1) {
+	//cout << "-------------------------------------------------------------" << endl;
+	if (roundNumber >= 1) {
 		Deck::printDrawPile();
 	}
 	Deck::printDiscardPile();
@@ -62,33 +62,37 @@ void Round::roundDetails() {
 	}
 }
 
-void Round::printPlayersDetails() {
-	playersList[next_player_index]->printCurrentHand();
-	Deck::showTopDrawCard();
-	Deck::showTopDiscardCard();
-	cout << "Draw pile size is: " << Deck::drawPile.size();
-	cout << " Discard pile size is: " << Deck::discardPile.size() << endl;
-}
 
 void Round::startRound() {
 	while (!verify_go_out) {
+
+		cout << " --------------------------------------------" << endl;
+
+		Deck::printDrawPile();
+		Deck::printDiscardPile();
 		
-		//Deck::showTopDrawCard();
+		playersList[next_player_index]->printCurrentHand();
+
+		Deck::showTopDrawCard();
 		//cout << endl;
 
-		//Deck::showTopDiscardCard();
+		Deck::showTopDiscardCard();
 		//cout << endl;
 		
+		cout << endl;
 	
 		playersList[next_player_index]->pickCard();
 
-		printPlayersDetails();
-
 		next_player_index = (next_player_index + 1) % total_players_num;
+
+		Deck::printDrawPile();
+		Deck::printDiscardPile();
+		cout << endl;
+		Deck::showTopDrawCard();
+		Deck::showTopDiscardCard();
+		
 		
 		playersList[next_player_index]->pickCard();
-
-		printPlayersDetails();
 
 		next_player_index = (next_player_index + 1) % total_players_num;
 		
