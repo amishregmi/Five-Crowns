@@ -24,6 +24,8 @@ public:
 	int getCurrentRoundNum();
 	bool checkBook();
 	bool checkRun();
+	bool checkIfJoker(string);
+	bool checkIfWildcard(string);
 	~Player();
 protected:
 	vector<Card> current_player_hand;

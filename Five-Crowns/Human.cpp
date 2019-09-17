@@ -70,6 +70,8 @@ void Human::dropCard() {
 	//cout << "AFter human dropcard " << total_cards_in_hand << endl;
 	cout << " Checking book: ";
 	cout << checkBook() << endl;
+	cout << "Checking run: ";
+	cout << checkRun() << endl;
 	cout << endl;
 	cout << endl;
 

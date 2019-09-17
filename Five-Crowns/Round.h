@@ -29,6 +29,7 @@ public:
 	void printRoundDetails();
 	void dealForRound();
 	void startRound();
+	void printPlayersDetails();
 	~Round();
 };
 

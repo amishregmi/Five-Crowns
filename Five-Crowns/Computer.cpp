@@ -56,6 +56,10 @@ void Computer::dropCard() {
 	//cout << "Total cards after dropCard " << total_cards_in_hand << endl;
 	cout << "The total number of wildcards is: " << getWildcardsNum() << endl;
 	cout << "The total number of jokers is: " << getJokersNum() << endl;
+	cout << "Checking book: ";
+	cout << checkBook() << endl;
+	cout << "Checking run: ";
+	cout << checkRun() << endl;
 	cout << endl;
 	cout << endl;
 }

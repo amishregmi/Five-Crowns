@@ -23,17 +23,10 @@ void Player::checkJokercards() {
 
 		for (vector<string>::iterator i = current_player_hand_str.begin(); i != current_player_hand_str.end(); ++i) {
 			string current_card = *i;
-			//((stoi(current_card) == 1 || stoi(current_card) == 2 || stoi(current_card) == 3))
-			if ((current_card.at(0) == 'J') && isdigit(current_card.at(1))) {
-				//cout << "Inside joker";
-				int number = current_card.at(1) - '0';
-
-				if (number > 0 && number < 4) {
-					cout << "Increasing Joker num" << endl;
-					total_jokers_num++;
-				}
+			bool check_joker = checkIfJoker(current_card);
+			if (check_joker) {
+				total_jokers_num++;
 			}
-
 		}
 	}
 }
@@ -46,34 +39,10 @@ void Player::checkWildcards() {
 
 		for (vector<string>::iterator i = current_player_hand_str.begin(); i != current_player_hand_str.end(); ++i) {
 			string current_card = *i;
-			//cout << "   Current card is: " << current_card;
-			 
-			//Need to check wildcards for rounds 10, 11, 12, 13 for faces
-
-			if (isdigit(current_card.at(0))) {
-				int number = current_card.at(0) - '0';
-				if (number == (current_round_num+2)) {
-				//	cout << "Inside firstdigit is roundnumber " << endl;
-					total_wildcards_num++;
-				}
-			}
-			
-			if (current_round_num == 8 && current_card.at(0) == 'X') {
+			bool check_card = checkIfWildcard(current_card);
+			if (check_card) {
 				total_wildcards_num++;
 			}
-
-			if (current_round_num == 9 && (current_card.at(0) == 'J' && !isdigit(current_card.at(1)))) {
-				total_wildcards_num++;
-			}
-
-			if (current_round_num == 10 && current_card.at(0) == 'Q') {
-				total_wildcards_num++;
-			}
-
-			if (current_round_num == 11 && current_card.at(0) == 'K') {
-				total_wildcards_num++;
-			}
-
 		}
 	}
 }
@@ -120,11 +89,45 @@ int Player::getJokersNum() {
 
 
 bool Player::checkBook() {
-	int total_applicable_wildcards = getJokersNum() + getWildcardsNum();
-	cout << "Inside checkBook() total applicable wildcards is: " << total_applicable_wildcards << endl;
-	vector<int> face_numbers;
 	
-	for (vector<string>::iterator i = current_player_hand_str.begin(); i != current_player_hand_str.end(); ++i) {
+	//error in case JC J1 5C
+	int total_applicable_wildcards = 0;
+	vector<string>::iterator i;
+	vector<string> temp;
+	vector<int> hand_int_vals;
+
+	for (int i = 0; i < current_player_hand_str.size(); i++) {
+		temp.push_back(current_player_hand_str[i]);
+	}
+
+	for (i = temp.begin(); i != temp.end(); ) {
+		string current_card = *i;
+		bool check_if_joker = checkIfJoker(current_card);
+		bool check_if_wildcard = checkIfWildcard(current_card);
+
+		if (check_if_joker) {
+			i = temp.erase(i);
+			total_applicable_wildcards++;
+		}
+
+		else if (check_if_wildcard) {
+			i = temp.erase(i);
+			total_applicable_wildcards++;
+		}
+
+		else {
+			++i;
+		}
+
+	}
+
+	if (temp.size() == 1) {
+		return true;
+	}
+
+	vector<int> face_numbers;
+
+	for (vector<string>::iterator i = temp.begin(); i != temp.end(); ++i) {
 		string current_card = *i;
 		int number = current_card.at(0) - '0';
 		face_numbers.push_back(number);
@@ -140,7 +143,7 @@ bool Player::checkBook() {
 
 	int size_of_unique = face_numbers.size();
 
-	if ((size_of_unique - total_applicable_wildcards * 2) <= 1) {
+	if (size_of_unique <= 1) {
 		return true;
 	}
 		
@@ -148,6 +151,143 @@ bool Player::checkBook() {
 }
 
 bool Player::checkRun() {
+	
+	int total_applicable_wildcards = 0;
+	vector<string>::iterator i;
+	vector<string> temp;
+	vector<int> hand_int_vals;
+
+	for (int i = 0; i < current_player_hand_str.size(); i++) {
+		temp.push_back(current_player_hand_str[i]);
+	}
+
+	for (i = temp.begin(); i != temp.end(); ) {
+		string current_card = *i;
+		bool check_if_joker = checkIfJoker(current_card);
+		bool check_if_wildcard = checkIfWildcard(current_card);
+		
+		if (check_if_joker) {
+			i = temp.erase(i);
+			total_applicable_wildcards++;
+		}
+
+		else if (check_if_wildcard) {
+			i = temp.erase(i);
+			total_applicable_wildcards++;
+		}
+
+		else {
+			++i;
+		}
+		
+	}
+
+	if (temp.size() == 1) {
+		return true;
+	}
+
+	//wildcards are removed. check if all cards have the same suit.
+	vector<string> temp_suits;
+	for (i = temp.begin(); i != temp.end(); ++i) {
+		string current_tempandsuit = *i;
+		char suit = current_tempandsuit[1];
+		string s(1, suit);
+
+		if (!(find(temp_suits.begin(), temp_suits.end(), s) != temp_suits.end())) {
+			temp_suits.push_back(s);
+		}
+	}
+
+	if (temp_suits.size() > 1) {
+		return false;
+	}
+
+	vector<int> face_values;
+
+	for (i = temp.begin(); i != temp.end(); ++i) {
+
+		string current_tempandsuit = *i;
+		char face = current_tempandsuit[0];
+		int int_face = face - '0';
+		if (face == 'X') {
+			int_face -= 30;
+		}
+
+		if (face == 'J') {
+			int_face -= 15;
+		}
+
+		if (face == 'Q') {
+			int_face -= 21;
+		}
+
+		if (face == 'K') {
+			int_face -= 14;
+		}
+
+		face_values.push_back(int_face);
+	}
+
+	sort(face_values.begin(), face_values.end());
+
+	int vec_size = face_values.size();
+	int max_diff = face_values[1] - face_values[0];
+
+	for (int i = 0; i < vec_size; i++) {
+		for (int j = i + 1; j < vec_size; j++) {
+			if (face_values[j] - face_values[i] > max_diff) {
+				max_diff = face_values[j] - face_values[i];
+			}
+		}
+	}
+
+	if (max_diff <= (total_applicable_wildcards + 1)) {
+		return true;
+	}
+
+	return false;
+}
+
+
+
+bool Player::checkIfJoker(string current_card) {
+	
+	if ((current_card.at(0) == 'J') && isdigit(current_card.at(1))) {
+		int number = current_card.at(1) - '0';
+
+		if (number > 0 && number < 4) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool Player::checkIfWildcard(string current_card) {
+	
+	if (isdigit(current_card.at(0))) {
+		int number = current_card.at(0) - '0';
+		if (number == (current_round_num + 2)) {
+			return true;
+		}
+	}
+
+	if (current_round_num == 8 && current_card.at(0) == 'X') {
+		return true;
+	}
+
+	if (current_round_num == 9 && (current_card.at(0) == 'J' && !isdigit(current_card.at(1)))) {
+		return true;
+	}
+
+	if (current_round_num == 10 && current_card.at(0) == 'Q') {
+		return true;
+	}
+
+	if (current_round_num == 11 && current_card.at(0) == 'K') {
+		return true;
+	}
+
 	return false;
 }
 
