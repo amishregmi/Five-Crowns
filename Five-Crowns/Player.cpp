@@ -87,15 +87,10 @@ int Player::getJokersNum() {
 	return total_jokers_num;
 }
 
-
-bool Player::checkBook() {
-	
-	//error in case JC J1 5C
-	int total_applicable_wildcards = 0;
-	vector<string>::iterator i;
+vector<string> Player::handWithoutWildcards(int &total_applicable_wildcards) {
 	vector<string> temp;
-	vector<int> hand_int_vals;
-
+	vector<string>::iterator i;
+	
 	for (int i = 0; i < current_player_hand_str.size(); i++) {
 		temp.push_back(current_player_hand_str[i]);
 	}
@@ -120,6 +115,15 @@ bool Player::checkBook() {
 		}
 
 	}
+
+	cout << "returned cards without wildcards " << endl;
+	return temp;
+
+}
+
+bool Player::checkBook() {
+	int total_applicable_wildcards = 0;
+	vector<string> temp = handWithoutWildcards(total_applicable_wildcards);
 
 	if (temp.size() == 1) {
 		return true;
@@ -138,9 +142,7 @@ bool Player::checkBook() {
 	vector<int>::iterator it;
 
 	it = unique(face_numbers.begin(), face_numbers.begin() + total_numb);
-
 	face_numbers.resize(distance(face_numbers.begin(), it));
-
 	int size_of_unique = face_numbers.size();
 
 	if (size_of_unique <= 1) {
@@ -150,44 +152,20 @@ bool Player::checkBook() {
 	return false;
 }
 
+
 bool Player::checkRun() {
 	
 	int total_applicable_wildcards = 0;
-	vector<string>::iterator i;
-	vector<string> temp;
-	vector<int> hand_int_vals;
-
-	for (int i = 0; i < current_player_hand_str.size(); i++) {
-		temp.push_back(current_player_hand_str[i]);
-	}
-
-	for (i = temp.begin(); i != temp.end(); ) {
-		string current_card = *i;
-		bool check_if_joker = checkIfJoker(current_card);
-		bool check_if_wildcard = checkIfWildcard(current_card);
-		
-		if (check_if_joker) {
-			i = temp.erase(i);
-			total_applicable_wildcards++;
-		}
-
-		else if (check_if_wildcard) {
-			i = temp.erase(i);
-			total_applicable_wildcards++;
-		}
-
-		else {
-			++i;
-		}
-		
-	}
+	vector<string> temp = handWithoutWildcards(total_applicable_wildcards);
 
 	if (temp.size() == 1) {
 		return true;
 	}
 
 	//wildcards are removed. check if all cards have the same suit.
+	vector<string>::iterator i;
 	vector<string> temp_suits;
+
 	for (i = temp.begin(); i != temp.end(); ++i) {
 		string current_tempandsuit = *i;
 		char suit = current_tempandsuit[1];
@@ -205,10 +183,10 @@ bool Player::checkRun() {
 	vector<int> face_values;
 
 	for (i = temp.begin(); i != temp.end(); ++i) {
-
 		string current_tempandsuit = *i;
 		char face = current_tempandsuit[0];
 		int int_face = face - '0';
+		
 		if (face == 'X') {
 			int_face -= 30;
 		}
@@ -225,21 +203,20 @@ bool Player::checkRun() {
 			int_face -= 14;
 		}
 
-		face_values.push_back(int_face);
+		if (!(find(face_values.begin(), face_values.end(), int_face) != face_values.end())) {
+			face_values.push_back(int_face);
+		}
+		
 	}
 
 	sort(face_values.begin(), face_values.end());
 
-	int vec_size = face_values.size();
-	int max_diff = face_values[1] - face_values[0];
 
-	for (int i = 0; i < vec_size; i++) {
-		for (int j = i + 1; j < vec_size; j++) {
-			if (face_values[j] - face_values[i] > max_diff) {
-				max_diff = face_values[j] - face_values[i];
-			}
-		}
+	if (face_values.size() == 1) {
+		return false;
 	}
+
+	int max_diff = facesMaxDiff(face_values, face_values.size());
 
 	if (max_diff <= (total_applicable_wildcards + 1)) {
 		return true;
@@ -248,6 +225,20 @@ bool Player::checkRun() {
 	return false;
 }
 
+
+
+int Player::facesMaxDiff(vector<int> face_values, int vec_size) {
+	
+	int max_diff = face_values[1] - face_values[0];
+	for (int i = 0; i < vec_size; i++) {
+		for (int j = i + 1; j < vec_size; j++) {
+			if (face_values[j] - face_values[i] > max_diff) {
+				max_diff = face_values[j] - face_values[i];
+			}
+		}
+	}
+	return max_diff;
+}
 
 
 bool Player::checkIfJoker(string current_card) {

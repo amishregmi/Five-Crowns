@@ -26,6 +26,8 @@ public:
 	bool checkRun();
 	bool checkIfJoker(string);
 	bool checkIfWildcard(string);
+	vector<string> handWithoutWildcards(int &);
+	int facesMaxDiff(vector<int>, int);
 	~Player();
 protected:
 	vector<Card> current_player_hand;
