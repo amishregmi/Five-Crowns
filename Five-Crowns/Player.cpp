@@ -116,7 +116,7 @@ vector<string> Player::handWithoutWildcards(int &total_applicable_wildcards) {
 
 	}
 
-	cout << "returned cards without wildcards " << endl;
+	//cout << "returned cards without wildcards " << endl;
 	return temp;
 
 }
@@ -280,6 +280,27 @@ bool Player::checkIfWildcard(string current_card) {
 	}
 
 	return false;
+}
+
+bool Player::goOut() {
+	int total_cards = current_player_hand.size();
+	bool check_book;
+	bool check_run;
+
+	if (total_cards < 6) {
+		check_book = checkBook();
+		check_run = checkRun();
+
+		if (check_book || check_run) {
+			return true;
+		}
+		return false;
+	}
+	return false;
+}
+
+int Player::calculatePoints() {
+	return 0;
 }
 
 Player::~Player()

@@ -19,16 +19,18 @@ public:
 	void checkWildcards();
 	int getJokersNum();
 	void checkJokercards();
-	//void goOut();
+	bool goOut();
 	void setCurrentRoundNum(int);
 	int getCurrentRoundNum();
 	bool checkBook();
 	bool checkRun();
 	bool checkIfJoker(string);
 	bool checkIfWildcard(string);
+	int calculatePoints();
 	vector<string> handWithoutWildcards(int &);
 	int facesMaxDiff(vector<int>, int);
 	~Player();
+
 protected:
 	vector<Card> current_player_hand;
 	vector<string> current_player_hand_str;

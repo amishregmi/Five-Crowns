@@ -65,16 +65,12 @@ void Human::dropCard() {
 	//printCurrentHand();
 	checkWildcards();
 	checkJokercards();
-	cout << "The total number of wildcards is: " << getWildcardsNum() << endl;
-	cout << "Total number of jokers is: " << getJokersNum() << endl;
+	//cout << "The total number of wildcards is: " << getWildcardsNum() << endl;
+	//cout << "Total number of jokers is: " << getJokersNum() << endl;
 	//cout << "AFter human dropcard " << total_cards_in_hand << endl;
-	cout << " Checking book: ";
-	cout << checkBook() << endl;
-	cout << "Checking run: ";
-	cout << checkRun() << endl;
-	cout << endl;
-	cout << endl;
-
+	//cout << checkBook() << endl;
+	//cout << checkRun() << endl;
+	
 }
 
 Human::~Human()

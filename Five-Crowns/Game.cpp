@@ -12,11 +12,11 @@ Game::Game()
 
 void Game::callRound(int round_number = 0) {
 	//Main game loop
-	//while (round_number <= 2) {
+	while (round_number <= 13) {
 		Round round(round_number);
 		round.roundDetails();
-	//	round_number++;
-	//}
+		round_number++;
+	}
 }
 
 
