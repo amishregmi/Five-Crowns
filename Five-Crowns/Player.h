@@ -12,6 +12,7 @@ public:
 	Player();
 	void addCardToHand(Card);
 	void printCurrentHand();
+	string getCurrentHand();
 	virtual void pickCard();
 	virtual void dropCard();
 	void decreaseHandCardNum();
@@ -26,7 +27,7 @@ public:
 	bool checkRun();
 	bool checkIfJoker(string);
 	bool checkIfWildcard(string);
-	int calculatePoints();
+	int getPlayerPoints();
 	vector<string> handWithoutWildcards(int &);
 	int facesMaxDiff(vector<int>, int);
 	~Player();
@@ -38,5 +39,6 @@ protected:
 	int total_wildcards_num;
 	int total_jokers_num;
 	int current_round_num;
+	int current_round_score;
 };
 

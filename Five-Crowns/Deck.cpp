@@ -102,6 +102,24 @@ Card Deck::takeTopDrawCard() {
 	return topDrawCard;
 }
 
+string Deck::getCurrentDrawPile() {
+	
+	string current_draw_pile;
+	for (auto it = drawPile.rbegin(); it != drawPile.rend(); ++it) {
+		string card_str = it->cardToString();
+		current_draw_pile = current_draw_pile + card_str + " ";
+	}
+	return current_draw_pile;
+}
+
+string Deck::getCurrentDiscardPile() {
+	string current_discard_pile;
+	for (auto it = discardPile.rbegin(); it != discardPile.rend(); ++it) {
+		string card_str = it->cardToString();
+		current_discard_pile = current_discard_pile + card_str + " ";
+	}
+	return current_discard_pile;
+}
 
 Deck::~Deck()
 {

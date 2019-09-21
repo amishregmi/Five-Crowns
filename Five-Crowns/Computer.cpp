@@ -7,6 +7,7 @@ Computer::Computer()
 }
 
 
+
 void Computer::pickCard() {
 	//cout << "Computer at start of pickCard total cards" << total_cards_in_hand << endl;
 	srand(time(NULL));

@@ -1,3 +1,3 @@
-﻿  Round.cpp
-c:\five-crowns\five-crowns\round.cpp(54): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+﻿  Deck.cpp
+c:\five-crowns\five-crowns\deck.cpp(39): warning C4244: 'initializing': conversion from 'std::chrono::system_clock::rep' to 'unsigned int', possible loss of data
   Five-Crowns.vcxproj -> C:\Five-Crowns\Five-Crowns\Debug\Five-Crowns.exe

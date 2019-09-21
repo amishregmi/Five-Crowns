@@ -4,7 +4,9 @@ Human::Human()
 {
 }
 
+
 void Human::pickCard() {
+	//menuOptions();
 	checkWildcards();
 	checkJokercards();
 	//cout << "Inside human pickCard() " << total_cards_in_hand << endl;

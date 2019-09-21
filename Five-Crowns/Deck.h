@@ -26,6 +26,10 @@ public:
 
 	static Card takeTopDrawCard();
 
+	static string getCurrentDrawPile();
+
+	static string getCurrentDiscardPile();
+
 	~Deck();
 
 public:

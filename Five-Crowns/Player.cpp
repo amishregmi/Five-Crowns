@@ -5,6 +5,7 @@
 Player::Player()
 {
 	total_cards_in_hand = 0;
+	current_round_score = 0;
 }
 
 
@@ -73,6 +74,7 @@ void Player::pickCard() {
 void Player::dropCard() {
 	cout << "Virtual function dropCard() in Player class " << endl;
 }
+
 
 void Player::decreaseHandCardNum() {
 	total_cards_in_hand--;
@@ -299,8 +301,16 @@ bool Player::goOut() {
 	return false;
 }
 
-int Player::calculatePoints() {
+int Player::getPlayerPoints() {
 	return 0;
+}
+
+string Player::getCurrentHand() {
+	string current_hand_space_sep;
+	for (auto const& onecard : current_player_hand_str) {
+		current_hand_space_sep = current_hand_space_sep + onecard + " ";
+	}
+	return current_hand_space_sep;
 }
 
 Player::~Player()

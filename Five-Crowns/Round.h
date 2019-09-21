@@ -5,8 +5,11 @@
 #include "Computer.h"
 #include "Deck.h"
 #include <time.h>
+#include <fstream>
 
 using namespace std;
+
+const string SAVED_GAME = "./saved_game.txt";
 
 class Round
 {
@@ -34,6 +37,8 @@ public:
 	void startRound();
 	string coinToss();
 	void printPlayersDetails();
+	void menuOptions();
+	void saveGame();
 	~Round();
 };
 
