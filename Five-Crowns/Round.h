@@ -6,6 +6,7 @@
 #include "Deck.h"
 #include <time.h>
 #include <fstream>
+#include <sstream>
 
 using namespace std;
 

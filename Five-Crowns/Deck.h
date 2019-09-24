@@ -30,6 +30,10 @@ public:
 
 	static string getCurrentDiscardPile();
 
+	static void setDrawPile(vector<string>);
+
+	static void setDiscardPile(vector<string>);
+
 	~Deck();
 
 public:

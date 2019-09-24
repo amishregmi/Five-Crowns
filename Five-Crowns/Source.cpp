@@ -6,8 +6,8 @@ using namespace std;
 
 int main() {
 
-	Game game;
-	game.callRound(1);
+	Game game = Game();
+	//game.callRound(1);
 	system("pause");
 	return 0;
 }

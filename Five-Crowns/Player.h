@@ -10,6 +10,7 @@ class Player
 {
 public:
 	Player();
+	
 	void addCardToHand(Card);
 	void printCurrentHand();
 	string getCurrentHand();
@@ -28,6 +29,8 @@ public:
 	bool checkIfJoker(string);
 	bool checkIfWildcard(string);
 	int getPlayerPoints();
+	void setPlayerHand(vector<string>);
+	
 	vector<string> handWithoutWildcards(int &);
 	int facesMaxDiff(vector<int>, int);
 	~Player();

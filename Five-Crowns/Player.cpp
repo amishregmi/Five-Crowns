@@ -5,8 +5,11 @@
 Player::Player()
 {
 	total_cards_in_hand = 0;
+	total_wildcards_num = 0;
+	total_jokers_num = 0;
 	current_round_score = 0;
 }
+
 
 
 void Player::addCardToHand(Card card){
@@ -17,6 +20,33 @@ void Player::addCardToHand(Card card){
 	//checkWildcards(current_round_num);
 
 }
+
+void Player::setPlayerHand(vector<string> hand) {
+	//Need to reset hand
+	current_player_hand.erase(current_player_hand.begin(), current_player_hand.begin() + total_cards_in_hand);
+	current_player_hand_str.erase(current_player_hand_str.begin(), current_player_hand_str.begin() + total_cards_in_hand);
+	total_cards_in_hand = 0;
+	total_wildcards_num = 0;
+	total_jokers_num = 0; 
+	current_round_score = 0;
+	//current_round_num -> call set function
+	vector<string>::iterator it;
+	char face, suit;
+	//string s_face, s_suit;
+	for (it = hand.begin(); it != hand.end(); ++it) {
+		face = (*it)[0];
+		suit = (*it)[1];
+		string s_face(1, face);
+		string s_suit(1, suit);
+		Card current_card = Card(s_face, s_suit);
+		addCardToHand(current_card);
+	}
+	checkWildcards();
+	checkJokercards();
+	//set points
+
+}
+
 
 void Player::checkJokercards() {
 	if (current_round_num != 0) {
@@ -300,6 +330,7 @@ bool Player::goOut() {
 	}
 	return false;
 }
+
 
 int Player::getPlayerPoints() {
 	return 0;

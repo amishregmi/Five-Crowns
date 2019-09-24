@@ -4,6 +4,7 @@ string Round::next_player;
 
 Round::Round(int roundNumber = 0)
 {
+	
 	this->roundNumber = roundNumber;
 	//Determine next_player_index by coin toss.
 	this->next_player_index = 0;
@@ -45,7 +46,12 @@ Round::Round(int roundNumber = 0)
 			this->player_names[1] = "Human";
 		}
 	}
+	
+
 }
+
+
+
 
 
 string Round::coinToss() {

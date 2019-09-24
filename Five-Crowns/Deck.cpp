@@ -121,6 +121,40 @@ string Deck::getCurrentDiscardPile() {
 	return current_discard_pile;
 }
 
+void Deck::setDrawPile(vector<string> draw_Pile) {
+	int size = drawPile.size();
+	drawPile.erase(drawPile.begin(), drawPile.begin() + size);
+
+	vector<string>::iterator it;
+	char face, suit;
+	//string s_face, s_suit;
+	for (it = draw_Pile.begin(); it != draw_Pile.end(); ++it) {
+		face = (*it)[0];
+		suit = (*it)[1];
+		string s_face(1, face);
+		string s_suit(1, suit);
+		Card current_card = Card(s_face, s_suit);
+		drawPile.push_back(current_card);
+	}
+}
+
+void Deck::setDiscardPile(vector<string> discard_Pile) {
+	int size = discardPile.size();
+	discardPile.erase(discardPile.begin(), discardPile.begin() + size);
+
+	vector<string>::iterator it;
+	char face, suit;
+	//string s_face, s_suit;
+	for (it = discard_Pile.begin(); it != discard_Pile.end(); ++it) {
+		face = (*it)[0];
+		suit = (*it)[1];
+		string s_face(1, face);
+		string s_suit(1, suit);
+		Card current_card = Card(s_face, s_suit);
+		discardPile.push_back(current_card);
+	}
+}
+
 Deck::~Deck()
 {
 }
