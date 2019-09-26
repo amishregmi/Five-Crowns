@@ -2,9 +2,11 @@
 
 string Round::next_player;
 
-Round::Round(int roundNumber = 0)
-{
-	
+Round::Round(int roundNumber, Human* human_player_ptr, Computer* computer_player_ptr, string next_player_name, bool read_from_file){
+	cout << "Inside round constructor " << endl;
+	this->readfromfile = read_from_file;
+	this->human_player = *human_player_ptr;
+	this->computer_player = *computer_player_ptr;
 	this->roundNumber = roundNumber;
 	//Determine next_player_index by coin toss.
 	this->next_player_index = 0;
@@ -13,9 +15,9 @@ Round::Round(int roundNumber = 0)
 	this->verify_go_out_second = false;
 	cout << "Round Number: " << roundNumber << endl;
 	if (roundNumber == 1) {
-		string toss_val = coinToss();
+		//string toss_val = "Human";
 
-		if (toss_val == "Human") {
+		if (next_player_name == "Human") {
 			this->playersList[0] = &human_player;
 			this->playersList[1] = &computer_player;
 			this->player_names[0] = "Human";
@@ -51,44 +53,9 @@ Round::Round(int roundNumber = 0)
 }
 
 
-
-
-
-string Round::coinToss() {
-	cout << endl;
-	cout << "Tossing coin for first round " << endl;
-	srand(time(NULL));
-	int toss_val = rand() % 2;
-	cout << "The coin toss value is: " << toss_val << endl;
-	int human_call;
-	cout << "Enter 0 for heads and 1 for tails: ";
-	cin >> human_call;
-	if (human_call != 0 && human_call != 1) {
-		do {
-			cout << "Invalid input. Please enter 0 or 1: ";
-			cin >> human_call;
-		} while (human_call != 0 && human_call != 1);
-	}
-
-	if (human_call == toss_val) {
-		cout << "Human won the toss and is going first " << endl;
-		return "Human";
-	}
-
-	else {
-		cout << "Human lost the toss computer is going first " << endl;
-		return "Computer";
-	}
-
-}
-
-
-
-
-
 void Round::dealForRound() {
 	//Distribute cards to both players based on round number, and add one card to discard pile.
-	vector<Card> dealtCards = deck.dealCards(roundNumber);
+	vector<Card> dealtCards = Deck::dealCards(roundNumber);
 	vector<Card>::iterator it = dealtCards.begin();
 
 	if (!dealtCards.empty()) {
@@ -125,7 +92,9 @@ void Round::printRoundDetails() {
 void Round::roundDetails() {
 
 	if (roundNumber >= 1) {
-		dealForRound();
+		if (!readfromfile) {
+			dealForRound();
+		}
 		startRound();
 	}
 }
@@ -144,7 +113,7 @@ void Round::saveGame() {
 	saved_file << "Draw Pile: " << Deck::getCurrentDrawPile() << "\n\n";
 	saved_file << "Discard Pile: " << Deck::getCurrentDiscardPile() << "\n\n";
 	saved_file << "Next Player: " << player_names[next_player_index] << "\n";
-
+	exit(0);
 }
 
 void Round::menuOptions() {

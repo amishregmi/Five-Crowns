@@ -2,6 +2,7 @@
 
 Human::Human()
 {
+	cout << "Inside human player constructor()";
 }
 
 

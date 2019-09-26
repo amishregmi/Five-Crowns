@@ -21,22 +21,22 @@ private:
 	int next_player_index;
 	Human human_player;
 	Computer computer_player;
-	Deck deck;
+	//Deck deck;
 	
 	int total_players_num;
 	bool verify_go_out_first;
 	bool verify_go_out_second;
 	int roundNumber;
+	bool readfromfile;
 
 public:
 //	static int roundNumber;
 	static string next_player;
-	Round(int roundNumber);
+	Round(int roundNumber, Human*, Computer*, string, bool);
 	void roundDetails();
 	void printRoundDetails();
 	void dealForRound();
 	void startRound();
-	string coinToss();
 	void printPlayersDetails();
 	void menuOptions();
 	void saveGame();

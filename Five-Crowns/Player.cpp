@@ -8,6 +8,7 @@ Player::Player()
 	total_wildcards_num = 0;
 	total_jokers_num = 0;
 	current_round_score = 0;
+	
 }
 
 

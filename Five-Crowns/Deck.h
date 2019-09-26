@@ -16,7 +16,7 @@ public:
 
 	static void printDiscardPile();
 
-	vector<Card> dealCards(int);
+	static vector<Card> dealCards(int);
 
 	static void showTopDiscardCard();
 

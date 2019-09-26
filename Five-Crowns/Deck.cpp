@@ -2,11 +2,13 @@
 
 vector<Card> Deck::drawPile;
 vector<Card> Deck::discardPile;
-
+unsigned seed = chrono::system_clock::now().time_since_epoch().count();
+default_random_engine e(seed);
 
 
 Deck::Deck()
 {
+	cout << "Inside deck constructor " << endl;
 	drawPile.clear();
 	discardPile.clear();
 	//S - spades, C - clubs, D - diamonds, H - hearts, T - tridents
@@ -35,10 +37,6 @@ Deck::Deck()
 		}
 	}
 
-	
-	unsigned seed = chrono::system_clock::now().time_since_epoch().count();
-	default_random_engine e(seed);
-
 	shuffle(drawPile.begin(), drawPile.end(), e);
 }
 
@@ -48,11 +46,17 @@ vector<Card> Deck::dealCards(int roundNumber) {
 	vector<Card> cardstodeal;
 	int total_cards_per_player = (2 + roundNumber)*2;
 	for (int i = 0; i < total_cards_per_player; i++) {
-		cardstodeal.push_back(drawPile.back());
+		if (!drawPile.empty()) {
+			cardstodeal.push_back(drawPile.back());
+			drawPile.pop_back();
+		}
+	}
+
+	if (!drawPile.empty()) {
+		discardPile.push_back(drawPile.back());
 		drawPile.pop_back();
 	}
-	discardPile.push_back(drawPile.back());
-	drawPile.pop_back();
+
 	return cardstodeal;
 }
 
@@ -79,26 +83,42 @@ void Deck::printDiscardPile() {
 }
 
 void Deck::showTopDiscardCard() {
-	cout << "Top discard card is: ";
-	Card topDiscardCard = discardPile.back();
-	topDiscardCard.printCard();
+	if (!discardPile.empty()) {
+		cout << "Top discard card is: ";
+		Card topDiscardCard = discardPile.back();
+		topDiscardCard.printCard();
+	}
+	else {
+		cout << "Discard pile empty" << endl;
+	}
 }
 
 Card Deck::takeTopDiscardCard() {
-	Card topDiscardCard = discardPile.back();
-	discardPile.pop_back();
+	Card topDiscardCard;
+	if (!discardPile.empty()) {
+		topDiscardCard = discardPile.back();
+		discardPile.pop_back();
+	}
 	return topDiscardCard;
 }
 
 void Deck::showTopDrawCard() {
-	Card topDrawCard = drawPile.back();
-	cout << "Top draw card is: ";
-	topDrawCard.printCard();
+	if (!drawPile.empty()) {
+		Card topDrawCard = drawPile.back();
+		cout << "Top draw card is: ";
+		topDrawCard.printCard();
+	}
+	else {
+		cout << "Draw Pile empty" << endl;
+	}
 }
 
 Card Deck::takeTopDrawCard() {
-	Card topDrawCard = drawPile.back();
-	drawPile.pop_back();
+	Card topDrawCard;
+	if (!drawPile.empty()) {
+		topDrawCard = drawPile.back();
+		drawPile.pop_back();
+	}
 	return topDrawCard;
 }
 
@@ -139,6 +159,8 @@ void Deck::setDrawPile(vector<string> draw_Pile) {
 }
 
 void Deck::setDiscardPile(vector<string> discard_Pile) {
+	cout << "Inside setDiscardPile" << endl;
+	cout << "Size is: " << discard_Pile.size() << endl;
 	int size = discardPile.size();
 	discardPile.erase(discardPile.begin(), discardPile.begin() + size);
 
@@ -153,6 +175,7 @@ void Deck::setDiscardPile(vector<string> discard_Pile) {
 		Card current_card = Card(s_face, s_suit);
 		discardPile.push_back(current_card);
 	}
+	printDiscardPile();
 }
 
 Deck::~Deck()

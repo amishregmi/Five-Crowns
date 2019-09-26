@@ -8,6 +8,7 @@ Game::Game()
 	cout << "Welcome to the game: ";
 	cout << "Enter y to load a saved game. Enter any other key otherwise: ";
 	cin >> input;
+	
 
 	if (input == 'Y' || input == 'y') {
 		string file_name;
@@ -29,24 +30,46 @@ Game::Game()
 	}
 
 	else {
+		read_from_file = false;
 		human_player_points = 0;
 		computer_player_points = 0;
 		round_number = 1;
-		Deck::Deck();
-		callRound(round_number);
 	}
+
+	callRound();
 }
 
-void Game::callRound(int round_number = 0) {
+void Game::callRound() {
 	//Main game loop
-	while (round_number <= 13) {
-		Round round(round_number);
-		round.roundDetails();
-		round_number++;
+
+	if (round_number == 1 && !read_from_file) {
+		string toss_winner = coinToss();
+		
+		if (toss_winner == "Human") {
+			this->next_player = "Human";
+		}
+		else {
+			this->next_player = "Computer";
+		}
 	}
+
+
+	//while (round_number <= 13) {
+	cout << "Before round called" << endl;
+	human.printCurrentHand();
+	computer.printCurrentHand();
+	Deck::printDiscardPile();
+	Deck::printDrawPile();
+	cout << "Calling round from Game" << endl;
+	Round round(round_number, &human, &computer, next_player, read_from_file);
+	cout << "Calling roundDetails() function from Game" << endl;
+	round.roundDetails();
+		//round_number++;
+	//}
 }
 
 void Game::extractDetailsFromFile(string file_name) {
+	read_from_file = true;
 	ifstream load_details;
 	string oneline;
 	load_details.open(file_name);
@@ -120,8 +143,37 @@ void Game::extractDetailsFromFile(string file_name) {
 			}
 		}
 	}
-
+	
 }
+
+
+string Game::coinToss() {
+	cout << endl;
+	cout << "Tossing coin for first round " << endl;
+	srand(time(NULL));
+	int toss_val = rand() % 2;
+	cout << "The coin toss value is: " << toss_val << endl;
+	int human_call;
+	cout << "Enter 0 for heads and 1 for tails: ";
+	cin >> human_call;
+	if (human_call != 0 && human_call != 1) {
+		do {
+			cout << "Invalid input. Please enter 0 or 1: ";
+			cin >> human_call;
+		} while (human_call != 0 && human_call != 1);
+	}
+
+	if (human_call == toss_val) {
+		cout << "Human won the toss and is going first " << endl;
+		return "Human";
+	}
+
+	else {
+		cout << "Human lost the toss computer is going first " << endl;
+		return "Computer";
+	}
+}
+
 
 vector<string> Game::extract_card_str(string hand) {
 	vector<string> cards;
