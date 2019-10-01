@@ -16,6 +16,7 @@ public:
 	string getCurrentHand();
 	virtual void pickCard();
 	virtual void dropCard();
+	void calculatePoints();
 	void decreaseHandCardNum();
 	int getWildcardsNum();
 	void checkWildcards();
@@ -24,15 +25,24 @@ public:
 	bool goOut();
 	void setCurrentRoundNum(int);
 	int getCurrentRoundNum();
-	bool checkBook();
-	bool checkRun();
+	
+	bool checkBook(vector<Card> handToCheck);
+	bool checkRun(vector<Card> handToCheck);
+	
 	bool checkIfJoker(string);
 	bool checkIfWildcard(string);
 	int getPlayerPoints();
 	void setPlayerHand(vector<string>);
+
+	vector<string> handToStr(vector<Card>);
 	
-	vector<string> handWithoutWildcards(int &);
+	vector<string> handWithoutWildcards(vector<Card>, int &);
 	int facesMaxDiff(vector<int>, int);
+
+	void getCombination(vector<Card>, int, int);
+	void combinationUtil(vector<Card>, vector<Card>, int, int, int, int);
+
+
 	~Player();
 
 protected:

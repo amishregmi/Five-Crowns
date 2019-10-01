@@ -10,6 +10,7 @@ public:
 	//void printCurrentHard();
 	void dropCard();
 	void pickCard();
+	//void calculatePoints();
 	~Human();
 
 //private:

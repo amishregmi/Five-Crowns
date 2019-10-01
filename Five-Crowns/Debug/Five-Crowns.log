@@ -1,5 +1,4 @@
-﻿  Game.cpp
-c:\five-crowns\five-crowns\game.cpp(153): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-  Source.cpp
+﻿  Human.cpp
+  Round.cpp
   Generating Code...
   Five-Crowns.vcxproj -> C:\Five-Crowns\Five-Crowns\Debug\Five-Crowns.exe

@@ -120,12 +120,25 @@ int Player::getJokersNum() {
 	return total_jokers_num;
 }
 
-vector<string> Player::handWithoutWildcards(int &total_applicable_wildcards) {
+
+vector<string> Player::handToStr(vector<Card> present_hand_card) {
+	vector<string> present_hand_str;
+	vector<Card>::iterator it;
+	for (it = present_hand_card.begin(); it != present_hand_card.end(); it++) {
+		string current_card = it->cardToString();
+		present_hand_str.push_back(current_card);
+	}
+	return present_hand_str;
+}
+
+
+vector<string> Player::handWithoutWildcards(vector<Card> present_hand, int &total_applicable_wildcards) {
+	vector<string> present_hand_str = handToStr(present_hand);
 	vector<string> temp;
 	vector<string>::iterator i;
 	
-	for (int i = 0; i < current_player_hand_str.size(); i++) {
-		temp.push_back(current_player_hand_str[i]);
+	for (int i = 0; i < present_hand_str.size(); i++) {
+		temp.push_back(present_hand_str[i]);
 	}
 
 	for (i = temp.begin(); i != temp.end(); ) {
@@ -154,9 +167,10 @@ vector<string> Player::handWithoutWildcards(int &total_applicable_wildcards) {
 
 }
 
-bool Player::checkBook() {
+bool Player::checkBook(vector<Card> handToCheck) {
+
 	int total_applicable_wildcards = 0;
-	vector<string> temp = handWithoutWildcards(total_applicable_wildcards);
+	vector<string> temp = handWithoutWildcards(handToCheck, total_applicable_wildcards);
 
 	if (temp.size() == 1) {
 		return true;
@@ -186,10 +200,10 @@ bool Player::checkBook() {
 }
 
 
-bool Player::checkRun() {
+bool Player::checkRun(vector<Card> current_hand_to_check) {
 	
 	int total_applicable_wildcards = 0;
-	vector<string> temp = handWithoutWildcards(total_applicable_wildcards);
+	vector<string> temp = handWithoutWildcards(current_hand_to_check, total_applicable_wildcards);
 
 	if (temp.size() == 1) {
 		return true;
@@ -321,17 +335,60 @@ bool Player::goOut() {
 	bool check_run;
 
 	if (total_cards < 6) {
-		check_book = checkBook();
-		check_run = checkRun();
+		check_book = checkBook(current_player_hand);
+		check_run = checkRun(current_player_hand);
 
 		if (check_book || check_run) {
 			return true;
 		}
-		return false;
+		//return false;
 	}
 	return false;
 }
 
+void Player::getCombination(vector<Card> current_player_hand, int total_card_num, int size) {
+	vector<Card> store_combination;
+	//comb
+	combinationUtil(current_player_hand, store_combination, 0, total_card_num - 1, 0, size);
+}
+
+void Player::combinationUtil(vector<Card> current_hand, vector<Card> store_combination, int start, int end, int index, int r) {
+	vector<Card> temp;
+	if (index == r) {
+		for (int j = 0; j < r; j++) {
+			//temp.push_back(store_combination[j]);
+			store_combination[j].printCard();
+		}
+		cout << endl;
+		return;
+	}
+
+	for (int i = start; i <= end && end - i + 1 >= r - index; i++) {
+		store_combination.push_back(current_hand[i]);
+		combinationUtil(current_hand, store_combination, i + 1, end, index + 1, r);
+	}
+
+}
+
+
+
+void Player::calculatePoints() {
+	//Find all possible permutations starting from max_size.
+	//check combinations and check if check book or run from max size
+	//when we get the first true value, delete the cards from hand and print scores of the remaining cards.
+
+	vector<Card> checking_this_hand;
+	vector<vector<Card>> all_combinations;
+	vector<Card> current_combinations;
+	int total_card_num = current_player_hand_str.size();
+
+	for (int i = current_player_hand_str.size(); i >= 3; i--) {
+		//current_combinations = getCombination(current_player_hand, total_card_num, i);
+		//all_combinations.push_back(current_combinations);
+		getCombination(current_player_hand, total_card_num, i);
+	}
+	
+}
 
 int Player::getPlayerPoints() {
 	return 0;

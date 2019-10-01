@@ -2,7 +2,6 @@
 
 Human::Human()
 {
-	cout << "Inside human player constructor()";
 }
 
 
@@ -22,20 +21,15 @@ void Human::pickCard() {
 	}
 
 	if (tolower(draw_or_discard) == 'a') {
-		//Take top draw card
-		//cout << "Human selected card from draw pile" << endl;
 		Card topDrawCard = Deck::takeTopDrawCard();
 		addCardToHand(topDrawCard);
 	}
 
 	else {
-		//cout << "Human selected card from discard pile " << endl;
 		Card topDiscardPile = Deck::takeTopDiscardCard();
 		addCardToHand(topDiscardPile);
 	}
 
-	//cout << "Total number of wildcards is: " << total_wildcards_num << endl;
-	//cout << "After human pickcard total cardss in hand " << total_cards_in_hand << endl;
 	dropCard();
 	
 }
@@ -43,11 +37,8 @@ void Human::pickCard() {
 
 
 void Human::dropCard() {
-	//cout << "The current player's hand is: " << endl;
-	//cout << "Beginning of dropCard " << total_cards_in_hand << endl;
 	cout << "Before dropping card, ";
 	printCurrentHand();
-	//Card(face, suit)
 	int del_index;
 	cout << "Enter the index of the card you want to delete: ";
 	cin >> del_index;
@@ -64,17 +55,12 @@ void Human::dropCard() {
 	total_cards_in_hand--;
 	Deck::discardPile.push_back(card_dropped);
 	current_player_hand_str.erase(current_player_hand_str.begin() + del_index);
-	//cout << "After dropping card, ";
-	//printCurrentHand();
 	checkWildcards();
 	checkJokercards();
-	//cout << "The total number of wildcards is: " << getWildcardsNum() << endl;
-	//cout << "Total number of jokers is: " << getJokersNum() << endl;
-	//cout << "AFter human dropcard " << total_cards_in_hand << endl;
-	//cout << checkBook() << endl;
-	//cout << checkRun() << endl;
+
 	
 }
+
 
 Human::~Human()
 {

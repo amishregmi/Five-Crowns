@@ -8,7 +8,7 @@ default_random_engine e(seed);
 
 Deck::Deck()
 {
-	cout << "Inside deck constructor " << endl;
+	//cout << "Inside deck constructor " << endl;
 	drawPile.clear();
 	discardPile.clear();
 	//S - spades, C - clubs, D - diamonds, H - hearts, T - tridents
@@ -159,7 +159,7 @@ void Deck::setDrawPile(vector<string> draw_Pile) {
 }
 
 void Deck::setDiscardPile(vector<string> discard_Pile) {
-	cout << "Inside setDiscardPile" << endl;
+	//cout << "Inside setDiscardPile" << endl;
 	cout << "Size is: " << discard_Pile.size() << endl;
 	int size = discardPile.size();
 	discardPile.erase(discardPile.begin(), discardPile.begin() + size);

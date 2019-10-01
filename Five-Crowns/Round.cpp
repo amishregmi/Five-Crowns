@@ -3,7 +3,7 @@
 string Round::next_player;
 
 Round::Round(int roundNumber, Human* human_player_ptr, Computer* computer_player_ptr, string next_player_name, bool read_from_file){
-	cout << "Inside round constructor " << endl;
+	//cout << "Inside round constructor " << endl;
 	this->readfromfile = read_from_file;
 	this->human_player = *human_player_ptr;
 	this->computer_player = *computer_player_ptr;
@@ -123,14 +123,17 @@ void Round::menuOptions() {
 		cout << "3. Ask for help" << endl;
 	}
 	cout << "4. Quit the game" << endl;
-	int input;
+	char input_c;
 	cout << "Enter your choice from the above numbers: ";
-	cin >> input;
+	cin >> input_c;
+
+	int input = input_c - '0';
 
 	if (input != 1 && input != 2 && input != 4 && !(player_names[next_player_index] == "Human" && input == 3)) {
 		do {
 			cout << "Invalid input. Please enter a valid number ";
-			cin >> input;
+			cin >> input_c;
+			input = input_c - '0';
 		} while (input != 1 && input != 2 && input != 4 && !(player_names[next_player_index] == "Human" && input == 3));
 	}
 
@@ -176,11 +179,13 @@ void Round::startRound() {
 		if (verify_go_out_first && !verify_go_out_second) {
 			//calculate points of second player.
 			cout << "Calculating points for player " << player_names[next_player_index+1] << endl;
+			playersList[next_player_index + 1]->calculatePoints();
 		}
 
 		if (!verify_go_out_first && verify_go_out_second) {
 			//calculate points of first player
 			cout << "Calculating points for player: " << player_names[next_player_index] << endl;
+			playersList[next_player_index]->calculatePoints();
 			next_player_index = (next_player_index + 1) % total_players_num;
 		}
 
