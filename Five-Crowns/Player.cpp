@@ -343,51 +343,100 @@ bool Player::goOut() {
 		}
 		//return false;
 	}
+
+	else {
+		generatePossibleCombinations();
+	}
+
+	
+
 	return false;
 }
 
-void Player::getCombination(vector<Card> current_player_hand, int total_card_num, int size) {
-	vector<Card> store_combination;
-	//comb
-	combinationUtil(current_player_hand, store_combination, 0, total_card_num - 1, 0, size);
+
+vector<vector<Card>> Player::listBooksAndRuns(vector<vector<string>> possible_combinations) {
+	
+	bool checkbook, checkrun;
+
+	for (int i = 0; i < list_books_and_runs.size(); i++) {
+		list_books_and_runs[i].clear();
+	}
+
+	vector<Card> current_hand_combination;
+	char face, suit;
+
+	for (int i = 0; i < possible_combinations.size(); i++) {
+		current_hand_combination.clear();
+		for (int j = 0; j < possible_combinations[i].size(); j++) {
+			face = possible_combinations[i][j][0];
+			suit = possible_combinations[i][j][1];
+			string s_face(1, face);
+			string s_suit(1, suit);
+			Card temp = Card(s_face, s_suit);
+			current_hand_combination.push_back(temp);
+		}
+
+		checkbook = checkBook(current_hand_combination);
+		checkrun = checkRun(current_hand_combination);
+
+		if (checkbook || checkrun) {
+			list_books_and_runs.push_back(current_hand_combination);
+		}
+
+	}
+
+	cout << "Printing list of books and runs: " << endl;
+	for (int i = 0; i < list_books_and_runs.size(); i++) {
+		for (int j = 0; j < list_books_and_runs[i].size(); j++) {
+			list_books_and_runs[i][j].printCard();
+		}
+		cout << endl << endl << endl;
+	}
+
+	return list_books_and_runs;
 }
 
-void Player::combinationUtil(vector<Card> current_hand, vector<Card> store_combination, int start, int end, int index, int r) {
-	vector<Card> temp;
-	if (index == r) {
-		for (int j = 0; j < r; j++) {
-			//temp.push_back(store_combination[j]);
-			store_combination[j].printCard();
+
+void Player::generatePossibleCombinations() {
+	
+	vector<vector<string>> possible_combinations;
+	
+	sort(current_player_hand_str.begin(), current_player_hand_str.end());
+	
+	int max_numofcards_in_combination = total_cards_in_hand;
+	int min_numofcards_in_combination = 3;
+
+	int numofcards_in_current_combination = min_numofcards_in_combination;
+	int start_index_current_combination;
+
+	while (numofcards_in_current_combination <= max_numofcards_in_combination) {
+		start_index_current_combination = 0;
+		
+
+		while (start_index_current_combination <= (max_numofcards_in_combination - numofcards_in_current_combination)) {
+			vector<string> current_combination;
+
+			for (int i = start_index_current_combination; i < (numofcards_in_current_combination + start_index_current_combination); i++) {
+				current_combination.push_back(current_player_hand_str[i]);
+			}
+
+			possible_combinations.push_back(current_combination);
+			start_index_current_combination++; 
+		}
+
+		numofcards_in_current_combination++;
+
+	}
+
+	cout << "THE POSSIBLE COMBINATIONS ARE: " << endl;
+	for (int i = 0; i < possible_combinations.size(); i++) {
+		for (int j = 0; j < possible_combinations[i].size(); j++) {
+			cout << possible_combinations[i][j] << "     ";
 		}
 		cout << endl;
-		return;
 	}
 
-	for (int i = start; i <= end && end - i + 1 >= r - index; i++) {
-		store_combination.push_back(current_hand[i]);
-		combinationUtil(current_hand, store_combination, i + 1, end, index + 1, r);
-	}
-
-}
-
-
-
-void Player::calculatePoints() {
-	//Find all possible permutations starting from max_size.
-	//check combinations and check if check book or run from max size
-	//when we get the first true value, delete the cards from hand and print scores of the remaining cards.
-
-	vector<Card> checking_this_hand;
-	vector<vector<Card>> all_combinations;
-	vector<Card> current_combinations;
-	int total_card_num = current_player_hand_str.size();
-
-	for (int i = current_player_hand_str.size(); i >= 3; i--) {
-		//current_combinations = getCombination(current_player_hand, total_card_num, i);
-		//all_combinations.push_back(current_combinations);
-		getCombination(current_player_hand, total_card_num, i);
-	}
-	
+	listBooksAndRuns(possible_combinations);
 }
 
 int Player::getPlayerPoints() {

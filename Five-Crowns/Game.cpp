@@ -41,6 +41,7 @@ Game::Game()
 
 void Game::callRound() {
 	//Main game loop
+	round_number = 4;
 
 	if (round_number == 1 && !read_from_file) {
 		string toss_winner = coinToss();
@@ -54,12 +55,12 @@ void Game::callRound() {
 	}
 
 
-	while (round_number <= 13) {
-		Round round(round_number, &human, &computer, next_player, read_from_file);
+	//while (round_number <= 13) {
+		Round round(round_number, &human, &computer, "Human", read_from_file);
 		//cout << "Calling roundDetails() function from Game" << endl;
 		round.roundDetails();
-		round_number++;
-	}
+	//	round_number++;
+	//}
 }
 
 void Game::extractDetailsFromFile(string file_name) {

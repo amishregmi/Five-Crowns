@@ -76,8 +76,8 @@ void Round::dealForRound() {
 
 void Round::printRoundDetails() {
 	
-	Deck::printDrawPile();
-	Deck::printDiscardPile();
+	//Deck::printDrawPile();
+	//Deck::printDiscardPile();
 	
 	cout << "Playing: " << player_names[next_player_index] << "    ";
 	playersList[next_player_index]->printCurrentHand();
@@ -117,6 +117,7 @@ void Round::saveGame() {
 }
 
 void Round::menuOptions() {
+	
 	cout << "1. Save the game" << endl;
 	cout << "2. Make a move" << endl;
 	if (player_names[next_player_index] == "Human") {
@@ -154,9 +155,10 @@ void Round::startRound() {
 		cout << " --------------------------------------------" << endl;
 		printRoundDetails();
 
-		menuOptions();
-		//playersList[next_player_index]->menuOptions();
+		//menuOptions();
+		playersList[next_player_index]->pickCard();
 		verify_go_out_first = playersList[next_player_index]->goOut();
+		
 		
 		if (verify_go_out_first) {
 			cout << "Player " << player_names[next_player_index] << " went out" << endl;
@@ -166,8 +168,10 @@ void Round::startRound() {
 
 		printRoundDetails();
 		
-		menuOptions();
+		//menuOptions();
+		playersList[next_player_index]->pickCard();
 		//playersList[next_player_index]->menuOptions();
+
 		verify_go_out_second = playersList[next_player_index]->goOut();
 
 		if (verify_go_out_second) {
@@ -176,18 +180,18 @@ void Round::startRound() {
 
 		next_player_index = (next_player_index + 1) % total_players_num;
 
-		if (verify_go_out_first && !verify_go_out_second) {
+		//if (verify_go_out_first && !verify_go_out_second) {
 			//calculate points of second player.
-			cout << "Calculating points for player " << player_names[next_player_index+1] << endl;
-			playersList[next_player_index + 1]->calculatePoints();
-		}
+			//cout << "Calculating points for player " << player_names[next_player_index+1] << endl;
+			//playersList[next_player_index + 1]->calculatePoints();
+		//}
 
-		if (!verify_go_out_first && verify_go_out_second) {
+		//if (!verify_go_out_first && verify_go_out_second) {
 			//calculate points of first player
-			cout << "Calculating points for player: " << player_names[next_player_index] << endl;
-			playersList[next_player_index]->calculatePoints();
-			next_player_index = (next_player_index + 1) % total_players_num;
-		}
+			//cout << "Calculating points for player: " << player_names[next_player_index] << endl;
+			//playersList[next_player_index]->calculatePoints();
+			//next_player_index = (next_player_index + 1) % total_players_num;
+		//}
 
 	}
 }
