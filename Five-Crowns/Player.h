@@ -21,7 +21,7 @@ public:
 	
 	virtual void dropCard();
 	
-	void generatePossibleCombinations();
+	vector<vector<Card>> generatePossibleCombinations(vector<string>);
 	
 	void decreaseHandCardNum();
 	
@@ -49,6 +49,10 @@ public:
 	
 	int getPlayerPoints();
 	
+	int calculateSumOfCards(vector<Card>);
+
+	int bestBookRunCombination(vector<Card>);
+
 	void setPlayerHand(vector<string>);
 
 	vector<vector<Card>> listBooksAndRuns(vector<vector<string>> possible_combinations);
@@ -78,6 +82,7 @@ protected:
 	
 	int current_round_score;
 
-	vector<vector<Card>> list_books_and_runs;
+	
+
 };
 

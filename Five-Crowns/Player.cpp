@@ -345,18 +345,89 @@ bool Player::goOut() {
 	}
 
 	else {
-		generatePossibleCombinations();
+		generatePossibleCombinations(current_player_hand_str);
 	}
-
-	
 
 	return false;
 }
 
 
+int Player::calculateSumOfCards(vector<Card> remaining_cards) {
+	int score = 0;
+	vector<Card>::iterator i;
+	for (i = remaining_cards.begin(); i != remaining_cards.end(); ++i) {
+		string current_tempandsuit = i->cardToString();
+		char face = current_tempandsuit[0];
+		int int_face = face - '0';
+
+		if (face == 'X') {
+			int_face -= 30;
+		}
+
+		if (face == 'J') {
+			int_face -= 15;
+		}
+
+		if (face == 'Q') {
+			int_face -= 21;
+		}
+
+		if (face == 'K') {
+			int_face -= 14;
+		}
+
+		score += int_face;
+	}
+
+	return score;
+}
+
+
+int Player::bestBookRunCombination(vector<Card> current_hand) {
+	
+	vector<string> current_hand_str;
+
+	for (vector<Card>::iterator it = current_hand.begin(); it != current_hand.end(); ++it) {
+		string card = it->cardToString();
+		current_hand_str.push_back(card);
+	}
+
+	vector<vector<Card>> listof_booksandruns_currenthand = generatePossibleCombinations(current_hand_str);
+
+	if (listof_booksandruns_currenthand.size() == 0) {
+		return calculateSumOfCards(current_hand);
+	}
+
+	for (auto i = listof_booksandruns_currenthand.begin(); i < listof_booksandruns_currenthand.end(); i++) {
+		vector<Card> hand_after_removal;
+
+		for (auto j = i->begin(); j < i->end(); j++) {
+			
+			current_hand_str.erase(remove(current_hand_str.begin(), current_hand_str.end(), j->cardToString()), current_hand_str.end());
+			//hand_after_removal.erase(remove(hand_after_removal.begin(), hand_after_removal.end(), *j), hand_after_removal.end());
+		}
+		vector<string>::iterator it;
+
+		for (it = current_hand_str.begin(); it != current_hand_str.end(); ++it) {
+			char face = (*it)[0];
+			char suit = (*it)[1];
+			string s_face(1, face);
+			string s_suit(1, suit);
+			Card current_card = Card(s_face, s_suit);
+			hand_after_removal.push_back(current_card);
+		}
+
+		bestBookRunCombination(hand_after_removal);
+	}
+
+}
+
+
+
 vector<vector<Card>> Player::listBooksAndRuns(vector<vector<string>> possible_combinations) {
 	
 	bool checkbook, checkrun;
+	vector<vector<Card>> list_books_and_runs;
 
 	for (int i = 0; i < list_books_and_runs.size(); i++) {
 		list_books_and_runs[i].clear();
@@ -397,7 +468,7 @@ vector<vector<Card>> Player::listBooksAndRuns(vector<vector<string>> possible_co
 }
 
 
-void Player::generatePossibleCombinations() {
+vector<vector<Card>> Player::generatePossibleCombinations(vector<string> current_player_hand_str) {
 	
 	vector<vector<string>> possible_combinations;
 	
@@ -436,7 +507,7 @@ void Player::generatePossibleCombinations() {
 		cout << endl;
 	}
 
-	listBooksAndRuns(possible_combinations);
+	return listBooksAndRuns(possible_combinations);
 }
 
 int Player::getPlayerPoints() {
