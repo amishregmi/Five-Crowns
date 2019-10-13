@@ -82,6 +82,7 @@ protected:
 	
 	int current_round_score;
 
+	int hand_score; 
 	
 
 };
