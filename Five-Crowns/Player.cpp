@@ -169,6 +169,9 @@ vector<string> Player::handWithoutWildcards(vector<Card> present_hand, int &tota
 
 bool Player::checkBook(vector<Card> handToCheck) {
 	//cout << "Inside checkBook()" << endl;
+	if (handToCheck.size() < 3) {
+		return false;
+	}
 	int total_applicable_wildcards = 0;
 	vector<string> temp = handWithoutWildcards(handToCheck, total_applicable_wildcards);
 
@@ -202,6 +205,9 @@ bool Player::checkBook(vector<Card> handToCheck) {
 
 bool Player::checkRun(vector<Card> current_hand_to_check) {
 	
+	if (current_hand_to_check.size() < 3) {
+		return false;
+	}
 	//cout << "Inside checkRun()" << endl;
 	int total_applicable_wildcards = 0;
 	vector<string> temp = handWithoutWildcards(current_hand_to_check, total_applicable_wildcards);
@@ -331,10 +337,10 @@ bool Player::checkIfWildcard(string current_card) {
 }
 
 bool Player::goOut() {
-	cout << "Inside goOut()" << endl;
+	//cout << "Inside goOut()" << endl;
 	int total_cards = current_player_hand.size();
 
-	hand_score = INT_MAX;
+	hand_score = calculateSumOfCards(current_player_hand);
 	//bool check_book;
 	//bool check_run;
 
@@ -350,22 +356,33 @@ bool Player::goOut() {
 
 	//else {
 		//generatePossibleCombinations(current_player_hand_str);
-		cout << "Inside else before calling bestBookRunCombination" << endl;
+		//cout << "Inside else before calling bestBookRunCombination" << endl;
 		int score = bestBookRunCombination(current_player_hand);
-		cout << "After getting score from the bestBookRunCombination return value" << endl;
+		//cout << "After getting score from the bestBookRunCombination return value" << endl;
 		if (score == 0) {
 			return true;
 		}
-		cout << "LOWEST SCORE AFTER BEST COMBINATION IS: " << score << endl;
+		cout << "LOWEST SCORE AFTER BEST COMBINATION IS: " << hand_score << endl;
 	//}
+		cout << "Best combination of cards is: " << endl;
+		for (auto i = recursive_bookrun_hands.begin(); i < recursive_bookrun_hands.end(); i++) {
+			for (auto j = i->begin(); j < i->end(); j++) {
+				cout << *j << "    ";
+			}
+			cout << endl;
+		}
 
 	return false;
 }
 
+//TODO - > 5S 8T 9C 9T XC J1 JD. 9C 9T J1 should be on the list. 
+// TODO -> 3H 7C 8C 9S XC JD KD -> JD 7C KD can be a run
+
 int Player::bestBookRunCombination(vector<Card> current_hand) {
 
-	cout << "Inside bestBookRunCombination" << endl;
+	//cout << "Inside bestBookRunCombination" << endl;
 	vector<string> current_hand_str;
+	
 
 	for (vector<Card>::iterator it = current_hand.begin(); it < current_hand.end(); it++) {
 		string card = it->cardToString();
@@ -382,21 +399,33 @@ int Player::bestBookRunCombination(vector<Card> current_hand) {
 	vector<vector<Card>> listof_booksandruns_currenthand = generatePossibleCombinations(current_hand_str);
 
 	if (listof_booksandruns_currenthand.size() == 0) {
+		cout << "Inside if statement: " << endl;
 		int score = calculateSumOfCards(current_hand);
-		if (score < hand_score) {
+		cout << "The score is: " << score << endl;
+		
+		if (score <= hand_score) {
 			hand_score = score;
+			recursive_bookrun_hands.clear();
+			recursive_bookrun_hands.push_back(current_hand_str);
 		}
+
+		cout << "After comparison, hand_score is: " << hand_score << endl;
 		return hand_score;
 	}
 
+
 	for (auto i = listof_booksandruns_currenthand.begin(); i < listof_booksandruns_currenthand.end(); i++) {
 		vector<Card> hand_after_removal;
+		//vector<string> recursive_caller_bookrun;
 		vector<string> temp_hand_for_removal = current_hand_str;
 		for (auto j = i->begin(); j < i->end(); j++) {
 			//TODO -> Just remove the first occurence of an element.
+			//recursive_caller_bookrun.push_back(j->cardToString());
 			temp_hand_for_removal.erase(remove(temp_hand_for_removal.begin(), temp_hand_for_removal.end(), j->cardToString()), temp_hand_for_removal.end());
 			//hand_after_removal.erase(remove(hand_after_removal.begin(), hand_after_removal.end(), *j), hand_after_removal.end());
 		}
+
+		//recursive_bookrun_hands.push_back(recursive_caller_bookrun);
 		vector<string>::iterator it;
 
 		for (it = temp_hand_for_removal.begin(); it < temp_hand_for_removal.end(); it++) {
@@ -417,7 +446,7 @@ int Player::bestBookRunCombination(vector<Card> current_hand) {
 
 
 int Player::calculateSumOfCards(vector<Card> remaining_cards) {
-	cout << "Inside calculateSumOfCards" << endl;
+	//cout << "Inside calculateSumOfCards" << endl;
 	int score = 0;
 	vector<Card>::iterator i;
 	bool check_if_wildcard, check_if_joker;
@@ -465,7 +494,7 @@ int Player::calculateSumOfCards(vector<Card> remaining_cards) {
 
 vector<vector<Card>> Player::generatePossibleCombinations(vector<string> current_player_hand_str) {
 
-	cout << "Inside generatePossibleCombinations" << endl;
+	//cout << "Inside generatePossibleCombinations" << endl;
 	vector<vector<string>> possible_combinations;
 
 	sort(current_player_hand_str.begin(), current_player_hand_str.end());
@@ -473,6 +502,7 @@ vector<vector<Card>> Player::generatePossibleCombinations(vector<string> current
 	//If current_player_hand_str contains X, remove it from the hand. Then, find the right position and insert again.
 	vector<string> x_faces;
 	vector<string> k_faces;
+	vector<string> wildcardsandjokers;
 
 	vector<string>::iterator it;
 
@@ -486,6 +516,17 @@ vector<vector<Card>> Player::generatePossibleCombinations(vector<string> current
 			k_faces.push_back(current_card);
 			it = current_player_hand_str.erase(it);
 		}
+
+		else if (checkIfJoker(current_card)) {
+			wildcardsandjokers.push_back(current_card);
+			it = current_player_hand_str.erase(it);
+		}
+		
+		else if (checkIfWildcard(current_card)) {
+			wildcardsandjokers.push_back(current_card);
+			it = current_player_hand_str.erase(it);
+		}
+
 		else {
 			++it;
 		}
@@ -543,7 +584,7 @@ vector<vector<Card>> Player::generatePossibleCombinations(vector<string> current
 
 
 
-	cout << "After sorting, the hand is: " << endl;
+	cout << "After sorting, the hand without wildcards and jokers is: " << endl;
 	for (auto i = current_player_hand_str.begin(); i < current_player_hand_str.end(); i++) {
 		cout << *i << "    ";
 	}
@@ -551,6 +592,14 @@ vector<vector<Card>> Player::generatePossibleCombinations(vector<string> current
 
 	int max_numofcards_in_combination = current_player_hand_str.size();
 	int min_numofcards_in_combination = 3;
+
+	if (wildcardsandjokers.size() == 1) {
+		min_numofcards_in_combination--;
+	}
+
+	if (wildcardsandjokers.size() == 2) {
+		min_numofcards_in_combination -= 2;
+	}
 
 	int numofcards_in_current_combination = min_numofcards_in_combination;
 	int start_index_current_combination;
@@ -579,14 +628,7 @@ vector<vector<Card>> Player::generatePossibleCombinations(vector<string> current
 	}
 
 	/*
-	cout << "THE POSSIBLE COMBINATIONS ARE: " << endl;
-
-	for (auto i = possible_combinations.begin(); i < possible_combinations.end(); i++) {
-		for (auto j = i->begin(); j < i->end(); j++) {
-			cout << *j << "    ";
-		}
-		cout << endl;
-	} */
+	 */
 	/*
 	for (int i = 0; i < possible_combinations.size(); i++) {
 	for (int j = 0; j < possible_combinations[i].size(); j++) {
@@ -595,6 +637,21 @@ vector<vector<Card>> Player::generatePossibleCombinations(vector<string> current
 	cout << endl;
 	} */
 
+	for (auto i = wildcardsandjokers.begin(); i < wildcardsandjokers.end(); i++) {
+		for (auto j = possible_combinations.begin(); j < possible_combinations.end(); j++) {
+			j->push_back(*i);
+		}
+	}
+
+	cout << "THE POSSIBLE COMBINATIONS ARE: " << endl;
+
+	for (auto i = possible_combinations.begin(); i < possible_combinations.end(); i++) {
+		for (auto j = i->begin(); j < i->end(); j++) {
+			cout << *j << "    ";
+		}
+		cout << endl;
+	}
+
 	return listBooksAndRuns(possible_combinations);
 }
 
@@ -602,7 +659,7 @@ vector<vector<Card>> Player::generatePossibleCombinations(vector<string> current
 
 vector<vector<Card>> Player::listBooksAndRuns(vector<vector<string>> possible_combinations) {
 	
-	cout << "Inside listBooksAndRuns" << endl;
+	//cout << "Inside listBooksAndRuns" << endl;
 	bool checkbook, checkrun;
 	vector<vector<Card>> list_books_and_runs;
 
@@ -642,7 +699,7 @@ vector<vector<Card>> Player::listBooksAndRuns(vector<vector<string>> possible_co
 		cout << endl;
 	}
 
-	cout << "Printed and returned " << endl;
+	//cout << "Printed and returned " << endl;
 
 	return list_books_and_runs;
 }

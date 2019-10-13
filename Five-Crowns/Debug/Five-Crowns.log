@@ -1,8 +1,8 @@
 ﻿  Player.cpp
 c:\five-crowns\five-crowns\player.cpp(140): warning C4018: '<': signed/unsigned mismatch
-c:\five-crowns\five-crowns\player.cpp(568): warning C4018: '<': signed/unsigned mismatch
-c:\five-crowns\five-crowns\player.cpp(609): warning C4018: '<': signed/unsigned mismatch
 c:\five-crowns\five-crowns\player.cpp(617): warning C4018: '<': signed/unsigned mismatch
-c:\five-crowns\five-crowns\player.cpp(619): warning C4018: '<': signed/unsigned mismatch
-c:\five-crowns\five-crowns\player.cpp(416): warning C4715: 'Player::bestBookRunCombination': not all control paths return a value
+c:\five-crowns\five-crowns\player.cpp(666): warning C4018: '<': signed/unsigned mismatch
+c:\five-crowns\five-crowns\player.cpp(674): warning C4018: '<': signed/unsigned mismatch
+c:\five-crowns\five-crowns\player.cpp(676): warning C4018: '<': signed/unsigned mismatch
+c:\five-crowns\five-crowns\player.cpp(445): warning C4715: 'Player::bestBookRunCombination': not all control paths return a value
   Five-Crowns.vcxproj -> C:\Five-Crowns\Five-Crowns\Debug\Five-Crowns.exe

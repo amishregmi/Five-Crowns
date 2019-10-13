@@ -82,7 +82,11 @@ protected:
 	
 	int current_round_score;
 
+	//Used to keep track of combination of assembled cards with lowest score
 	int hand_score; 
+
+	//use to keep track of the best arrangement of cards for least points.
+	vector<vector<string>> recursive_bookrun_hands;
 	
 
 };
