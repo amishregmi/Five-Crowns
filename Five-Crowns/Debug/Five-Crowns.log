@@ -1,6 +1,3 @@
-﻿  Player.cpp
-c:\five-crowns\five-crowns\player.cpp(140): warning C4018: '<': signed/unsigned mismatch
-c:\five-crowns\five-crowns\player.cpp(656): warning C4018: '<': signed/unsigned mismatch
-c:\five-crowns\five-crowns\player.cpp(727): warning C4018: '<': signed/unsigned mismatch
-c:\five-crowns\five-crowns\player.cpp(475): warning C4715: 'Player::bestBookRunCombination': not all control paths return a value
+﻿  Game.cpp
+c:\five-crowns\five-crowns\game.cpp(148): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
   Five-Crowns.vcxproj -> C:\Five-Crowns\Five-Crowns\Debug\Five-Crowns.exe

@@ -88,6 +88,9 @@ protected:
 	//use to keep track of the best arrangement of cards for least points.
 	vector<vector<string>> recursive_bookrun_hands;
 	vector<vector<string>> best_combination;
+
+	//Amruth algo TODO remove name
+	vector<string> child_returning_smallest_sum;
 	
 
 };

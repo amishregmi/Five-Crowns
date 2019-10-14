@@ -41,7 +41,7 @@ Game::Game()
 
 void Game::callRound() {
 	//Main game loop
-	round_number = 8;
+	//round_number = 8;
 
 	if (round_number == 1 && !read_from_file) {
 		string toss_winner = coinToss();
