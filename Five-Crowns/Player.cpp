@@ -204,7 +204,7 @@ bool Player::checkBook(vector<Card> handToCheck) {
 
 
 bool Player::checkRun(vector<Card> current_hand_to_check) {
-	
+	//cout << "Inside checkRun" << endl;
 	if (current_hand_to_check.size() < 3) {
 		return false;
 	}
@@ -212,7 +212,7 @@ bool Player::checkRun(vector<Card> current_hand_to_check) {
 	int total_applicable_wildcards = 0;
 	vector<string> temp = handWithoutWildcards(current_hand_to_check, total_applicable_wildcards);
 
-	if (temp.size() == 1) {
+	if (temp.size() <= 1) {
 		return true;
 	}
 
@@ -357,19 +357,40 @@ bool Player::goOut() {
 	//else {
 		//generatePossibleCombinations(current_player_hand_str);
 		//cout << "Inside else before calling bestBookRunCombination" << endl;
+		best_combination.clear();
 		int score = bestBookRunCombination(current_player_hand);
 		//cout << "After getting score from the bestBookRunCombination return value" << endl;
-		if (score == 0) {
-			return true;
-		}
+		
 		cout << "LOWEST SCORE AFTER BEST COMBINATION IS: " << hand_score << endl;
 	//}
-		cout << "Best combination of cards is: " << endl;
+		//TODO
+		//Remove these cards, get list of books and runs in remaining hand and print as assemble cards.
+		vector<string> assemble_remaining_bookandrun;
+		assemble_remaining_bookandrun = current_player_hand_str;
+		cout << "Best combination of remaining cards is: " << endl;
 		for (auto i = recursive_bookrun_hands.begin(); i < recursive_bookrun_hands.end(); i++) {
 			for (auto j = i->begin(); j < i->end(); j++) {
 				cout << *j << "    ";
+				assemble_remaining_bookandrun.erase(remove(assemble_remaining_bookandrun.begin(), assemble_remaining_bookandrun.end(), *j));
 			}
 			cout << endl;
+		}
+
+		
+		vector<vector<Card>> remaining_cards_bookrun = generatePossibleCombinations(assemble_remaining_bookandrun);
+		cout << "Best combination of books and runs is: " << endl;
+
+		for (auto i = remaining_cards_bookrun.begin(); i < remaining_cards_bookrun.end(); i++) {
+			for (auto j = i->begin(); j < i->end(); j++) {
+				j->printCard();
+			}
+			cout << endl;
+		}
+
+		cout << endl;
+	
+		if (score == 0) {
+			return true;
 		}
 
 	return false;
@@ -399,14 +420,23 @@ int Player::bestBookRunCombination(vector<Card> current_hand) {
 	vector<vector<Card>> listof_booksandruns_currenthand = generatePossibleCombinations(current_hand_str);
 
 	if (listof_booksandruns_currenthand.size() == 0) {
-		cout << "Inside if statement: " << endl;
+		//cout << "Inside if statement: " << endl;
 		int score = calculateSumOfCards(current_hand);
 		cout << "The score is: " << score << endl;
 		
-		if (score <= hand_score) {
-			hand_score = score;
+		if (score <= hand_score) {		
 			recursive_bookrun_hands.clear();
 			recursive_bookrun_hands.push_back(current_hand_str);
+			vector<string> temp;
+			for (auto i = current_player_hand_str.begin(); i < current_player_hand_str.end(); i++) {
+				if (!(find(current_hand_str.begin(), current_hand_str.end(), *i) != current_hand_str.end())) {
+					temp.push_back(*i);
+				}
+			}
+			if (score < hand_score) {
+				best_combination.push_back(temp);
+			}
+			hand_score = score;
 		}
 
 		cout << "After comparison, hand_score is: " << hand_score << endl;
@@ -508,12 +538,9 @@ vector<vector<Card>> Player::generatePossibleCombinations(vector<string> current
 
 	for (it = current_player_hand_str.begin(); it != current_player_hand_str.end(); ) {
 		string current_card = *it;
-		if (current_card.at(0) == 'X') {
-			x_faces.push_back(current_card);
-			it = current_player_hand_str.erase(it);
-		}
-		else if (current_card.at(0) == 'K') {
-			k_faces.push_back(current_card);
+
+		if (checkIfWildcard(current_card)) {
+			wildcardsandjokers.push_back(current_card);
 			it = current_player_hand_str.erase(it);
 		}
 
@@ -521,14 +548,20 @@ vector<vector<Card>> Player::generatePossibleCombinations(vector<string> current
 			wildcardsandjokers.push_back(current_card);
 			it = current_player_hand_str.erase(it);
 		}
-		
-		else if (checkIfWildcard(current_card)) {
-			wildcardsandjokers.push_back(current_card);
-			it = current_player_hand_str.erase(it);
-		}
 
 		else {
-			++it;
+			if (current_card.at(0) == 'X') {
+				x_faces.push_back(current_card);
+				it = current_player_hand_str.erase(it);
+			}
+
+			else if (current_card.at(0) == 'K') {
+				k_faces.push_back(current_card);
+				it = current_player_hand_str.erase(it);
+			}
+			else {
+				++it;
+			}
 		}
 	
 	}
@@ -597,34 +630,40 @@ vector<vector<Card>> Player::generatePossibleCombinations(vector<string> current
 		min_numofcards_in_combination--;
 	}
 
-	if (wildcardsandjokers.size() == 2) {
-		min_numofcards_in_combination -= 2;
+	else if (wildcardsandjokers.size() >= 2) {
+		min_numofcards_in_combination -= 2; 
 	}
 
 	int numofcards_in_current_combination = min_numofcards_in_combination;
 	int start_index_current_combination;
 
 
-
+	//cout << "Inside while 1 " << endl;
 	while (numofcards_in_current_combination <= max_numofcards_in_combination) {
+		
+		//cout << "Inside outer while " << endl;
 		start_index_current_combination = 0;
 
-
+		//cout << "before while 2 " << endl;
 		while (start_index_current_combination <= (max_numofcards_in_combination - numofcards_in_current_combination)) {
+			//cout << "Inside while 2 " << endl;
+			//cout << "Inside inner while " << endl;
 			vector<string> current_combination;
 			
 			for (int i = start_index_current_combination; i < (numofcards_in_current_combination + start_index_current_combination); i++) {
+				//cout << "Inside for " << endl;
+				//cout << "Line 642" << endl;
 				if (i < current_player_hand_str.size()) {
 					current_combination.push_back(current_player_hand_str[i]);
 				}
 			}
-
+			//cout << "Line 647" << endl;
 			possible_combinations.push_back(current_combination);
 			start_index_current_combination++;
 		}
 
 		numofcards_in_current_combination++;
-
+		//cout << "Line 653" << endl;
 	}
 
 	/*
@@ -637,12 +676,23 @@ vector<vector<Card>> Player::generatePossibleCombinations(vector<string> current
 	cout << endl;
 	} */
 
-	for (auto i = wildcardsandjokers.begin(); i < wildcardsandjokers.end(); i++) {
-		for (auto j = possible_combinations.begin(); j < possible_combinations.end(); j++) {
-			j->push_back(*i);
+	vector<vector<string>> copy_possible_combinations;
+	copy_possible_combinations = possible_combinations;
+	//cout << "Outside while  " << endl;
+	//cout << "Outside while " << endl;
+	for (auto i = copy_possible_combinations.begin(); i < copy_possible_combinations.end(); i++) {
+		//cout << "Line 670" << endl;
+		//cout << "Inside for 1" << endl;
+		//for (auto j = i->begin(); j < i->end(); j++) {
+		vector<string> temp = *i;
+		for (auto j = wildcardsandjokers.begin(); j < wildcardsandjokers.end(); j++) {
+			//cout << "Inside second for " << endl;
+			temp.push_back(*j);
+			possible_combinations.push_back(temp);
 		}
 	}
 
+	
 	cout << "THE POSSIBLE COMBINATIONS ARE: " << endl;
 
 	for (auto i = possible_combinations.begin(); i < possible_combinations.end(); i++) {
@@ -651,26 +701,59 @@ vector<vector<Card>> Player::generatePossibleCombinations(vector<string> current
 		}
 		cout << endl;
 	}
-
+	
+	//cout << "Line 692 " << endl;
 	return listBooksAndRuns(possible_combinations);
 }
 
+//TODO
+//currently, JD JT 7S, JD JT 7S J2 but not JD JT J2
 
 
+//TODO->
+/*
+3S 4C 4T 5S XC JS, wildcard -> 7S
+listofbooks and runs -> 4C 4T 7S but not 3S 7S 5S
+
+*/
 vector<vector<Card>> Player::listBooksAndRuns(vector<vector<string>> possible_combinations) {
 	
 	//cout << "Inside listBooksAndRuns" << endl;
 	bool checkbook, checkrun;
 	vector<vector<Card>> list_books_and_runs;
 
+	//cout << "Inside listBooksAndRuns" << endl;
+	//cout << "Before clear " << endl;
 	for (int i = 0; i < list_books_and_runs.size(); i++) {
 		list_books_and_runs[i].clear();
 	}
 
-	vector<Card> current_hand_combination;
+	//vector<Card> current_hand_combination;
 	char face, suit;
 
+	//cout << "Before for loop " << endl;
 
+	//ERROR INSIDE FOR LOOP
+	for (auto i = possible_combinations.begin(); i < possible_combinations.end(); i++) {
+		vector<Card> current_hand_combination;
+		//cout << "Before inside for " << endl;
+		for (auto j = i->begin(); j < i->end(); j++) {
+			face = (*j)[0];
+			suit = (*j)[1];
+			string s_face(1, face);
+			string s_suit(1, suit);
+			Card temp = Card(s_face, s_suit);
+			current_hand_combination.push_back(temp);
+		}
+		//cout << "After inside for " << endl;
+		checkbook = checkBook(current_hand_combination);
+		checkrun = checkRun(current_hand_combination);
+		if (checkbook || checkrun) {
+			list_books_and_runs.push_back(current_hand_combination);
+		}
+		//cout << "After if " << endl;
+	}
+	/*
 	for (int i = 0; i < possible_combinations.size(); i++) {
 		current_hand_combination.clear();
 		for (int j = 0; j < possible_combinations[i].size(); j++) {
@@ -685,11 +768,11 @@ vector<vector<Card>> Player::listBooksAndRuns(vector<vector<string>> possible_co
 		checkbook = checkBook(current_hand_combination);
 		checkrun = checkRun(current_hand_combination);
 
-		if (checkbook || checkrun) {
-			list_books_and_runs.push_back(current_hand_combination);
-		}
+		
 
 	}
+	*/
+	//ERROR IS BEFORE PRINTING.
 
 	cout << "Printing list of books and runs: " << endl;
 	for (auto i = list_books_and_runs.begin(); i < list_books_and_runs.end(); i++) {

@@ -87,6 +87,7 @@ protected:
 
 	//use to keep track of the best arrangement of cards for least points.
 	vector<vector<string>> recursive_bookrun_hands;
+	vector<vector<string>> best_combination;
 	
 
 };
