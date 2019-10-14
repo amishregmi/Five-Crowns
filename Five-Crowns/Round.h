@@ -40,6 +40,8 @@ public:
 	void printPlayersDetails();
 	void menuOptions();
 	void saveGame();
+	int getHumanScore();
+	int getComputerScore();
 	~Round();
 };
 

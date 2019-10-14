@@ -47,7 +47,6 @@ public:
 	
 	bool checkIfWildcard(string);
 	
-	int getPlayerPoints();
 	
 	int calculateSumOfCards(vector<Card>);
 
@@ -63,7 +62,7 @@ public:
 	
 	int facesMaxDiff(vector<int>, int);
 
-	
+	int getHandScore();
 
 	~Player();
 

@@ -105,10 +105,10 @@ void Round::saveGame() {
 	saved_file.open(SAVED_GAME);
 	saved_file << "Round: " << roundNumber << "\n\n";
 	saved_file << "Computer: " << "\n";
-	saved_file << "    Score: " << computer_player.getPlayerPoints() << "\n";
+	saved_file << "    Score: " << computer_player.getHandScore() << "\n";
 	saved_file << "    Hand: " << computer_player.getCurrentHand() << "\n\n";
 	saved_file << "Human: " << "\n";
-	saved_file << "    Score: " << human_player.getPlayerPoints() << "\n";
+	saved_file << "    Score: " << human_player.getHandScore() << "\n";
 	saved_file << "    Hand: " << human_player.getCurrentHand() << "\n\n";
 	saved_file << "Draw Pile: " << Deck::getCurrentDrawPile() << "\n\n";
 	saved_file << "Discard Pile: " << Deck::getCurrentDiscardPile() << "\n\n";
@@ -180,20 +180,27 @@ void Round::startRound() {
 
 		next_player_index = (next_player_index + 1) % total_players_num;
 
-		//if (verify_go_out_first && !verify_go_out_second) {
+		if (verify_go_out_first && !verify_go_out_second) {
 			//calculate points of second player.
-			//cout << "Calculating points for player " << player_names[next_player_index+1] << endl;
-			//playersList[next_player_index + 1]->calculatePoints();
-		//}
+			cout << "The points for player " << player_names[next_player_index+1] << " is ";
+			cout << playersList[next_player_index + 1]->getHandScore() << endl;
+		}
 
-		//if (!verify_go_out_first && verify_go_out_second) {
-			//calculate points of first player
-			//cout << "Calculating points for player: " << player_names[next_player_index] << endl;
-			//playersList[next_player_index]->calculatePoints();
-			//next_player_index = (next_player_index + 1) % total_players_num;
-		//}
+		if (!verify_go_out_first && verify_go_out_second) {
+			cout << "The points for player " << player_names[next_player_index] << "is ";
+			cout << playersList[next_player_index]->getHandScore() << endl;
+			next_player_index = (next_player_index + 1) % total_players_num;
+		}
 
 	}
+}
+
+int Round::getHumanScore() {
+	return human_player.getHandScore();
+}
+
+int Round::getComputerScore() {
+	return computer_player.getHandScore();
 }
 
 Round::~Round()

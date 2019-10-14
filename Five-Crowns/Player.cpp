@@ -439,7 +439,7 @@ bool Player::goOut() {
 
 		cout << endl;
 	
-		if (score == 0) {
+		if (hand_score == 0) {
 			return true;
 		}
 
@@ -587,6 +587,8 @@ vector<vector<Card>> Player::generatePossibleCombinations(vector<string> current
 
 	vector<string>::iterator it;
 
+	//Remove, wildcards, jokers, Xs and Ks
+
 	for (it = current_player_hand_str.begin(); it != current_player_hand_str.end(); ) {
 		string current_card = *it;
 
@@ -617,17 +619,13 @@ vector<vector<Card>> Player::generatePossibleCombinations(vector<string> current
 	
 	}
 
-	//cout << "Hand after removing X's and K's is " << endl;
-	
-	//cout << endl;
-
-	//cout << "After printing hand without X and K" << endl;
+	//Sort vectors containing cards with faces Xs and Ks
 	sort(x_faces.begin(), x_faces.end());
 	sort(k_faces.begin(), k_faces.end());
-
-	//cout << "After sorting " << endl;
-	//find first position of either J or Q.
+	
 	int first = 50;
+
+	//Find first position of Js and Qs if exists, to find the right position to insert cards Xs
 
 	for (auto i = current_player_hand_str.begin(); i < current_player_hand_str.end(); i++) {
 		//if (!checkIfJoker(*i)) {
@@ -660,19 +658,13 @@ vector<vector<Card>> Player::generatePossibleCombinations(vector<string> current
 			first++;
 		}
 	}
-
+	
+	//Add Ks to the end 
 
 	for (auto i = k_faces.begin(); i < k_faces.end(); i++) {
 		current_player_hand_str.push_back(*i);
 	}
 
-
-	/*
-	cout << "After sorting, the hand without wildcards and jokers is: " << endl;
-	for (auto i = current_player_hand_str.begin(); i < current_player_hand_str.end(); i++) {
-		cout << *i << "    ";
-	}
-	cout << endl; */
 
 	int max_numofcards_in_combination = current_player_hand_str.size();
 	int min_numofcards_in_combination = 3;
@@ -688,72 +680,179 @@ vector<vector<Card>> Player::generatePossibleCombinations(vector<string> current
 	int numofcards_in_current_combination = min_numofcards_in_combination;
 	int start_index_current_combination;
 
-
-	//cout << "Inside while 1 " << endl;
 	while (numofcards_in_current_combination <= max_numofcards_in_combination) {
 		
-		//cout << "Inside outer while " << endl;
 		start_index_current_combination = 0;
 
-		//cout << "before while 2 " << endl;
 		while (start_index_current_combination <= (max_numofcards_in_combination - numofcards_in_current_combination)) {
-			//cout << "Inside while 2 " << endl;
-			//cout << "Inside inner while " << endl;
+
 			vector<string> current_combination;
 			
 			for (int i = start_index_current_combination; i < (numofcards_in_current_combination + start_index_current_combination); i++) {
-				//cout << "Inside for " << endl;
-				//cout << "Line 642" << endl;
+
 				if (i < current_player_hand_str.size()) {
 					current_combination.push_back(current_player_hand_str[i]);
 				}
 			}
-			//cout << "Line 647" << endl;
+
 			possible_combinations.push_back(current_combination);
 			start_index_current_combination++;
 		}
 
 		numofcards_in_current_combination++;
-		//cout << "Line 653" << endl;
+
 	}
 
-	/*
-	 */
-	/*
-	for (int i = 0; i < possible_combinations.size(); i++) {
-	for (int j = 0; j < possible_combinations[i].size(); j++) {
-	cout << possible_combinations[i][j] << "     ";
+	//TODO -> REFACTOR THIS CODE.
+
+	vector<string> s_suit_cards, c_suit_cards, d_suit_cards, h_suit_cards, t_suit_cards;
+
+	for (auto i = current_player_hand_str.begin(); i < current_player_hand_str.end(); i++) {
+		if ((*i)[1] == 'S') {
+			s_suit_cards.push_back(*i);
+		}
+		else if ((*i)[1] == 'C') {
+			c_suit_cards.push_back(*i);
+		}
+		else if ((*i)[1] == 'D') {
+			d_suit_cards.push_back(*i);
+		}
+		else if ((*i)[1] == 'H') {
+			h_suit_cards.push_back(*i);
+		}
+		else if ((*i)[1] == 'T') {
+			t_suit_cards.push_back(*i);
+		}
 	}
-	cout << endl;
-	} */
+	
+	//---------------------------------------------------------FOR S ------------------------------------------------------------------------
+
+	max_numofcards_in_combination = s_suit_cards.size();
+	numofcards_in_current_combination = min_numofcards_in_combination;
+	//int start_index_current_combination;
+	while (numofcards_in_current_combination <= max_numofcards_in_combination) {
+		start_index_current_combination = 0;
+		while (start_index_current_combination <= (max_numofcards_in_combination - numofcards_in_current_combination)) {
+			vector<string> current_combination;
+			for (int i = start_index_current_combination; i < (numofcards_in_current_combination + start_index_current_combination); i++) {
+				if (i < s_suit_cards.size()) {
+					current_combination.push_back(s_suit_cards[i]);
+				}
+			}
+
+			if (!(find(possible_combinations.begin(), possible_combinations.end(), current_combination) != possible_combinations.end())){
+				possible_combinations.push_back(current_combination);
+			}
+			start_index_current_combination++;
+		}
+		numofcards_in_current_combination++;
+	}
+
+	//---------------------------------------------------------FOR C ------------------------------------------------------------------------
+
+	max_numofcards_in_combination = c_suit_cards.size();
+	numofcards_in_current_combination = min_numofcards_in_combination;
+	//int start_index_current_combination;
+	while (numofcards_in_current_combination <= max_numofcards_in_combination) {
+		start_index_current_combination = 0;
+		while (start_index_current_combination <= (max_numofcards_in_combination - numofcards_in_current_combination)) {
+			vector<string> current_combination;
+			for (int i = start_index_current_combination; i < (numofcards_in_current_combination + start_index_current_combination); i++) {
+				if (i < c_suit_cards.size()) {
+					current_combination.push_back(c_suit_cards[i]);
+				}
+			}
+
+			if (!(find(possible_combinations.begin(), possible_combinations.end(), current_combination) != possible_combinations.end())) {
+				possible_combinations.push_back(current_combination);
+			}
+			start_index_current_combination++;
+		}
+		numofcards_in_current_combination++;
+	}
+
+	//---------------------------------------------------------FOR D ------------------------------------------------------------------------
+
+	max_numofcards_in_combination = d_suit_cards.size();
+	numofcards_in_current_combination = min_numofcards_in_combination;
+	//int start_index_current_combination;
+	while (numofcards_in_current_combination <= max_numofcards_in_combination) {
+		start_index_current_combination = 0;
+		while (start_index_current_combination <= (max_numofcards_in_combination - numofcards_in_current_combination)) {
+			vector<string> current_combination;
+			for (int i = start_index_current_combination; i < (numofcards_in_current_combination + start_index_current_combination); i++) {
+				if (i < d_suit_cards.size()) {
+					current_combination.push_back(d_suit_cards[i]);
+				}
+			}
+
+			if (!(find(possible_combinations.begin(), possible_combinations.end(), current_combination) != possible_combinations.end())) {
+				possible_combinations.push_back(current_combination);
+			}
+			start_index_current_combination++;
+		}
+		numofcards_in_current_combination++;
+	}
+
+
+	//---------------------------------------------------------FOR H ------------------------------------------------------------------------
+
+	max_numofcards_in_combination = h_suit_cards.size();
+	numofcards_in_current_combination = min_numofcards_in_combination;
+	//int start_index_current_combination;
+	while (numofcards_in_current_combination <= max_numofcards_in_combination) {
+		start_index_current_combination = 0;
+		while (start_index_current_combination <= (max_numofcards_in_combination - numofcards_in_current_combination)) {
+			vector<string> current_combination;
+			for (int i = start_index_current_combination; i < (numofcards_in_current_combination + start_index_current_combination); i++) {
+				if (i < h_suit_cards.size()) {
+					current_combination.push_back(h_suit_cards[i]);
+				}
+			}
+
+			if (!(find(possible_combinations.begin(), possible_combinations.end(), current_combination) != possible_combinations.end())) {
+				possible_combinations.push_back(current_combination);
+			}
+			start_index_current_combination++;
+		}
+		numofcards_in_current_combination++;
+	}
+
+	//---------------------------------------------------------FOR T ------------------------------------------------------------------------
+
+	max_numofcards_in_combination = t_suit_cards.size();
+	numofcards_in_current_combination = min_numofcards_in_combination;
+	//int start_index_current_combination;
+	while (numofcards_in_current_combination <= max_numofcards_in_combination) {
+		start_index_current_combination = 0;
+		while (start_index_current_combination <= (max_numofcards_in_combination - numofcards_in_current_combination)) {
+			vector<string> current_combination;
+			for (int i = start_index_current_combination; i < (numofcards_in_current_combination + start_index_current_combination); i++) {
+				if (i < t_suit_cards.size()) {
+					current_combination.push_back(t_suit_cards[i]);
+				}
+			}
+
+			if (!(find(possible_combinations.begin(), possible_combinations.end(), current_combination) != possible_combinations.end())) {
+				possible_combinations.push_back(current_combination);
+			}
+			start_index_current_combination++;
+		}
+		numofcards_in_current_combination++;
+	}
 
 	vector<vector<string>> copy_possible_combinations;
 	copy_possible_combinations = possible_combinations;
-	//cout << "Outside while  " << endl;
-	//cout << "Outside while " << endl;
+	
 	for (auto i = copy_possible_combinations.begin(); i < copy_possible_combinations.end(); i++) {
-		//cout << "Line 670" << endl;
-		//cout << "Inside for 1" << endl;
-		//for (auto j = i->begin(); j < i->end(); j++) {
+	
 		vector<string> temp = *i;
 		for (auto j = wildcardsandjokers.begin(); j < wildcardsandjokers.end(); j++) {
-			//cout << "Inside second for " << endl;
 			temp.push_back(*j);
 			possible_combinations.push_back(temp);
 		}
 	}
-
-	/*
-	cout << "THE POSSIBLE COMBINATIONS ARE: " << endl;
-
-	for (auto i = possible_combinations.begin(); i < possible_combinations.end(); i++) {
-		for (auto j = i->begin(); j < i->end(); j++) {
-			cout << *j << "    ";
-		}
-		cout << endl;
-	} */
 	
-	//cout << "Line 692 " << endl;
 	return listBooksAndRuns(possible_combinations);
 }
 
@@ -842,8 +941,8 @@ vector<vector<Card>> Player::listBooksAndRuns(vector<vector<string>> possible_co
 
 
 
-int Player::getPlayerPoints() {
-	return 0;
+int Player::getHandScore() {
+	return hand_score;
 }
 
 string Player::getCurrentHand() {

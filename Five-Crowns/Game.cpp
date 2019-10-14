@@ -56,11 +56,16 @@ void Game::callRound() {
 
 
 	//while (round_number <= 13) {
-		Round round(round_number, &human, &computer, "Human", read_from_file);
+		Round round(round_number, &human, &computer, next_player, read_from_file);
 		//cout << "Calling roundDetails() function from Game" << endl;
 		round.roundDetails();
 	//	round_number++;
 	//}
+		cout << "After round: " << round_number << endl;
+		human_player_points += round.getHumanScore();
+		computer_player_points += round.getComputerScore();
+		
+		cout << "Human score is: " << human_player_points << " and Computer score is: " << computer_player_points << endl;
 }
 
 void Game::extractDetailsFromFile(string file_name) {
@@ -147,7 +152,7 @@ string Game::coinToss() {
 	cout << "Tossing coin for first round " << endl;
 	srand(time(NULL));
 	int toss_val = rand() % 2;
-	//cout << "The coin toss value is: " << toss_val << endl;
+	cout << "The coin toss value is: " << toss_val << endl;
 	int human_call;
 	cout << "Enter 0 for heads and 1 for tails: ";
 	cin >> human_call;
