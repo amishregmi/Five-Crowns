@@ -178,6 +178,22 @@ void Deck::setDiscardPile(vector<string> discard_Pile) {
 	printDiscardPile();
 }
 
+Card Deck::accessTopDiscardPileCard() {
+	Card topDiscardCard;
+	if (!discardPile.empty()) {
+		topDiscardCard = discardPile.back();
+	}
+	return topDiscardCard;
+}
+
+Card Deck::accessTopDrawPileCard() {
+	Card topDrawCard;
+	if (!drawPile.empty()) {
+		topDrawCard = drawPile.back();
+	}
+	return topDrawCard;
+}
+
 Deck::~Deck()
 {
 }

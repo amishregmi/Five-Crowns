@@ -349,6 +349,9 @@ bool Player::checkIfWildcard(string current_card) {
 
 bool Player::goOut() {
 	//cout << "Inside goOut()" << endl;
+	checkJokercards();
+	checkWildcards();
+
 	int total_cards = current_player_hand.size();
 
 	hand_score = calculateSumOfCards(current_player_hand);

@@ -10,35 +10,119 @@ Computer::Computer()
 
 void Computer::pickCard() {
 	//cout << "Computer at start of pickCard total cards" << total_cards_in_hand << endl;
-	srand(time(NULL));
-	int randNum = rand() % 2;
-	//cout << "Computer's randNum is: " << randNum;
-	if (randNum == 0) {
-		//computer picked from draw pile
-		cout << "Computer picked from draw pile: " << endl;
-		Card topDrawCard = Deck::takeTopDrawCard();
-		addCardToHand(topDrawCard);
-	}
-	else {
-		//computer picked from discard pile
-		cout << "Computer picked from discard pile: " << endl;
-		Card topDiscardPile = Deck::takeTopDiscardCard();
-		addCardToHand(topDiscardPile);
+	Card topDiscardCard = Deck::accessTopDiscardPileCard();
+	
+	Card topDrawCard = Deck::accessTopDrawPileCard();
+	string reason; 
+
+	//If topDiscardCard is wildcard or joker, add the card to hand.
+	if (checkIfJoker(topDiscardCard.cardToString())) {
+		reason = "Computer picked from top of Discard pile because the card is a joker";
+		addCardToHand(topDiscardCard);
 	}
 
-	//cout << "Computer before dropCard() " << total_cards_in_hand << endl;
+	else if (checkIfWildcard(topDiscardCard.cardToString())) {
+		reason = "Computer picked from top of Discard pile because the card is a wildcard ";
+		addCardToHand(topDiscardCard);
+	}
+
+	else {
+		//Try adding card to hand and check if computer can go out.
+		goOut();
+		int points_before_adding_discard_card = hand_score;
+		addCardToHand(topDiscardCard);
+		bool check_if_goout = goOut();
+		if (check_if_goout) {
+			reason = "Computer picked from top of Discard pile because it helps to goOut ";
+			Deck::takeTopDiscardCard();
+		}
+		else {
+			int points_after_adding_discard_card = hand_score;
+
+			if (points_after_adding_discard_card < points_before_adding_discard_card) {
+				reason = "Computer picked from top of Discard pile because it helps in a better book/run combination in hand ";
+				Deck::takeTopDiscardCard();
+			}
+
+			else {
+				//No use of top Discard Card;
+				int drop_index = total_cards_in_hand - 1;
+				//Card drop_topdiscardcard_fromhand = current_player_hand.at(drop_index);
+				current_player_hand.erase(current_player_hand.begin() + drop_index);
+				total_cards_in_hand--;
+				current_player_hand_str.erase(current_player_hand_str.begin() + drop_index);
+
+				reason = "Computer picked from top of Draw Pile because discard pile didn't have wildcard or joker and didn't help assemble a better book/run combination ";
+				addCardToHand(Deck::takeTopDrawCard());
+
+			}
+		}
+	}
+
+	cout << reason << endl;
 
 	dropCard();
 
 }
 
 void Computer::dropCard() {
-	//Get random index and delete that card for now
-	//cout << "Total cards in hand at start of dropCard() " << total_cards_in_hand << endl;
+	
+	string reason; 
 	cout << "Before dropping card, ";
 	printCurrentHand();
-	int randNum = rand() % total_cards_in_hand;
-	cout << "Computer is dropping card at index: " << randNum << endl;
+	
+	//Remove card at every index and calculate score and push scores in vector
+	//index of vector element corresponding to lowest sum is the card you want to drop.
+	vector<int> points_after_drop;
+	int current_index = 0;
+
+	vector<Card> temp = current_player_hand;
+	vector<string> temp_str = current_player_hand_str;
+
+	cout << "Total cards in hand is: " << total_cards_in_hand << endl;
+	
+	while (current_index < total_cards_in_hand) {
+
+		//cout << "current_index is: " << current_index << endl;
+		current_player_hand.erase(current_player_hand.begin() + current_index);
+		total_cards_in_hand--;
+		current_player_hand_str.erase(current_player_hand_str.begin() + current_index);
+		goOut();
+		points_after_drop.push_back(hand_score);
+
+		//RESET VALUES
+		current_player_hand = temp;
+		total_cards_in_hand++;
+		current_player_hand_str = temp_str;
+		current_index++;
+		//cout << "Before while again " << endl;
+	}
+
+	//cout << "Printing points after dropping card at every index " << endl;
+
+	//int i = 0;
+	int min = INT_MAX;
+	int required_index;
+
+	for (int i = 0; i < points_after_drop.size(); i++) {
+		if (!( checkIfJoker(current_player_hand_str[i]) || checkIfWildcard(current_player_hand_str[i] ))) {
+			if (points_after_drop[i] < min) {
+				if (points_after_drop[i] == 0) {
+					reason = "Dropping card at index " + to_string(i) + "because the player can go out ";
+				}
+				reason = "Dropping card at index " + to_string(i) + "because it's not a wildcard/joker and helps decrease sum of cards remaining after book/run combination";
+				min = points_after_drop[i];
+				required_index = i;
+			}
+		}
+	}
+
+	cout << reason << endl;
+
+	cout << endl;
+	
+	int randNum = required_index;
+	//cout << "Computer is dropping card at index: " << randNum << endl;
 	//cout << "The current computer hand is: ";
 	
 	Card card_dropped = current_player_hand.at(randNum);
@@ -49,19 +133,6 @@ void Computer::dropCard() {
 
 	printCurrentHand();
 
-	//checkWildcards();
-	//cout << "After dropping card, ";
-	//printCurrentHand();
-	checkJokercards();
-	checkWildcards();
-	//cout << "Total cards after dropCard " << total_cards_in_hand << endl;
-	//cout << "The total number of wildcards is: " << getWildcardsNum() << endl;
-	//cout << "The total number of jokers is: " << getJokersNum() << endl;
-	//cout << "Checking book: ";
-	//cout << checkBook() << endl;
-	//cout << "Checking run: ";
-	//cout << checkRun() << endl;
-	//cout << endl;
 	cout << endl;
 }
 

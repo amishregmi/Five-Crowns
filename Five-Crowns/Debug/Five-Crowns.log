@@ -1,2 +1,3 @@
-﻿  Round.cpp
+﻿  Computer.cpp
+c:\five-crowns\five-crowns\computer.cpp(107): warning C4018: '<': signed/unsigned mismatch
   Five-Crowns.vcxproj -> C:\Five-Crowns\Five-Crowns\Debug\Five-Crowns.exe

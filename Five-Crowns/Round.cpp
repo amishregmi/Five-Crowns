@@ -81,8 +81,8 @@ void Round::dealForRound() {
 
 void Round::printRoundDetails() {
 	
-	//Deck::printDrawPile();
-	//Deck::printDiscardPile();
+	Deck::printDrawPile();
+	Deck::printDiscardPile();
 	cout << " -------------------------------------------------------------- " << endl;
 	cout << "Playing: " << player_names[next_player_index] << "    ";
 	playersList[next_player_index]->printCurrentHand();

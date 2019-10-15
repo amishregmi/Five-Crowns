@@ -30,6 +30,10 @@ public:
 
 	static string getCurrentDiscardPile();
 
+	static Card accessTopDiscardPileCard();
+
+	static Card accessTopDrawPileCard();
+
 	static void setDrawPile(vector<string>);
 
 	static void setDiscardPile(vector<string>);
