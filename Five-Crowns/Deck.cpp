@@ -9,12 +9,17 @@ default_random_engine e(seed);
 Deck::Deck()
 {
 	//cout << "Inside deck constructor " << endl;
+	resetDeck();
+}
+
+
+void Deck::resetDeck() {
 	drawPile.clear();
 	discardPile.clear();
 	//S - spades, C - clubs, D - diamonds, H - hearts, T - tridents
 	string suits[] = { "S", "C", "D", "H", "T" };
 
-	string faces[] = { "3", "4", "5", "6", "7", "8", "9", "X", "J", "Q", "K"};
+	string faces[] = { "3", "4", "5", "6", "7", "8", "9", "X", "J", "Q", "K" };
 
 	string joker_face = "J";
 
@@ -22,9 +27,9 @@ Deck::Deck()
 
 	for (int i = 0; i < 2; i++) {
 		//two piles in first draw pile
-		
+
 		//loop for every suit through all the faces then add jokers
-		for (int j = 0; j < (sizeof(suits)/sizeof(suits[0])); j++) {
+		for (int j = 0; j < (sizeof(suits) / sizeof(suits[0])); j++) {
 			for (int k = 0; k < (sizeof(faces) / sizeof(faces[0])); k++) {
 				Card currentCard(faces[k], suits[j]);
 				drawPile.push_back(currentCard);
@@ -40,8 +45,8 @@ Deck::Deck()
 	shuffle(drawPile.begin(), drawPile.end(), e);
 }
 
-
 vector<Card> Deck::dealCards(int roundNumber) {
+	resetDeck();
 	//cout << "Dealing cards for roundNumber: " << roundNumber << endl;
 	vector<Card> cardstodeal;
 	int total_cards_per_player = (2 + roundNumber)*2;

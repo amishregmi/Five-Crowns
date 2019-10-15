@@ -79,7 +79,7 @@ void Computer::dropCard() {
 	vector<Card> temp = current_player_hand;
 	vector<string> temp_str = current_player_hand_str;
 
-	cout << "Total cards in hand is: " << total_cards_in_hand << endl;
+	//cout << "Total cards in hand is: " << total_cards_in_hand << endl;
 	
 	while (current_index < total_cards_in_hand) {
 
@@ -119,7 +119,7 @@ void Computer::dropCard() {
 
 	cout << reason << endl;
 
-	cout << endl;
+	//cout << endl;
 	
 	int randNum = required_index;
 	//cout << "Computer is dropping card at index: " << randNum << endl;
@@ -133,7 +133,7 @@ void Computer::dropCard() {
 
 	printCurrentHand();
 
-	cout << endl;
+	//cout << endl;
 }
 
 Computer::~Computer()

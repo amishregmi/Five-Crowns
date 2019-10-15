@@ -38,7 +38,7 @@ Round::Round(int roundNumber, Human* human_player_ptr, Computer* computer_player
 	else {
 		
 		if (next_player_name == "Human") {
-			cout << "Inside human " << endl;
+			//cout << "Inside human " << endl;
 			this->playersList[0] = &human_player;
 			this->playersList[1] = &computer_player;
 			this->player_names[0] = "Human";
@@ -46,7 +46,7 @@ Round::Round(int roundNumber, Human* human_player_ptr, Computer* computer_player
 		}
 
 		else {
-			cout << "Inside computer " << endl;
+			//cout << "Inside computer " << endl;
 			this->playersList[0] = &computer_player;
 			this->playersList[1] = &human_player;
 			this->player_names[0] = "Computer";
@@ -60,6 +60,8 @@ Round::Round(int roundNumber, Human* human_player_ptr, Computer* computer_player
 
 void Round::dealForRound() {
 	//Distribute cards to both players based on round number, and add one card to discard pile.
+	//Deck::discardPile.clear();
+	//Deck::drawPile.clear();
 	vector<Card> dealtCards = Deck::dealCards(roundNumber);
 	vector<Card>::iterator it = dealtCards.begin();
 
@@ -123,12 +125,15 @@ void Round::saveGame() {
 
 void Round::menuOptions() {
 	
+	cout << "---------------------------MENU------------------------------------------------------" << endl;
 	cout << "1. Save the game" << endl;
 	cout << "2. Make a move" << endl;
 	if (player_names[next_player_index] == "Human") {
 		cout << "3. Ask for help" << endl;
 	}
 	cout << "4. Quit the game" << endl;
+	cout << " --------------------------------------------------------------" << endl;
+
 	char input_c;
 	cout << "Enter your choice from the above numbers: ";
 	cin >> input_c;
@@ -150,6 +155,7 @@ void Round::menuOptions() {
 	if (input == 2) {
 		playersList[next_player_index]->pickCard();
 	}
+
 	
 }
 
@@ -160,8 +166,8 @@ void Round::startRound() {
 		//cout << " --------------------------------------------" << endl;
 		printRoundDetails();
 
-		//menuOptions();
-		playersList[next_player_index]->pickCard();
+		menuOptions();
+		//playersList[next_player_index]->pickCard();
 		verify_go_out_first = playersList[next_player_index]->goOut();
 		
 		
@@ -173,8 +179,8 @@ void Round::startRound() {
 
 		printRoundDetails();
 		
-		//menuOptions();
-		playersList[next_player_index]->pickCard();
+		menuOptions();
+		//playersList[next_player_index]->pickCard();
 		//playersList[next_player_index]->menuOptions();
 
 		verify_go_out_second = playersList[next_player_index]->goOut();

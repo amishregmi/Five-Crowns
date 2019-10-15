@@ -375,26 +375,26 @@ bool Player::goOut() {
 		int score = bestBookRunCombination(current_player_hand);
 		//cout << "After getting score from the bestBookRunCombination return value" << endl;
 		
-		cout << "LOWEST SCORE AFTER BEST COMBINATION IS: " << hand_score << endl;
+		//cout << "LOWEST SCORE AFTER BEST COMBINATION IS: " << hand_score << endl;
 	//}
 		//TODO
 		//Remove these cards, get list of books and runs in remaining hand and print as assemble cards.
 		vector<string> assemble_remaining_bookandrun;
 		vector<string> temp;
 		assemble_remaining_bookandrun = current_player_hand_str;
-		cout << "Best combination of remaining cards is: " << endl;
+		//cout << "Best combination of remaining cards is: " << endl;
 		for (auto i = recursive_bookrun_hands.begin(); i < recursive_bookrun_hands.end(); i++) {
 			for (auto j = i->begin(); j < i->end(); j++) {
-				cout << *j << "    ";
+				//cout << *j << "    ";
 				temp.push_back(*j);
 				assemble_remaining_bookandrun.erase(remove(assemble_remaining_bookandrun.begin(), assemble_remaining_bookandrun.end(), *j), assemble_remaining_bookandrun.end());
 			}
-			cout << endl;
+			//cout << endl;
 		}
 
 		
 		//vector<vector<Card>> remaining_cards_bookrun = generatePossibleCombinations(assemble_remaining_bookandrun);
-		cout << "Best combination of books and runs is: " << endl;
+		//cout << "Best combination of books and runs is: " << endl;
 		//If it is present in temp, discard.
 		vector<vector<string>> remaining_cards_assemble;
 		/*
@@ -436,11 +436,11 @@ bool Player::goOut() {
 		//}
 
 		for (auto i = child_returning_smallest_sum.begin(); i < child_returning_smallest_sum.end(); i++) {
-			cout << *i << "   ";
+			//cout << *i << "   ";
 		}
-		cout << endl;
+		//cout << endl;
 
-		cout << endl;
+		//cout << endl;
 	
 		if (hand_score == 0) {
 			return true;

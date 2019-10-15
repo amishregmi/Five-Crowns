@@ -57,7 +57,7 @@ void Game::callRound() {
 
 	while (round_number <= 13) {
 
-		cout << "Calling round with next_player = " << next_player << endl;
+		//cout << "Calling round with next_player = " << next_player << endl;
 
 		Round round(round_number, &human, &computer, next_player, read_from_file);
 		//cout << "Calling roundDetails() function from Game" << endl;
@@ -72,7 +72,7 @@ void Game::callRound() {
 		
 		string first_went_out = round.getNextPlayer();
 
-		cout << "First to go out is: " << first_went_out << endl;
+		//cout << "First to go out is: " << first_went_out << endl;
 
 		if (first_went_out == "Human") {
 			next_player = "Human";
@@ -81,6 +81,7 @@ void Game::callRound() {
 			next_player = "Computer";
 		}
 
+		
 		round_number++;
 	}
 }

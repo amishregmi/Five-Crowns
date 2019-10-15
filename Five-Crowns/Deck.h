@@ -36,6 +36,8 @@ public:
 
 	static void setDrawPile(vector<string>);
 
+	static void resetDeck();
+
 	static void setDiscardPile(vector<string>);
 
 	~Deck();
