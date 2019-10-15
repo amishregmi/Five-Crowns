@@ -42,6 +42,7 @@ public:
 	void saveGame();
 	int getHumanScore();
 	int getComputerScore();
+	string getNextPlayer();
 	~Round();
 };
 

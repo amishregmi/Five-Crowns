@@ -4,6 +4,7 @@ string Round::next_player;
 
 Round::Round(int roundNumber, Human* human_player_ptr, Computer* computer_player_ptr, string next_player_name, bool read_from_file){
 	//cout << "Inside round constructor " << endl;
+
 	this->readfromfile = read_from_file;
 	this->human_player = *human_player_ptr;
 	this->computer_player = *computer_player_ptr;
@@ -13,6 +14,8 @@ Round::Round(int roundNumber, Human* human_player_ptr, Computer* computer_player
 	this->total_players_num = 2;
 	this->verify_go_out_first = false;
 	this->verify_go_out_second = false;
+	cout << endl;
+	cout << endl;
 	cout << "Round Number: " << roundNumber << endl;
 	if (roundNumber == 1) {
 		//string toss_val = "Human";
@@ -33,8 +36,9 @@ Round::Round(int roundNumber, Human* human_player_ptr, Computer* computer_player
 	}
 
 	else {
-		//Don't change -> next_player if go out successful
-		if (this->next_player == "Human") {
+		
+		if (next_player_name == "Human") {
+			cout << "Inside human " << endl;
 			this->playersList[0] = &human_player;
 			this->playersList[1] = &computer_player;
 			this->player_names[0] = "Human";
@@ -42,6 +46,7 @@ Round::Round(int roundNumber, Human* human_player_ptr, Computer* computer_player
 		}
 
 		else {
+			cout << "Inside computer " << endl;
 			this->playersList[0] = &computer_player;
 			this->playersList[1] = &human_player;
 			this->player_names[0] = "Computer";
@@ -193,6 +198,10 @@ void Round::startRound() {
 		}
 
 	}
+}
+
+string Round::getNextPlayer() {
+	return player_names[next_player_index];
 }
 
 int Round::getHumanScore() {

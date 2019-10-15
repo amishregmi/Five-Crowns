@@ -55,17 +55,34 @@ void Game::callRound() {
 	}
 
 
-	//while (round_number <= 13) {
+	while (round_number <= 13) {
+
+		cout << "Calling round with next_player = " << next_player << endl;
+
 		Round round(round_number, &human, &computer, next_player, read_from_file);
 		//cout << "Calling roundDetails() function from Game" << endl;
 		round.roundDetails();
-	//	round_number++;
-	//}
+		//	round_number++;
+
 		cout << "After round: " << round_number << endl;
 		human_player_points += round.getHumanScore();
 		computer_player_points += round.getComputerScore();
-		
+
 		cout << "Human score is: " << human_player_points << " and Computer score is: " << computer_player_points << endl;
+		
+		string first_went_out = round.getNextPlayer();
+
+		cout << "First to go out is: " << first_went_out << endl;
+
+		if (first_went_out == "Human") {
+			next_player = "Human";
+		}
+		else {
+			next_player = "Computer";
+		}
+
+		round_number++;
+	}
 }
 
 void Game::extractDetailsFromFile(string file_name) {
