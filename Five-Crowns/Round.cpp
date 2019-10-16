@@ -82,7 +82,7 @@ void Round::dealForRound() {
 
 
 void Round::printRoundDetails() {
-	
+	cout << endl;
 	Deck::printDrawPile();
 	Deck::printDiscardPile();
 	cout << " -------------------------------------------------------------- " << endl;
@@ -203,8 +203,16 @@ void Round::startRound() {
 		}
 
 		if (!verify_go_out_first && verify_go_out_second) {
+			printRoundDetails();
+			menuOptions();
 			cout << "The points for player " << player_names[next_player_index] << "is ";
-			cout << playersList[next_player_index]->getHandScore() << endl;
+			verify_go_out_first = playersList[next_player_index]->goOut();
+			if (verify_go_out_first) {
+				cout << "Player " << player_names[next_player_index] << " went out" << endl;
+			}
+			else {
+				cout << playersList[next_player_index]->getHandScore() << endl;
+			}
 			next_player_index = (next_player_index + 1) % total_players_num;
 		}
 

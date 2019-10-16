@@ -124,7 +124,7 @@ void Human::dropCardHelp() {
 			if (points_after_drop[i] < min) {
 				reason = "I recommend you drop card at index " + to_string(i) + " because it's not a wildcard or joker and helps decrease the sum of cards that remain after the best book/run combination in hand";
 				if (points_after_drop[i] == 0) {
-					reason = "I recommend yo drop card at index: " + to_string(i) + " because you can go out with remaining cards";
+					reason = "I recommend you drop card at index: " + to_string(i) + " because you can go out with remaining cards";
 				}
 				min = points_after_drop[i];
 				required_index = i;
@@ -133,7 +133,7 @@ void Human::dropCardHelp() {
 	}
 
 	cout << "Recommendation: ";
-	cout << reason << endl << endl;
+	cout << reason << endl;
 
 }
 
@@ -144,6 +144,7 @@ void Human::dropCard() {
 	int del_index;
 	cout << "Enter the index of the card you want to delete: ";
 	cin >> del_index;
+	cout << endl;
 
 	if (del_index > (total_cards_in_hand - 1)) {
 		do {
@@ -160,9 +161,38 @@ void Human::dropCard() {
 	checkWildcards();
 	checkJokercards();
 
+	char after_drop_help;
+	cout << "Press y to get help for books and runs and see if you can go out: ";
+	cin >> after_drop_help;
+
+	if (after_drop_help == 'y' || after_drop_help == 'Y') {
+		booksRunsAndGoOut();
+	}
 	
 }
 
+void Human::booksRunsAndGoOut() {
+	goOut();
+	
+	if (hand_score == 0) {
+		cout << "You will be able to go out now" << endl;
+	}
+	else {
+		cout << "You cannot go out because cards remain in your hand not a part of book or run " << endl;
+	}
+
+	if (child_returning_smallest_sum.size() == 0) {
+		cout << "Couldn't find any combination of books and runs in the current hand: " << endl;
+	}
+	else {
+		cout << " I recommend the following combination for books and runs: " << endl;
+		for (auto i = child_returning_smallest_sum.begin(); i < child_returning_smallest_sum.end(); i++) {
+			cout << *i << "   ";
+		}
+		cout << endl;
+
+	}
+}
 
 Human::~Human()
 {

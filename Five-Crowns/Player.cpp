@@ -352,49 +352,26 @@ bool Player::checkIfWildcard(string current_card) {
 }
 
 bool Player::goOut() {
-	//cout << "Inside goOut()" << endl;
 	checkJokercards();
 	checkWildcards();
 
 	int total_cards = current_player_hand.size();
-
 	hand_score = calculateSumOfCards(current_player_hand);
-	//bool check_book;
-	//bool check_run;
 
-	//if (total_cards < 6) {
-	//	check_book = checkBook(current_player_hand);
-	//	check_run = checkRun(current_player_hand);
-
-	//	if (check_book || check_run) {
-		//	return true;
-	//	}
-		//return false;
-	//}
-
-	//else {
-		//generatePossibleCombinations(current_player_hand_str);
-		//cout << "Inside else before calling bestBookRunCombination" << endl;
-		best_combination.clear();
-		int score = bestBookRunCombination(current_player_hand);
-		//cout << "After getting score from the bestBookRunCombination return value" << endl;
-		
-		//cout << "LOWEST SCORE AFTER BEST COMBINATION IS: " << hand_score << endl;
-	//}
-		//TODO
-		//Remove these cards, get list of books and runs in remaining hand and print as assemble cards.
-		vector<string> assemble_remaining_bookandrun;
-		vector<string> temp;
-		assemble_remaining_bookandrun = current_player_hand_str;
-		//cout << "Best combination of remaining cards is: " << endl;
-		for (auto i = recursive_bookrun_hands.begin(); i < recursive_bookrun_hands.end(); i++) {
-			for (auto j = i->begin(); j < i->end(); j++) {
+	best_combination.clear();
+	child_returning_smallest_sum.clear();
+	int score = bestBookRunCombination(current_player_hand);
+	vector<string> assemble_remaining_bookandrun;
+	vector<string> temp;
+	assemble_remaining_bookandrun = current_player_hand_str;
+	for (auto i = recursive_bookrun_hands.begin(); i < recursive_bookrun_hands.end(); i++) {
+		for (auto j = i->begin(); j < i->end(); j++) {
 				//cout << *j << "    ";
-				temp.push_back(*j);
-				assemble_remaining_bookandrun.erase(remove(assemble_remaining_bookandrun.begin(), assemble_remaining_bookandrun.end(), *j), assemble_remaining_bookandrun.end());
-			}
-			//cout << endl;
+			temp.push_back(*j);
+			assemble_remaining_bookandrun.erase(remove(assemble_remaining_bookandrun.begin(), assemble_remaining_bookandrun.end(), *j), assemble_remaining_bookandrun.end());
 		}
+			//cout << endl;
+	}
 
 		
 		//vector<vector<Card>> remaining_cards_bookrun = generatePossibleCombinations(assemble_remaining_bookandrun);
@@ -438,6 +415,7 @@ bool Player::goOut() {
 		//for (auto j = last_hand.begin(); j < last_hand.end(); j++) {
 		//	cout << *j << "   ";
 		//}
+		//cout << "Child returning smallest sum is : " << endl;
 
 		for (auto i = child_returning_smallest_sum.begin(); i < child_returning_smallest_sum.end(); i++) {
 			//cout << *i << "   ";
