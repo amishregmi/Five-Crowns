@@ -11,6 +11,10 @@ public:
 	void dropCard();
 	void pickCard();
 	//void calculatePoints();
+	void pickCardHelp();
+	void dropCardHelp();
+	void booksRunsAndGoOut();
+
 	~Human();
 
 //private:

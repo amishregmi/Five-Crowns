@@ -8,6 +8,7 @@ public:
 	Computer();
 	void dropCard();
 	void pickCard();
+	void pickCardHelp();
 	~Computer();
 //private:
 	//vector<Card> computer_hand;

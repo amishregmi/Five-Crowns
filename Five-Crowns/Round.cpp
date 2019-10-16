@@ -156,6 +156,11 @@ void Round::menuOptions() {
 		playersList[next_player_index]->pickCard();
 	}
 
+	if (player_names[next_player_index] == "Human" && input == 3) {
+		playersList[next_player_index]->pickCardHelp();
+		playersList[next_player_index]->pickCard();
+	}
+
 	
 }
 

@@ -102,6 +102,10 @@ void Player::pickCard() {
 	cout << "Virtual function pickCard() in Player class " << endl;
 }
 
+void Player::pickCardHelp() {
+	cout << "Virtual function pickCardHelp() in Player class " << endl;
+}
+
 void Player::dropCard() {
 	cout << "Virtual function dropCard() in Player class " << endl;
 }

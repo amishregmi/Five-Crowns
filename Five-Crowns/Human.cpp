@@ -4,6 +4,52 @@ Human::Human()
 {
 }
 
+void Human::pickCardHelp() {
+	Card topDiscardCard = Deck::accessTopDiscardPileCard();
+	Card topDrawCard = Deck::accessTopDrawPileCard();
+
+	string reason;
+
+	if (checkIfJoker(topDiscardCard.cardToString())) {
+		reason = "I recommend picking card from top discard pile since it's a joker";
+	}
+
+	else if (checkIfWildcard(topDiscardCard.cardToString())) {
+		reason = "I recommend picking card from top discard pile since it's a wildcard";
+	}
+
+	else {
+		//Not wildcard or joker
+		goOut();
+		int points_before_adding_discard_card = hand_score;
+		addCardToHand(topDiscardCard);
+		bool check_if_goout = goOut();
+
+		if (check_if_goout) {
+			reason = "I recommend picking card from top of discard pile since it helps you assemble cards to goOut";
+		}
+		else {
+			int points_after_adding_discard_card = hand_score;
+			if (points_after_adding_discard_card < points_before_adding_discard_card) {
+				reason = "I recommend picking card from top of discard pile since it helps form a better book/run combination and get a hand where sum of remaining cards is lower";
+			}
+
+			else {
+				int drop_index = total_cards_in_hand - 1;
+				current_player_hand.erase(current_player_hand.begin() + drop_index);
+				total_cards_in_hand--;
+				current_player_hand_str.erase(current_player_hand_str.begin() + drop_index);
+
+				reason = "I recommend picking card from top of Draw pile because top of discard pile is neither a wildcard, nor a joker, and does not help form a better book/run combination or help you goout";
+			}
+		}
+	}
+
+	cout << "Recommendation: ";
+	cout << reason << endl << endl;;
+
+}
+
 
 void Human::pickCard() {
 	//menuOptions();
@@ -30,15 +76,71 @@ void Human::pickCard() {
 		addCardToHand(topDiscardPile);
 	}
 
+	char drop_help;
+
+
+	cout << "Before dropping card, ";
+	printCurrentHand();
+	
+	cout << "Press y to get help for which card to drop. Press any other key otherwise: ";
+	cin >> drop_help;
+
+
+
+	if (drop_help == 'y' || drop_help == 'Y') {
+		dropCardHelp();
+	}
+	
 	dropCard();
 	
+}
+
+void Human::dropCardHelp() {
+	string reason;
+	vector<int> points_after_drop;
+	int current_index = 0;
+	vector<Card> temp = current_player_hand;
+	vector<string> temp_str = current_player_hand_str;
+
+	while (current_index < total_cards_in_hand) {
+		current_player_hand.erase(current_player_hand.begin() + current_index);
+		total_cards_in_hand--;
+		current_player_hand_str.erase(current_player_hand_str.begin() + current_index);
+		goOut();
+		points_after_drop.push_back(hand_score);
+
+		//RESET VALUES
+		current_player_hand = temp;
+		total_cards_in_hand++;
+		current_player_hand_str = temp_str;
+		current_index++;
+	}
+
+	int min = INT_MAX;
+	int required_index;
+
+	for (int i = 0; i < points_after_drop.size(); i++) {
+		if (!(checkIfJoker(current_player_hand_str[i]) || checkIfWildcard(current_player_hand_str[i]))) {
+			if (points_after_drop[i] < min) {
+				reason = "I recommend you drop card at index " + to_string(i) + " because it's not a wildcard or joker and helps decrease the sum of cards that remain after the best book/run combination in hand";
+				if (points_after_drop[i] == 0) {
+					reason = "I recommend yo drop card at index: " + to_string(i) + " because you can go out with remaining cards";
+				}
+				min = points_after_drop[i];
+				required_index = i;
+			}
+		}
+	}
+
+	cout << "Recommendation: ";
+	cout << reason << endl << endl;
+
 }
 
 
 
 void Human::dropCard() {
-	cout << "Before dropping card, ";
-	printCurrentHand();
+	
 	int del_index;
 	cout << "Enter the index of the card you want to delete: ";
 	cin >> del_index;

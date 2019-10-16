@@ -107,10 +107,12 @@ void Computer::dropCard() {
 	for (int i = 0; i < points_after_drop.size(); i++) {
 		if (!( checkIfJoker(current_player_hand_str[i]) || checkIfWildcard(current_player_hand_str[i] ))) {
 			if (points_after_drop[i] < min) {
+				reason = "Computer is dropping card at index " + to_string(i) + " because it's not a wildcard/joker and helps decrease sum of cards remaining after book/run combination";
+
 				if (points_after_drop[i] == 0) {
-					reason = "Dropping card at index " + to_string(i) + "because the player can go out ";
+					reason = "Computer is dropping card at index " + to_string(i) + " because the player can go out with remaining cards ";
 				}
-				reason = "Dropping card at index " + to_string(i) + "because it's not a wildcard/joker and helps decrease sum of cards remaining after book/run combination";
+				
 				min = points_after_drop[i];
 				required_index = i;
 			}
@@ -134,6 +136,10 @@ void Computer::dropCard() {
 	printCurrentHand();
 
 	//cout << endl;
+}
+
+void Computer::pickCardHelp() {
+	cout << "Overridden in computer class " << endl;
 }
 
 Computer::~Computer()

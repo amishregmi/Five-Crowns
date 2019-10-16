@@ -21,6 +21,8 @@ public:
 	
 	virtual void dropCard();
 	
+	virtual void pickCardHelp();
+
 	vector<vector<Card>> generatePossibleCombinations(vector<string>);
 	
 	void decreaseHandCardNum();
