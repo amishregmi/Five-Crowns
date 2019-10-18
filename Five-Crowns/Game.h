@@ -11,10 +11,12 @@ public:
 	void extractDetailsFromFile(string);
 	vector<string> extract_card_str(string);
 	string coinToss();
+	static int getHumanTotalPoints();
+	static int getComputerTotalPoints();
 	~Game();
 private:
-	int human_player_points;
-	int computer_player_points;
+	static int human_player_points;
+	static int computer_player_points;
 	int round_number;
 	Human human;
 	Computer computer;

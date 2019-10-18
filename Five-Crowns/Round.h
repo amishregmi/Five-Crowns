@@ -7,6 +7,7 @@
 #include <time.h>
 #include <fstream>
 #include <sstream>
+#include "Game.h"
 
 using namespace std;
 

@@ -58,6 +58,7 @@ Round::Round(int roundNumber, Human* human_player_ptr, Computer* computer_player
 }
 
 
+
 void Round::dealForRound() {
 	//Distribute cards to both players based on round number, and add one card to discard pile.
 	//Deck::discardPile.clear();
@@ -86,6 +87,7 @@ void Round::printRoundDetails() {
 	Deck::printDrawPile();
 	Deck::printDiscardPile();
 	cout << " -------------------------------------------------------------- " << endl;
+	cout << "Round: " << roundNumber << endl;
 	cout << "Playing: " << player_names[next_player_index] << "    ";
 	playersList[next_player_index]->printCurrentHand();
 
@@ -93,6 +95,8 @@ void Round::printRoundDetails() {
 	Deck::showTopDiscardCard();
 	cout << endl;
 }
+
+//TODO -> right when loading the hand, check if went out previously.
 
 
 
@@ -112,10 +116,10 @@ void Round::saveGame() {
 	saved_file.open(SAVED_GAME);
 	saved_file << "Round: " << roundNumber << "\n\n";
 	saved_file << "Computer: " << "\n";
-	saved_file << "    Score: " << computer_player.getHandScore() << "\n";
+	saved_file << "    Score: " <<  Game::getComputerTotalPoints() << "\n";
 	saved_file << "    Hand: " << computer_player.getCurrentHand() << "\n\n";
 	saved_file << "Human: " << "\n";
-	saved_file << "    Score: " << human_player.getHandScore() << "\n";
+	saved_file << "    Score: " << Game::getHumanTotalPoints() << "\n";
 	saved_file << "    Hand: " << human_player.getCurrentHand() << "\n\n";
 	saved_file << "Draw Pile: " << Deck::getCurrentDrawPile() << "\n\n";
 	saved_file << "Discard Pile: " << Deck::getCurrentDiscardPile() << "\n\n";
@@ -161,7 +165,9 @@ void Round::menuOptions() {
 		playersList[next_player_index]->pickCard();
 	}
 
-	
+	if (input == 4) {
+		exit(0);
+	}
 }
 
 void Round::startRound() {
@@ -178,6 +184,7 @@ void Round::startRound() {
 		
 		if (verify_go_out_first) {
 			cout << "Player " << player_names[next_player_index] << " went out" << endl;
+			playersList[next_player_index]->printAvailableBooksandRuns();
 		}
 		
 		next_player_index = (next_player_index + 1) % total_players_num;
@@ -192,23 +199,28 @@ void Round::startRound() {
 
 		if (verify_go_out_second) {
 			cout << "Player " << player_names[next_player_index] << " went out" << endl;
+			playersList[next_player_index]->printAvailableBooksandRuns();
 		}
 
 		next_player_index = (next_player_index + 1) % total_players_num;
 
 		if (verify_go_out_first && !verify_go_out_second) {
 			//calculate points of second player.
+			cout << endl;
 			cout << "The points for player " << player_names[next_player_index+1] << " is ";
+			playersList[next_player_index + 1]->printAvailableBooksandRuns();
 			cout << playersList[next_player_index + 1]->getHandScore() << endl;
 		}
 
 		if (!verify_go_out_first && verify_go_out_second) {
 			printRoundDetails();
 			menuOptions();
-			cout << "The points for player " << player_names[next_player_index] << "is ";
+			cout << endl;
+			playersList[next_player_index]->printAvailableBooksandRuns();
+			cout << "The points for player " << player_names[next_player_index] << " is ";
 			verify_go_out_first = playersList[next_player_index]->goOut();
 			if (verify_go_out_first) {
-				cout << "Player " << player_names[next_player_index] << " went out" << endl;
+				cout << "0 since Player " << player_names[next_player_index] << " went out" << endl;
 			}
 			else {
 				cout << playersList[next_player_index]->getHandScore() << endl;

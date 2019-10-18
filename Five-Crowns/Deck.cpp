@@ -14,6 +14,7 @@ Deck::Deck()
 
 
 void Deck::resetDeck() {
+	//cout << "Clearing decks and adding cards again " << endl;
 	drawPile.clear();
 	discardPile.clear();
 	//S - spades, C - clubs, D - diamonds, H - hearts, T - tridents
@@ -78,6 +79,7 @@ void Deck::printDrawPile() {
 }
 
 void Deck::printDiscardPile() {
+	//cout << "printDiscardPile function " << endl;
 	cout << "The discard Pile is: ";
 	//vector<Card> ::iterator it;
 	for (auto it = discardPile.rbegin(); it != discardPile.rend(); ++it) {
@@ -148,7 +150,8 @@ string Deck::getCurrentDiscardPile() {
 
 void Deck::setDrawPile(vector<string> draw_Pile) {
 	int size = drawPile.size();
-	drawPile.erase(drawPile.begin(), drawPile.begin() + size);
+	drawPile.clear();
+	//drawPile.erase(drawPile.begin(), drawPile.begin() + size);
 
 	vector<string>::iterator it;
 	char face, suit;
@@ -165,9 +168,10 @@ void Deck::setDrawPile(vector<string> draw_Pile) {
 
 void Deck::setDiscardPile(vector<string> discard_Pile) {
 	//cout << "Inside setDiscardPile" << endl;
-	cout << "Size is: " << discard_Pile.size() << endl;
+	//cout << "Size is: " << discard_Pile.size() << endl;
 	int size = discardPile.size();
-	discardPile.erase(discardPile.begin(), discardPile.begin() + size);
+	//discardPile.erase(discardPile.begin(), discardPile.begin() + size);
+	discardPile.clear();
 
 	vector<string>::iterator it;
 	char face, suit;
@@ -180,7 +184,7 @@ void Deck::setDiscardPile(vector<string> discard_Pile) {
 		Card current_card = Card(s_face, s_suit);
 		discardPile.push_back(current_card);
 	}
-	printDiscardPile();
+	//printDiscardPile();
 }
 
 Card Deck::accessTopDiscardPileCard() {

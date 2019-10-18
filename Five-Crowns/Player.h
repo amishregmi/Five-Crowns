@@ -66,6 +66,10 @@ public:
 
 	int getHandScore();
 
+	void clearCurrentHand();
+
+	void printAvailableBooksandRuns();
+
 	~Player();
 
 protected:

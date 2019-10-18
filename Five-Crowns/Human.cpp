@@ -30,8 +30,8 @@ void Human::pickCardHelp() {
 		}
 		else {
 			int points_after_adding_discard_card = hand_score;
-			if (points_after_adding_discard_card < points_before_adding_discard_card) {
-				reason = "I recommend picking card from top of discard pile since it helps form a better book/run combination and get a hand where sum of remaining cards is lower";
+			if (points_after_adding_discard_card <= points_before_adding_discard_card) {
+				reason = "I recommend picking card from top of discard pile since it helps form a better book/run combination and get a hand where sum of remaining cards is lower or equal";
 			}
 
 			else {
@@ -46,7 +46,7 @@ void Human::pickCardHelp() {
 	}
 
 	cout << "Recommendation: ";
-	cout << reason << endl << endl;;
+	cout << reason << endl;
 
 }
 
@@ -140,17 +140,21 @@ void Human::dropCardHelp() {
 
 
 void Human::dropCard() {
-	
-	int del_index;
-	cout << "Enter the index of the card you want to delete: ";
-	cin >> del_index;
-	cout << endl;
 
-	if (del_index > (total_cards_in_hand - 1)) {
+	char del_indexx;
+	cout << "Enter the index of the card you want to delete: ";
+	cin >> del_indexx;
+	int del_index = del_indexx - '0';
+
+
+	//cout << endl;
+
+	if ((del_index > (total_cards_in_hand - 1)) || del_index < 0) {
 		do {
 			cout << "Invalid input. Please enter index within range: ";
-			cin >> del_index;
-		} while (del_index > (total_cards_in_hand - 1));
+			cin >> del_indexx;
+			del_index = del_indexx - '0';
+		} while ((del_index > (total_cards_in_hand - 1)) || del_index < 0);
 	}
 
 	Card card_dropped = current_player_hand.at(del_index);

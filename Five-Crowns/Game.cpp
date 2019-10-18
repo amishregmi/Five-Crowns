@@ -1,6 +1,9 @@
 #include "Game.h"
 
 
+int Game::human_player_points;
+int  Game::computer_player_points;
+
 
 Game::Game()
 {
@@ -55,15 +58,17 @@ void Game::callRound() {
 	}
 
 
-	while (round_number <= 13) {
+	while (round_number <= 11) {
 
 		//cout << "Calling round with next_player = " << next_player << endl;
 
 		Round round(round_number, &human, &computer, next_player, read_from_file);
+		
 		//cout << "Calling roundDetails() function from Game" << endl;
 		round.roundDetails();
 		//	round_number++;
 
+		cout << endl;
 		cout << "After round: " << round_number << endl;
 		human_player_points += round.getHumanScore();
 		computer_player_points += round.getComputerScore();
@@ -80,9 +85,30 @@ void Game::callRound() {
 		else {
 			next_player = "Computer";
 		}
-
+		
+		human.clearCurrentHand();
+		computer.clearCurrentHand();
+		read_from_file = false;
+		//Deck::
 		
 		round_number++;
+	}
+
+	cout << " -------------------------------------------------------------------- " << endl;
+	cout << " -------------------------------------------------------------------- " << endl;
+	cout << "After all rounds, the human score is: " << human_player_points << endl;
+	cout << "After all rounds, the computer score is: " << computer_player_points << endl;
+
+	if (human_player_points < computer_player_points) {
+		cout << "Human player won the game" << endl;
+	}
+
+	else if (computer_player_points > human_player_points) {
+		cout << "Computer player won the game " << endl;
+	}
+
+	else {
+		cout << "The game ended in a tie " << endl;
 	}
 }
 
@@ -98,6 +124,8 @@ void Game::extractDetailsFromFile(string file_name) {
 		string word;
 
 		strm >> word;
+
+		//cout << "Extracting from file" << endl;
 
 		if (word == "Round:") {
 			strm >> word;
@@ -161,23 +189,38 @@ void Game::extractDetailsFromFile(string file_name) {
 			}
 		}
 	}
+
+	cout << "Human score is: " << human_player_points << endl;
+	cout << "Computer score is: " << computer_player_points << endl;
+	
 	
 }
 
+int Game::getComputerTotalPoints() {
+	return computer_player_points;
+}
+
+int Game::getHumanTotalPoints() {
+	return human_player_points;
+}
 
 string Game::coinToss() {
 	cout << endl;
 	cout << "Tossing coin for first round " << endl;
 	srand(time(NULL));
 	int toss_val = rand() % 2;
-	cout << "The coin toss value is: " << toss_val << endl;
+	//cout << "The coin toss value is: " << toss_val << endl;
+	char human_calll;
 	int human_call;
 	cout << "Enter 0 for heads and 1 for tails: ";
-	cin >> human_call;
+	cin >> human_calll;
+	human_call = human_calll - '0';
+
 	if (human_call != 0 && human_call != 1) {
 		do {
 			cout << "Invalid input. Please enter 0 or 1: ";
-			cin >> human_call;
+			cin >> human_calll;
+			human_call = human_calll - '0';
 		} while (human_call != 0 && human_call != 1);
 	}
 

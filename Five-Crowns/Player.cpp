@@ -8,6 +8,8 @@ Player::Player()
 	total_wildcards_num = 0;
 	total_jokers_num = 0;
 	current_round_score = 0;
+	current_player_hand.clear();
+	current_player_hand_str.clear();
 	
 }
 
@@ -936,6 +938,28 @@ string Player::getCurrentHand() {
 		current_hand_space_sep = current_hand_space_sep + onecard + " ";
 	}
 	return current_hand_space_sep;
+}
+
+void Player::clearCurrentHand() {
+	total_cards_in_hand = 0;
+	total_wildcards_num = 0;
+	total_jokers_num = 0;
+	current_round_score = 0;
+	current_player_hand.clear();
+	current_player_hand_str.clear();
+}
+
+void Player::printAvailableBooksandRuns() {
+	if (child_returning_smallest_sum.size() == 0) {
+		cout << "The current player has no books or runs in hand " << endl;
+	}
+	else {
+		cout << " The available books and runs are: " << endl;
+		for (auto i = child_returning_smallest_sum.begin(); i < child_returning_smallest_sum.end(); i++) {
+			cout << *i << "   ";
+		}
+	}
+	cout << endl;
 }
 
 Player::~Player()
