@@ -5,12 +5,15 @@
 class Computer: public Player
 {
 public:
+	//Default constructor
 	Computer();
-	void dropCard();
-	void pickCard();
-	void pickCardHelp();
-	~Computer();
-//private:
-	//vector<Card> computer_hand;
-};
 
+	//Function that overrides pickCard() in Player
+	void pickCard();
+
+	//Function that overrides dropCard() in Player
+	void dropCard();
+	
+	//Default destructor
+	~Computer();
+};

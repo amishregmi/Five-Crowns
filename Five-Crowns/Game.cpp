@@ -1,9 +1,19 @@
 #include "Game.h"
 
+//Initializing static members.
 
 int Game::human_player_points;
 int  Game::computer_player_points;
 
+/* *********************************************************************
+Function Name: Game
+Purpose: Constructor for the Game class. Gives the option to either read from file or start a new game and calls method to set up a round.
+Local Variables:
+	input, a char to check if user wants to read from serialized file or start a new game
+	file_name, a string containing name of the file user wants to load the game from
+	game_progress, ifstream to load the serialization file
+Assistance Received: none
+********************************************************************* */
 
 Game::Game()
 {
@@ -19,7 +29,6 @@ Game::Game()
 		cin >> file_name;
 		ifstream game_progress;
 		game_progress.open(file_name);
-		//game_progress(file_name);
 		if (game_progress.fail()) {
 			do {
 				cout << "Invalid input. Please enter correct file name and path: ";
@@ -28,7 +37,6 @@ Game::Game()
 
 			} while (game_progress.fail());
 		}
-
 		extractDetailsFromFile(file_name);
 	}
 
@@ -42,10 +50,17 @@ Game::Game()
 	callRound();
 }
 
-void Game::callRound() {
-	//Main game loop
-	//round_number = 8;
+/* *********************************************************************
+Function Name: callRound
+Purpose: The main game loop. Call the round based on either new game settings or settings loaded from serialized file and display winner at the end.
+Local Variables:
+	toss_winner, string containing winner of coin toss for first round
+	first_went_out, a string containing the first player to go out, which is the first player in next round.
+Assistance Received: none
+********************************************************************* */
 
+void Game::callRound() {
+	
 	if (round_number == 1 && !read_from_file) {
 		string toss_winner = coinToss();
 		
@@ -57,27 +72,17 @@ void Game::callRound() {
 		}
 	}
 
-
 	while (round_number <= 11) {
 
-		//cout << "Calling round with next_player = " << next_player << endl;
-
 		Round round(round_number, &human, &computer, next_player, read_from_file);
-		
-		//cout << "Calling roundDetails() function from Game" << endl;
 		round.roundDetails();
-		//	round_number++;
-
-		cout << endl;
+		
 		cout << "After round: " << round_number << endl;
 		human_player_points += round.getHumanScore();
 		computer_player_points += round.getComputerScore();
 
-		cout << "Human score is: " << human_player_points << " and Computer score is: " << computer_player_points << endl;
-		
+		cout << "Human score is: " << human_player_points << " and Computer score is: " << computer_player_points << endl;		
 		string first_went_out = round.getNextPlayer();
-
-		//cout << "First to go out is: " << first_went_out << endl;
 
 		if (first_went_out == "Human") {
 			next_player = "Human";
@@ -89,13 +94,12 @@ void Game::callRound() {
 		human.clearCurrentHand();
 		computer.clearCurrentHand();
 		read_from_file = false;
-		//Deck::
-		
+
 		round_number++;
 	}
 
-	cout << " -------------------------------------------------------------------- " << endl;
-	cout << " -------------------------------------------------------------------- " << endl;
+	cout << " -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- " << endl;
+	cout << " -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- " << endl;
 	cout << "After all rounds, the human score is: " << human_player_points << endl;
 	cout << "After all rounds, the computer score is: " << computer_player_points << endl;
 
@@ -103,7 +107,7 @@ void Game::callRound() {
 		cout << "Human player won the game" << endl;
 	}
 
-	else if (computer_player_points > human_player_points) {
+	else if (human_player_points > computer_player_points) {
 		cout << "Computer player won the game " << endl;
 	}
 
@@ -111,6 +115,19 @@ void Game::callRound() {
 		cout << "The game ended in a tie " << endl;
 	}
 }
+
+/* *********************************************************************
+Function Name: extractDetailsFromFile
+Purpose: To extract required details from serialized file before calling round.
+Parameters:
+	file_name, a string containing the name of the file to read from.
+Local Variables:
+	load_details, ifstream object to open the file into
+	oneline, every line of the file
+	strm, istringstream object to extract the words of the file
+	word, extracted invidiual words from the file
+Assistance Received: none
+********************************************************************* */
 
 void Game::extractDetailsFromFile(string file_name) {
 	read_from_file = true;
@@ -189,20 +206,42 @@ void Game::extractDetailsFromFile(string file_name) {
 			}
 		}
 	}
-
 	cout << "Human score is: " << human_player_points << endl;
 	cout << "Computer score is: " << computer_player_points << endl;
-	
-	
 }
 
-int Game::getComputerTotalPoints() {
+/* *********************************************************************
+Function Name: getComputerTotalPoints
+Purpose: To returns the total points of computer player when saving details from round class during serialization
+Return Value: The total computer player points, an integer value
+Assistance Received: none
+********************************************************************* */
+
+const int Game::getComputerTotalPoints() {
 	return computer_player_points;
 }
 
-int Game::getHumanTotalPoints() {
+/* *********************************************************************
+Function Name: getHumanTotalPoints
+Purpose: To returns the total points of human player when saving details from round class during serialization
+Return Value: The total human player points, an integer value
+Assistance Received: none
+********************************************************************* */
+
+const int Game::getHumanTotalPoints() {
 	return human_player_points;
 }
+
+/* *********************************************************************
+Function Name: coinToss
+Purpose: To toss the coin when starting a new game
+Return Value: a string containing the name of the player who won the coin toss
+Local Variables:
+	toss_val, a random integer either 0 or 1
+	human_calll, a char of user input of coin toss guess
+	human_call, integer conversion of char human input
+Assistance Received: none
+********************************************************************* */
 
 string Game::coinToss() {
 	cout << endl;
@@ -235,6 +274,18 @@ string Game::coinToss() {
 	}
 }
 
+/* *********************************************************************
+Function Name: extract_card_str
+Purpose: To extract individual cards from a string containing space separated string representation of cards
+Parameters:
+	hand, a string containing the card values space seperated
+Return Value: vector of strings where each string is a representation of a card
+Local Variables:
+	cards, a vector of string containing string representation of the cards
+	word, a string containing one card
+	iss, a stringstream object where the string containing all cards is loaded
+Assistance Received: none
+********************************************************************* */
 
 vector<string> Game::extract_card_str(string hand) {
 	vector<string> cards;
@@ -245,6 +296,8 @@ vector<string> Game::extract_card_str(string hand) {
 	}
 	return cards;
 }
+
+//Default destructor
 
 Game::~Game()
 {

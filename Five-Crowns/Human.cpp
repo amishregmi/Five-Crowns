@@ -35,15 +35,22 @@ void Human::pickCardHelp() {
 			}
 
 			else {
-				int drop_index = total_cards_in_hand - 1;
-				current_player_hand.erase(current_player_hand.begin() + drop_index);
-				total_cards_in_hand--;
-				current_player_hand_str.erase(current_player_hand_str.begin() + drop_index);
+				//int drop_index = total_cards_in_hand - 1;
+				//current_player_hand.erase(current_player_hand.begin() + drop_index);
+				//total_cards_in_hand--;
+				//current_player_hand_str.erase(current_player_hand_str.begin() + drop_index);
 
 				reason = "I recommend picking card from top of Draw pile because top of discard pile is neither a wildcard, nor a joker, and does not help form a better book/run combination or help you goout";
 			}
 		}
+
+		current_player_hand.erase(current_player_hand.begin() + total_cards_in_hand - 1);
+		current_player_hand_str.erase(current_player_hand_str.begin() + total_cards_in_hand - 1);
+		total_cards_in_hand--;
+
 	}
+
+	
 
 	cout << "Recommendation: ";
 	cout << reason << endl;
@@ -66,14 +73,25 @@ void Human::pickCard() {
 		} while (tolower(draw_or_discard) != 'a' && tolower(draw_or_discard) != 'b');
 	}
 
+	
+	//cout << "ABOUT to add card to hand " << endl;
+
 	if (tolower(draw_or_discard) == 'a') {
 		Card topDrawCard = Deck::takeTopDrawCard();
+		//cout << "About to add the card " << endl;
+		//topDrawCard.printCard();
 		addCardToHand(topDrawCard);
+		//cout << "Printing inside if";
+		//printCurrentHand();
 	}
 
 	else {
 		Card topDiscardPile = Deck::takeTopDiscardCard();
+		//cout << "About to add the card " << endl;
+		//topDiscardPile.printCard();
 		addCardToHand(topDiscardPile);
+		//cout << "Printing inside else";
+		//printCurrentHand();
 	}
 
 	char drop_help;
@@ -141,26 +159,41 @@ void Human::dropCardHelp() {
 
 void Human::dropCard() {
 
-	char del_indexx;
+	string del_indexx;
 	cout << "Enter the index of the card you want to delete: ";
 	cin >> del_indexx;
-	int del_index = del_indexx - '0';
+	int del_index;
+	bool notalldigits = true;
 
+	do {
+
+		if (!(any_of(del_indexx.begin(), del_indexx.end(), isdigit))) {
+
+			cout << "Number not entered. Please enter index of card you want to delete: ";
+			cin >> del_indexx;
+		}
+		else {
+			del_index = stoi(del_indexx);
+			notalldigits = false;
+		}
+	} while (notalldigits);
 
 	//cout << endl;
-
-	if ((del_index > (total_cards_in_hand - 1)) || del_index < 0) {
+	/* TODO -> THIS IS WORKING CODE
+	if ( !( del_index >=0 && del_index < total_cards_in_hand )) {
 		do {
 			cout << "Invalid input. Please enter index within range: ";
 			cin >> del_indexx;
-			del_index = del_indexx - '0';
+			del_index = stoi(del_indexx);
 		} while ((del_index > (total_cards_in_hand - 1)) || del_index < 0);
-	}
+	} */
 
 	Card card_dropped = current_player_hand.at(del_index);
 	current_player_hand.erase(current_player_hand.begin() + del_index);
 	total_cards_in_hand--;
-	Deck::discardPile.push_back(card_dropped);
+	//TODO changed below from working version
+	//Deck::discardPile.push_back(card_dropped);
+	Deck::pushToDiscardPile(card_dropped);
 	current_player_hand_str.erase(current_player_hand_str.begin() + del_index);
 	checkWildcards();
 	checkJokercards();
@@ -172,6 +205,7 @@ void Human::dropCard() {
 	if (after_drop_help == 'y' || after_drop_help == 'Y') {
 		booksRunsAndGoOut();
 	}
+	
 	
 }
 

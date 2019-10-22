@@ -1,3 +1,23 @@
-﻿  Human.cpp
-c:\five-crowns\five-crowns\human.cpp(122): warning C4018: '<': signed/unsigned mismatch
+﻿  Card.cpp
+  Computer.cpp
+c:\five-crowns\five-crowns\computer.cpp(134): warning C4018: '<': signed/unsigned mismatch
+  Deck.cpp
+c:\five-crowns\five-crowns\deck.cpp(7): warning C4244: 'initializing': conversion from 'std::chrono::system_clock::rep' to 'unsigned int', possible loss of data
+  Game.cpp
+c:\five-crowns\five-crowns\game.cpp(249): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  Human.cpp
+c:\five-crowns\five-crowns\human.cpp(140): warning C4018: '<': signed/unsigned mismatch
+  Player.cpp
+c:\five-crowns\five-crowns\player.cpp(147): warning C4018: '<': signed/unsigned mismatch
+c:\five-crowns\five-crowns\player.cpp(693): warning C4018: '<': signed/unsigned mismatch
+c:\five-crowns\five-crowns\player.cpp(738): warning C4018: '<': signed/unsigned mismatch
+c:\five-crowns\five-crowns\player.cpp(761): warning C4018: '<': signed/unsigned mismatch
+c:\five-crowns\five-crowns\player.cpp(784): warning C4018: '<': signed/unsigned mismatch
+c:\five-crowns\five-crowns\player.cpp(808): warning C4018: '<': signed/unsigned mismatch
+c:\five-crowns\five-crowns\player.cpp(831): warning C4018: '<': signed/unsigned mismatch
+c:\five-crowns\five-crowns\player.cpp(877): warning C4018: '<': signed/unsigned mismatch
+  Round.cpp
+  Source.cpp
+  Generating Code...
+c:\five-crowns\five-crowns\player.cpp(526): warning C4715: 'Player::bestBookRunCombination': not all control paths return a value
   Five-Crowns.vcxproj -> C:\Five-Crowns\Five-Crowns\Debug\Five-Crowns.exe

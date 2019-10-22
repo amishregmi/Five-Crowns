@@ -39,7 +39,7 @@ public:
 	
 	void setCurrentRoundNum(int);
 	
-	int getCurrentRoundNum();
+	const int getCurrentRoundNum();
 	
 	bool checkBook(vector<Card> handToCheck);
 	
@@ -64,7 +64,7 @@ public:
 	
 	int facesMaxDiff(vector<int>, int);
 
-	int getHandScore();
+	const int getHandScore();
 
 	void clearCurrentHand();
 

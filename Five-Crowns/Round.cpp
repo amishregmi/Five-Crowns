@@ -84,15 +84,16 @@ void Round::dealForRound() {
 
 void Round::printRoundDetails() {
 	cout << endl;
+	cout << "--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------" << endl;
 	Deck::printDrawPile();
 	Deck::printDiscardPile();
-	cout << " -------------------------------------------------------------- " << endl;
+	cout << " -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- " << endl;
 	cout << "Round: " << roundNumber << endl;
 	cout << "Playing: " << player_names[next_player_index] << "    ";
 	playersList[next_player_index]->printCurrentHand();
-
 	Deck::showTopDrawCard();
 	Deck::showTopDiscardCard();
+	
 	cout << endl;
 }
 
@@ -129,14 +130,14 @@ void Round::saveGame() {
 
 void Round::menuOptions() {
 	
-	cout << "---------------------------MENU------------------------------------------------------" << endl;
+	cout << "----------------------------------------------------------------------------------------[[**MENU**]]------------------------------------------------------------------------------------" << endl;
 	cout << "1. Save the game" << endl;
 	cout << "2. Make a move" << endl;
 	if (player_names[next_player_index] == "Human") {
 		cout << "3. Ask for help" << endl;
 	}
 	cout << "4. Quit the game" << endl;
-	cout << " --------------------------------------------------------------" << endl;
+	cout << " --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------" << endl;
 
 	char input_c;
 	cout << "Enter your choice from the above numbers: ";
@@ -174,7 +175,7 @@ void Round::startRound() {
 
 	while (!verify_go_out_first && !verify_go_out_second) {
 
-		//cout << " --------------------------------------------" << endl;
+		//cout << " -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------" << endl;
 		printRoundDetails();
 
 		menuOptions();
@@ -208,8 +209,9 @@ void Round::startRound() {
 			//calculate points of second player.
 			cout << endl;
 			cout << "The points for player " << player_names[next_player_index+1] << " is ";
-			playersList[next_player_index + 1]->printAvailableBooksandRuns();
 			cout << playersList[next_player_index + 1]->getHandScore() << endl;
+			playersList[next_player_index + 1]->printAvailableBooksandRuns();
+			
 		}
 
 		if (!verify_go_out_first && verify_go_out_second) {
@@ -227,6 +229,7 @@ void Round::startRound() {
 			}
 			next_player_index = (next_player_index + 1) % total_players_num;
 		}
+	
 
 	}
 }
@@ -235,11 +238,11 @@ string Round::getNextPlayer() {
 	return player_names[next_player_index];
 }
 
-int Round::getHumanScore() {
+const int Round::getHumanScore() {
 	return human_player.getHandScore();
 }
 
-int Round::getComputerScore() {
+const int Round::getComputerScore() {
 	return computer_player.getHandScore();
 }
 

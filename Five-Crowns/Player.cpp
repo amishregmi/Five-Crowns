@@ -16,6 +16,7 @@ Player::Player()
 
 
 void Player::addCardToHand(Card card){
+	//cout << "Add card to hand called " << endl;
 	total_cards_in_hand++;
 	current_player_hand.push_back(card);
 	string card_str = card.cardToString();
@@ -85,7 +86,7 @@ void Player::setCurrentRoundNum(int roundNumber) {
 	current_round_num = roundNumber;
 }
 
-int Player::getCurrentRoundNum() {
+const int Player::getCurrentRoundNum() {
 	return current_round_num;
 }
 
@@ -300,14 +301,26 @@ bool Player::checkRun(vector<Card> current_hand_to_check) {
 
 int Player::facesMaxDiff(vector<int> face_values, int vec_size) {
 	
+	int start = -5;
+	int end = -5;
+
 	int max_diff = face_values[1] - face_values[0];
 	for (int i = 0; i < vec_size; i++) {
 		for (int j = i + 1; j < vec_size; j++) {
 			if (face_values[j] - face_values[i] > max_diff) {
 				max_diff = face_values[j] - face_values[i];
+				end = face_values[j];
+				start = face_values[i];
 			}
 		}
 	}
+
+	for (int i = 0; i < vec_size; i++) {
+		if (face_values[i] > start && face_values[i] < end) {
+			max_diff--;
+		}
+	}
+
 	return max_diff;
 }
 
@@ -928,7 +941,7 @@ vector<vector<Card>> Player::listBooksAndRuns(vector<vector<string>> possible_co
 
 
 
-int Player::getHandScore() {
+const int Player::getHandScore() {
 	return hand_score;
 }
 

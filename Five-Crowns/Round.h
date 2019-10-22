@@ -15,21 +15,6 @@ const string SAVED_GAME = "./saved_game.txt";
 
 class Round
 {
-private:
-	//two players
-	Player *playersList[2];
-	string player_names[2];
-	int next_player_index;
-	Human human_player;
-	Computer computer_player;
-	//Deck deck;
-	
-	int total_players_num;
-	bool verify_go_out_first;
-	bool verify_go_out_second;
-	int roundNumber;
-	bool readfromfile;
-
 public:
 //	static int roundNumber;
 	static string next_player;
@@ -41,9 +26,25 @@ public:
 	void printPlayersDetails();
 	void menuOptions();
 	void saveGame();
-	int getHumanScore();
-	int getComputerScore();
+	const int getHumanScore();
+	const int getComputerScore();
 	string getNextPlayer();
 	~Round();
+
+private:
+	//two players
+	Player * playersList[2];
+	string player_names[2];
+	int next_player_index;
+	Human human_player;
+	Computer computer_player;
+	//Deck deck;
+
+	int total_players_num;
+	bool verify_go_out_first;
+	bool verify_go_out_second;
+	int roundNumber;
+	bool readfromfile;
+
 };
 
