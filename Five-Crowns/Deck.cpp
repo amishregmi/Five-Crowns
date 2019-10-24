@@ -57,6 +57,37 @@ void Deck::resetDeck() {
 }
 
 /* *********************************************************************
+Function Name: printDrawPile
+Purpose: To print the current draw pile.
+Assistance Received: none
+********************************************************************* */
+
+void Deck::printDrawPile() {
+	cout << "The draw Pile is: ";
+	for (auto it = drawPile.rbegin(); it != drawPile.rend(); ++it) {
+		it->printCard();
+	}
+	cout << endl;
+	cout << endl;
+}
+
+/* *********************************************************************
+Function Name: printDiscardPile
+Purpose: To print the current discard pile.
+Assistance Received: none
+********************************************************************* */
+
+void Deck::printDiscardPile() {
+	cout << "The discard Pile is: ";
+	for (auto it = discardPile.rbegin(); it != discardPile.rend(); ++it) {
+		it->printCard();
+	}
+	cout << endl;
+	cout << endl;
+}
+
+
+/* *********************************************************************
 Function Name: dealCards
 Purpose: To clear draw and discard piles and add all cards to the draw pile in random order.
 Parameters:
@@ -87,35 +118,6 @@ vector<Card> Deck::dealCards(int roundNumber) {
 	return cardstodeal;
 }
 
-/* *********************************************************************
-Function Name: printDrawPile
-Purpose: To print the current draw pile.
-Assistance Received: none
-********************************************************************* */
-
-void Deck::printDrawPile() {
-	cout << "The draw Pile is: ";
-	for (auto it = drawPile.rbegin(); it != drawPile.rend(); ++it) {
-		it->printCard();
-	}
-	cout << endl;
-	cout << endl;
-}
-
-/* *********************************************************************
-Function Name: printDiscardPile
-Purpose: To print the current discard pile.
-Assistance Received: none
-********************************************************************* */
-
-void Deck::printDiscardPile() {
-	cout << "The discard Pile is: ";
-	for (auto it = discardPile.rbegin(); it != discardPile.rend(); ++it) {
-		it->printCard();
-	}
-	cout << endl;
-	cout << endl;
-}
 
 /* *********************************************************************
 Function Name: showTopDiscardCard
@@ -228,6 +230,40 @@ const string Deck::getCurrentDiscardPile() {
 }
 
 /* *********************************************************************
+Function Name: accessTopDiscardPileCard
+Purpose: Get the card at the top of Discard Pile
+Local Variables:
+topDiscardCard, card at top of Discard Pile
+Return Value: The card at top of Discard Pile
+Assistance Received: none
+********************************************************************* */
+
+Card Deck::accessTopDiscardPileCard() {
+	Card topDiscardCard;
+	if (!discardPile.empty()) {
+		topDiscardCard = discardPile.back();
+	}
+	return topDiscardCard;
+}
+
+/* *********************************************************************
+Function Name: accessTopDrawPileCard
+Purpose: Get the card at the top of Draw Pile
+Local Variables:
+topDrawCard, card at top of Discard Pile
+Return Value: The card at top of Draw Pile
+Assistance Received: none
+********************************************************************* */
+
+Card Deck::accessTopDrawPileCard() {
+	Card topDrawCard;
+	if (!drawPile.empty()) {
+		topDrawCard = drawPile.back();
+	}
+	return topDrawCard;
+}
+
+/* *********************************************************************
 Function Name: setDrawPile
 Purpose: Set the current Draw Pile
 Parameters:
@@ -286,39 +322,7 @@ void Deck::setDiscardPile(vector<string> discard_Pile) {
 	}
 }
 
-/* *********************************************************************
-Function Name: accessTopDiscardPileCard
-Purpose: Get the card at the top of Discard Pile
-Local Variables:
-	topDiscardCard, card at top of Discard Pile
-Return Value: The card at top of Discard Pile
-Assistance Received: none
-********************************************************************* */
 
-Card Deck::accessTopDiscardPileCard() {
-	Card topDiscardCard;
-	if (!discardPile.empty()) {
-		topDiscardCard = discardPile.back();
-	}
-	return topDiscardCard;
-}
-
-/* *********************************************************************
-Function Name: accessTopDrawPileCard
-Purpose: Get the card at the top of Draw Pile
-Local Variables:
-	topDrawCard, card at top of Discard Pile
-Return Value: The card at top of Draw Pile
-Assistance Received: none
-********************************************************************* */
-
-Card Deck::accessTopDrawPileCard() {
-	Card topDrawCard;
-	if (!drawPile.empty()) {
-		topDrawCard = drawPile.back();
-	}
-	return topDrawCard;
-}
 
 /* *********************************************************************
 Function Name: pushToDiscardPile

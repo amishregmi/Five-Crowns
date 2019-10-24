@@ -77,11 +77,13 @@ void Game::callRound() {
 		Round round(round_number, &human, &computer, next_player, read_from_file);
 		round.roundDetails();
 		
+		cout << "***************************************************************************************************" << endl;
 		cout << "After round: " << round_number << endl;
 		human_player_points += round.getHumanScore();
 		computer_player_points += round.getComputerScore();
 
 		cout << "Human score is: " << human_player_points << " and Computer score is: " << computer_player_points << endl;		
+		cout << "***************************************************************************************************" << endl;
 		string first_went_out = round.getNextPlayer();
 
 		if (first_went_out == "Human") {
@@ -114,6 +116,8 @@ void Game::callRound() {
 	else {
 		cout << "The game ended in a tie " << endl;
 	}
+
+	cout << "********************************************************************************[[[[END]]]]********************************************************************************************" << endl;
 }
 
 /* *********************************************************************
@@ -211,25 +215,26 @@ void Game::extractDetailsFromFile(string file_name) {
 }
 
 /* *********************************************************************
-Function Name: getComputerTotalPoints
-Purpose: To returns the total points of computer player when saving details from round class during serialization
-Return Value: The total computer player points, an integer value
+Function Name: extract_card_str
+Purpose: To extract individual cards from a string containing space separated string representation of cards
+Parameters:
+hand, a string containing the card values space seperated
+Return Value: vector of strings where each string is a representation of a card
+Local Variables:
+cards, a vector of string containing string representation of the cards
+word, a string containing one card
+iss, a stringstream object where the string containing all cards is loaded
 Assistance Received: none
 ********************************************************************* */
 
-const int Game::getComputerTotalPoints() {
-	return computer_player_points;
-}
-
-/* *********************************************************************
-Function Name: getHumanTotalPoints
-Purpose: To returns the total points of human player when saving details from round class during serialization
-Return Value: The total human player points, an integer value
-Assistance Received: none
-********************************************************************* */
-
-const int Game::getHumanTotalPoints() {
-	return human_player_points;
+vector<string> Game::extract_card_str(string hand) {
+	vector<string> cards;
+	string word;
+	stringstream iss(hand);
+	while (iss >> word) {
+		cards.push_back(word);
+	}
+	return cards;
 }
 
 /* *********************************************************************
@@ -237,9 +242,9 @@ Function Name: coinToss
 Purpose: To toss the coin when starting a new game
 Return Value: a string containing the name of the player who won the coin toss
 Local Variables:
-	toss_val, a random integer either 0 or 1
-	human_calll, a char of user input of coin toss guess
-	human_call, integer conversion of char human input
+toss_val, a random integer either 0 or 1
+human_calll, a char of user input of coin toss guess
+human_call, integer conversion of char human input
 Assistance Received: none
 ********************************************************************* */
 
@@ -275,27 +280,27 @@ string Game::coinToss() {
 }
 
 /* *********************************************************************
-Function Name: extract_card_str
-Purpose: To extract individual cards from a string containing space separated string representation of cards
-Parameters:
-	hand, a string containing the card values space seperated
-Return Value: vector of strings where each string is a representation of a card
-Local Variables:
-	cards, a vector of string containing string representation of the cards
-	word, a string containing one card
-	iss, a stringstream object where the string containing all cards is loaded
+Function Name: getComputerTotalPoints
+Purpose: To returns the total points of computer player when saving details from round class during serialization
+Return Value: The total computer player points, an integer value
 Assistance Received: none
 ********************************************************************* */
 
-vector<string> Game::extract_card_str(string hand) {
-	vector<string> cards;
-	string word;
-	stringstream iss(hand);
-	while (iss >> word) {
-		cards.push_back(word);
-	}
-	return cards;
+const int Game::getComputerTotalPoints() {
+	return computer_player_points;
 }
+
+/* *********************************************************************
+Function Name: getHumanTotalPoints
+Purpose: To returns the total points of human player when saving details from round class during serialization
+Return Value: The total human player points, an integer value
+Assistance Received: none
+********************************************************************* */
+
+const int Game::getHumanTotalPoints() {
+	return human_player_points;
+}
+
 
 //Default destructor
 

@@ -1,15 +1,26 @@
 #include "Round.h"
 
-string Round::next_player;
+
+//DISCARDED 5C EXCEPT RECOMMENDATION
+
+/* *********************************************************************
+Function Name: Round
+Purpose: Constructor for the Round class.
+Parameters:
+	roundNumber, the integer of the current round number.
+	human_player_ptr, a pointer to a human player object.
+	computer_player_ptr, a pointer to a computer player object
+	next_player_name, a string containing the next player
+	read_from_file, a boolean set to true when user wants to read a serialized file
+Assistance Received: none
+********************************************************************* */
 
 Round::Round(int roundNumber, Human* human_player_ptr, Computer* computer_player_ptr, string next_player_name, bool read_from_file){
-	//cout << "Inside round constructor " << endl;
 
 	this->readfromfile = read_from_file;
 	this->human_player = *human_player_ptr;
 	this->computer_player = *computer_player_ptr;
 	this->roundNumber = roundNumber;
-	//Determine next_player_index by coin toss.
 	this->next_player_index = 0;
 	this->total_players_num = 2;
 	this->verify_go_out_first = false;
@@ -18,8 +29,6 @@ Round::Round(int roundNumber, Human* human_player_ptr, Computer* computer_player
 	cout << endl;
 	cout << "Round Number: " << roundNumber << endl;
 	if (roundNumber == 1) {
-		//string toss_val = "Human";
-
 		if (next_player_name == "Human") {
 			this->playersList[0] = &human_player;
 			this->playersList[1] = &computer_player;
@@ -36,17 +45,13 @@ Round::Round(int roundNumber, Human* human_player_ptr, Computer* computer_player
 	}
 
 	else {
-		
 		if (next_player_name == "Human") {
-			//cout << "Inside human " << endl;
 			this->playersList[0] = &human_player;
 			this->playersList[1] = &computer_player;
 			this->player_names[0] = "Human";
 			this->player_names[1] = "Computer";
 		}
-
 		else {
-			//cout << "Inside computer " << endl;
 			this->playersList[0] = &computer_player;
 			this->playersList[1] = &human_player;
 			this->player_names[0] = "Computer";
@@ -54,22 +59,26 @@ Round::Round(int roundNumber, Human* human_player_ptr, Computer* computer_player
 		}
 	}
 	
-
 }
 
-
+/* *********************************************************************
+Function Name: dealForRound
+Purpose: To deal the cards from draw pile to the players for the current round
+Parameters:
+	None
+Return Value: None
+Local Variables:
+	dealtCards, a vector of cards containing the cards to deal to the two players
+	it, an iterator for vector of cards
+Assistance Received: none
+********************************************************************* */
 
 void Round::dealForRound() {
-	//Distribute cards to both players based on round number, and add one card to discard pile.
-	//Deck::discardPile.clear();
-	//Deck::drawPile.clear();
 	vector<Card> dealtCards = Deck::dealCards(roundNumber);
 	vector<Card>::iterator it = dealtCards.begin();
 
 	if (!dealtCards.empty()) {
 		for (size_t i = 0; i < (dealtCards.size() - 1); i += 2) {
-			//human_player.addCardToHand(dealtCards[i]);
-			//computer_player.addCardToHand(dealtCards[i+1]);
 			playersList[next_player_index]->addCardToHand(dealtCards[i]);
 			playersList[next_player_index]->setCurrentRoundNum(roundNumber);
 			next_player_index = (next_player_index + 1) % total_players_num;
@@ -81,6 +90,16 @@ void Round::dealForRound() {
 	
 }
 
+/* *********************************************************************
+Function Name: printRoundDetails
+Purpose: To print details of the current round, the drawPile, the discardPile, the round number, the next player, the top draw pile card and the top discard pile card.
+Parameters:
+	None
+Return Value: None
+Local Variables:
+	None
+Assistance Received: none
+********************************************************************* */
 
 void Round::printRoundDetails() {
 	cout << endl;
@@ -97,12 +116,18 @@ void Round::printRoundDetails() {
 	cout << endl;
 }
 
-//TODO -> right when loading the hand, check if went out previously.
-
-
+/* *********************************************************************
+Function Name: roundDetails
+Purpose: Function to arrange for the round to start
+Parameters:
+	None
+Return Value: None
+Local Variables:
+	None
+Assistance Received: none
+********************************************************************* */
 
 void Round::roundDetails() {
-
 	if (roundNumber >= 1) {
 		if (!readfromfile) {
 			dealForRound();
@@ -111,8 +136,18 @@ void Round::roundDetails() {
 	}
 }
 
-void Round::saveGame() {
+/* *********************************************************************
+Function Name: saveGame
+Purpose: Function to save the state of the game to the serialized file
+Parameters:
+	None
+Return Value: None
+Local Variables:
+	saved_file, an ofstream object
+Assistance Received: none
+********************************************************************* */
 
+void Round::saveGame() {
 	ofstream saved_file;
 	saved_file.open(SAVED_GAME);
 	saved_file << "Round: " << roundNumber << "\n\n";
@@ -128,8 +163,18 @@ void Round::saveGame() {
 	exit(0);
 }
 
+/* *********************************************************************
+Function Name: menuOptions
+Purpose: Function to display menu options and call action according to user input
+Parameters:
+	None
+Return Value: None
+Local Variables:
+	input_c, a character to get the user input
+Assistance Received: none
+********************************************************************* */
+
 void Round::menuOptions() {
-	
 	cout << "----------------------------------------------------------------------------------------[[**MENU**]]------------------------------------------------------------------------------------" << endl;
 	cout << "1. Save the game" << endl;
 	cout << "2. Make a move" << endl;
@@ -171,30 +216,33 @@ void Round::menuOptions() {
 	}
 }
 
+/* *********************************************************************
+Function Name: startRound
+Purpose: Function to start the round, let the players play and end when one of the players go out
+Parameters:
+	None
+Return Value: None
+Local Variables:
+	None
+Assistance Received: none
+********************************************************************* */
+
 void Round::startRound() {
 
 	while (!verify_go_out_first && !verify_go_out_second) {
-
 		//cout << " -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------" << endl;
 		printRoundDetails();
-
 		menuOptions();
-		//playersList[next_player_index]->pickCard();
 		verify_go_out_first = playersList[next_player_index]->goOut();
-		
-		
+				
 		if (verify_go_out_first) {
 			cout << "Player " << player_names[next_player_index] << " went out" << endl;
 			playersList[next_player_index]->printAvailableBooksandRuns();
 		}
 		
 		next_player_index = (next_player_index + 1) % total_players_num;
-
 		printRoundDetails();
-		
 		menuOptions();
-		//playersList[next_player_index]->pickCard();
-		//playersList[next_player_index]->menuOptions();
 
 		verify_go_out_second = playersList[next_player_index]->goOut();
 
@@ -206,12 +254,10 @@ void Round::startRound() {
 		next_player_index = (next_player_index + 1) % total_players_num;
 
 		if (verify_go_out_first && !verify_go_out_second) {
-			//calculate points of second player.
 			cout << endl;
 			cout << "The points for player " << player_names[next_player_index+1] << " is ";
 			cout << playersList[next_player_index + 1]->getHandScore() << endl;
-			playersList[next_player_index + 1]->printAvailableBooksandRuns();
-			
+			playersList[next_player_index + 1]->printAvailableBooksandRuns();		
 		}
 
 		if (!verify_go_out_first && verify_go_out_second) {
@@ -229,22 +275,56 @@ void Round::startRound() {
 			}
 			next_player_index = (next_player_index + 1) % total_players_num;
 		}
-	
-
 	}
+
 }
+
+/* *********************************************************************
+Function Name: getNextPlayer
+Purpose: Function that returns the next player
+Parameters:
+	None
+Return Value: a string containing the next player
+Local Variables:
+	None
+Assistance Received: none
+********************************************************************* */
 
 string Round::getNextPlayer() {
 	return player_names[next_player_index];
 }
 
-const int Round::getHumanScore() {
+/* *********************************************************************
+Function Name: getHumanScore
+Purpose: Function that returns the human player score
+Parameters:
+	None
+Return Value: an integer containing the current score of the human player
+Local Variables:
+	None
+Assistance Received: none
+********************************************************************* */
+
+int Round::getHumanScore() {
 	return human_player.getHandScore();
 }
 
-const int Round::getComputerScore() {
+/* *********************************************************************
+Function Name: getComputerScore
+Purpose: Function that returns the computer player score
+Parameters:
+	None
+Return Value: an integer containing the current score of the computer player
+Local Variables:
+	None
+Assistance Received: none
+********************************************************************* */
+
+int Round::getComputerScore() {
 	return computer_player.getHandScore();
 }
+
+//Default destructor
 
 Round::~Round()
 {

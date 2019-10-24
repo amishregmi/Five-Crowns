@@ -22,7 +22,7 @@ Return Value: The face of the current card as a string
 Assistance Received: none
 ********************************************************************* */
 
-const string Card::getFace() {
+string Card::getFace() const{
 	return face;
 }
 
@@ -33,7 +33,7 @@ Return Value: The suit of the current card as a string
 Assistance Received: none
 ********************************************************************* */
 
-const string Card::getSuit() {
+string Card::getSuit() const {
 	return suit;
 }
 

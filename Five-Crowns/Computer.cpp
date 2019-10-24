@@ -44,7 +44,7 @@ void Computer::pickCard() {
 		//Try adding card to hand and check if computer can go out.
 		goOut();
 		//store the calculated sum of cards not part of the best combination of books and runs in current hand
-		int points_before_adding_discard_card = hand_score;
+		int points_before_adding_discard_card = getHandScore();
 		addCardToHand(topDiscardCard);
 		//boolean to check if the computer can go out
 		bool check_if_goout = goOut();
@@ -54,7 +54,7 @@ void Computer::pickCard() {
 		}
 		else {
 			//stores the calculated sum of cards not part of the best combination of books and runs in current hand after adding top discard card to hand.
-			int points_after_adding_discard_card = hand_score;
+			int points_after_adding_discard_card = getHandScore();
 
 			if (points_after_adding_discard_card <= points_before_adding_discard_card) {
 				reason = "Computer picked from top of Discard pile because it helps in a better book/run combination in hand ";
@@ -117,7 +117,7 @@ void Computer::dropCard() {
 		total_cards_in_hand--;
 		current_player_hand_str.erase(current_player_hand_str.begin() + current_index);
 		goOut();
-		points_after_drop.push_back(hand_score);
+		points_after_drop.push_back(getHandScore());
 
 		//RESET VALUES
 		current_player_hand = temp;

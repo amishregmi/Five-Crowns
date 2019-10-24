@@ -1,8 +1,30 @@
 #include "Human.h"
 
+//Default constructor
+
 Human::Human()
 {
 }
+
+/* *********************************************************************
+Function Name: pickCardHelp
+Purpose: To print to console the recommendation on whether to pick card from draw or discard pile
+Parameters:
+	None
+Return Value: None
+Local Variables:
+	topDiscardCard, card at the top of Discard pile
+	topDrawCard, card at the top of the draw pile
+	reason, string containing the reason for the recommendation
+	points_before_adding_discard_card, an integer containing the sum of cards remaining after best book/run combination before picking discard
+	points_before_adding_discard_card, an integer containing the sum of cards remaining after best book/run combination after picking discard card
+	check_if_goout, a boolean to check if human can go out
+Algorithm:
+	1) Check if the top discard card is joker or wildcard. If so, set the reason as such.
+	2) Calculate points of cards remaining after forming best bookrun combination before and after adding top discard card to hand. If the points after adding the card is less than 
+	points before adding the card, set reason to recommend picking card from top of discard pile, else from top of draw pile
+Assistance Received: none
+********************************************************************* */
 
 void Human::pickCardHelp() {
 	Card topDiscardCard = Deck::accessTopDiscardPileCard();
@@ -21,7 +43,7 @@ void Human::pickCardHelp() {
 	else {
 		//Not wildcard or joker
 		goOut();
-		int points_before_adding_discard_card = hand_score;
+		int points_before_adding_discard_card = getHandScore();
 		addCardToHand(topDiscardCard);
 		bool check_if_goout = goOut();
 
@@ -29,17 +51,12 @@ void Human::pickCardHelp() {
 			reason = "I recommend picking card from top of discard pile since it helps you assemble cards to goOut";
 		}
 		else {
-			int points_after_adding_discard_card = hand_score;
+			int points_after_adding_discard_card = getHandScore();
 			if (points_after_adding_discard_card <= points_before_adding_discard_card) {
 				reason = "I recommend picking card from top of discard pile since it helps form a better book/run combination and get a hand where sum of remaining cards is lower or equal";
 			}
 
 			else {
-				//int drop_index = total_cards_in_hand - 1;
-				//current_player_hand.erase(current_player_hand.begin() + drop_index);
-				//total_cards_in_hand--;
-				//current_player_hand_str.erase(current_player_hand_str.begin() + drop_index);
-
 				reason = "I recommend picking card from top of Draw pile because top of discard pile is neither a wildcard, nor a joker, and does not help form a better book/run combination or help you goout";
 			}
 		}
@@ -50,19 +67,26 @@ void Human::pickCardHelp() {
 
 	}
 
-	
-
 	cout << "Recommendation: ";
 	cout << reason << endl;
 
 }
 
+/* *********************************************************************
+Function Name: pickCard
+Purpose: To add a card to the user's hand based on user's choice to pick from either top of discard or draw pile.
+Parameters: 
+	None
+Return Value: None
+Local Variables:
+	draw_or_discard, a character containing user's choice for what card to pick
+	drop_help, a character to see if the user wants help with which card to drop
+Assistance Received: none
+********************************************************************* */
 
 void Human::pickCard() {
-	//menuOptions();
 	checkWildcards();
 	checkJokercards();
-	//cout << "Inside human pickCard() " << total_cards_in_hand << endl;
 	char draw_or_discard;
 	cout << "Enter a to take the top draw card and b to take the available discard card: ";
 	cin >> draw_or_discard;
@@ -73,37 +97,21 @@ void Human::pickCard() {
 		} while (tolower(draw_or_discard) != 'a' && tolower(draw_or_discard) != 'b');
 	}
 
-	
-	//cout << "ABOUT to add card to hand " << endl;
-
 	if (tolower(draw_or_discard) == 'a') {
 		Card topDrawCard = Deck::takeTopDrawCard();
-		//cout << "About to add the card " << endl;
-		//topDrawCard.printCard();
 		addCardToHand(topDrawCard);
-		//cout << "Printing inside if";
-		//printCurrentHand();
 	}
 
 	else {
 		Card topDiscardPile = Deck::takeTopDiscardCard();
-		//cout << "About to add the card " << endl;
-		//topDiscardPile.printCard();
 		addCardToHand(topDiscardPile);
-		//cout << "Printing inside else";
-		//printCurrentHand();
 	}
 
 	char drop_help;
-
-
 	cout << "Before dropping card, ";
 	printCurrentHand();
-	
 	cout << "Press y to get help for which card to drop. Press any other key otherwise: ";
 	cin >> drop_help;
-
-
 
 	if (drop_help == 'y' || drop_help == 'Y') {
 		dropCardHelp();
@@ -112,6 +120,26 @@ void Human::pickCard() {
 	dropCard();
 	
 }
+
+/* *********************************************************************
+Function Name: dropCardHelp
+Purpose: To print to console the recommendation on the index of the card to drop
+Parameters:
+	None
+Return Value: None
+Local Variables:
+	reason, string containing the reason for the recommendation
+	points_after_drop, an integer of vector containing the sum of remaining cards after forming best book/run combination after dropping cards at every index.
+	current_index, an integer containing the current index
+	temp, a temporary vector of cards to save the current player's hand
+	temp_str, a temporary vector of strings save the current player's hand representation in string
+	min, an integer containing the minimum value in the vector of integers points_after_drop
+	required_index, the index corresponding to the card to drop
+Algorithm:
+	1) Remove card at each index, computer the sum of points of cards remaining after forming best book/run combination of remaining cards and push that to a vector of integers
+	2) For the indexes that don't correspond to a wildcard or a joker, find the minimum value in the vector of integers and recommend for that card to be dropped.
+Assistance Received: none
+********************************************************************* */
 
 void Human::dropCardHelp() {
 	string reason;
@@ -125,7 +153,7 @@ void Human::dropCardHelp() {
 		total_cards_in_hand--;
 		current_player_hand_str.erase(current_player_hand_str.begin() + current_index);
 		goOut();
-		points_after_drop.push_back(hand_score);
+		points_after_drop.push_back(getHandScore());
 
 		//RESET VALUES
 		current_player_hand = temp;
@@ -149,50 +177,61 @@ void Human::dropCardHelp() {
 			}
 		}
 	}
-
 	cout << "Recommendation: ";
 	cout << reason << endl;
 
 }
 
-
+/* *********************************************************************
+Function Name: dropCard
+Purpose: To drop a card in the index specified by the user.
+Parameters:
+	None
+Return Value: None
+Local Variables:
+	del_indexx, a string containing the user input for the card they want to drop
+	del_index, an integer containing the user input for the card they want to drop
+	notalldigits, a boolean to check if all the numbers in the input are digits
+	numbernotinrange, a boolean to check if the integer entered by the user is within the range of 0 to total number of cards in hand - 1
+Assistance Received: none
+********************************************************************* */
 
 void Human::dropCard() {
-
 	string del_indexx;
 	cout << "Enter the index of the card you want to delete: ";
 	cin >> del_indexx;
 	int del_index;
 	bool notalldigits = true;
+	bool numbernotinrange = false;
 
 	do {
+		if (numbernotinrange) {
+			cout << "The number is not in range. Please enter valid index: ";
+			cin >> del_indexx;
+		}
 
-		if (!(any_of(del_indexx.begin(), del_indexx.end(), isdigit))) {
+		if (!(any_of(del_indexx.begin(), del_indexx.end(), isdigit)) ) {
 
-			cout << "Number not entered. Please enter index of card you want to delete: ";
+			cout << "Invalid input. Please enter index of card you want to delete: ";
 			cin >> del_indexx;
 		}
 		else {
 			del_index = stoi(del_indexx);
+			
+			if (del_index > (total_cards_in_hand - 1) || del_index < 0) {
+				numbernotinrange = true;
+			}
+			else {
+				numbernotinrange = false;
+			}
 			notalldigits = false;
 		}
-	} while (notalldigits);
+	} while (notalldigits || numbernotinrange);
 
-	//cout << endl;
-	/* TODO -> THIS IS WORKING CODE
-	if ( !( del_index >=0 && del_index < total_cards_in_hand )) {
-		do {
-			cout << "Invalid input. Please enter index within range: ";
-			cin >> del_indexx;
-			del_index = stoi(del_indexx);
-		} while ((del_index > (total_cards_in_hand - 1)) || del_index < 0);
-	} */
-
+	
 	Card card_dropped = current_player_hand.at(del_index);
 	current_player_hand.erase(current_player_hand.begin() + del_index);
 	total_cards_in_hand--;
-	//TODO changed below from working version
-	//Deck::discardPile.push_back(card_dropped);
 	Deck::pushToDiscardPile(card_dropped);
 	current_player_hand_str.erase(current_player_hand_str.begin() + del_index);
 	checkWildcards();
@@ -206,13 +245,21 @@ void Human::dropCard() {
 		booksRunsAndGoOut();
 	}
 	
-	
 }
+
+/* *********************************************************************
+Function Name: booksAndRunsAndGoOut
+Purpose: Function to get help on assembling books and runs and check if the user can go out
+Parameters:
+	None
+Return Value: None
+Assistance Received: none
+********************************************************************* */
 
 void Human::booksRunsAndGoOut() {
 	goOut();
 	
-	if (hand_score == 0) {
+	if (getHandScore() == 0) {
 		cout << "You will be able to go out now" << endl;
 	}
 	else {
@@ -231,6 +278,8 @@ void Human::booksRunsAndGoOut() {
 
 	}
 }
+
+//Default Constructor
 
 Human::~Human()
 {

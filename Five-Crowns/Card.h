@@ -1,3 +1,12 @@
+/*
+************************************************************
+* Name:  Amish Regmi                                       *
+* Project : Project 1, Five Crowns (C++)                   *
+* Class : CMPS 366 01                                      *
+* Date : 10/22/2019                                        *
+************************************************************
+*/
+
 #pragma once
 #include<iostream>
 #include<string>
@@ -12,10 +21,10 @@ public:
 	Card(string face="N", string suit="N");	
 
 	//Face getter function
-	const string getFace();
+	string getFace() const;
 
 	//Suit getter function
-	const string getSuit();
+	string getSuit() const;
 
 	//sets face of the current card
 	void setFace(string);

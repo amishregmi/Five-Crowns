@@ -1,3 +1,12 @@
+/*
+************************************************************
+* Name:  Amish Regmi                                       *
+* Project : Project 1, Five Crowns (C++)                   *
+* Class : CMPS 366 01                                      *
+* Date : 10/22/2019                                        *
+************************************************************
+*/
+
 #pragma once
 #include <iostream>
 #include "Player.h"
@@ -16,30 +25,46 @@ const string SAVED_GAME = "./saved_game.txt";
 class Round
 {
 public:
-//	static int roundNumber;
-	static string next_player;
+	//Constructor for round class
 	Round(int roundNumber, Human*, Computer*, string, bool);
+
+	//Function to set up a round
 	void roundDetails();
+
+	//Function to print the details of the current round
 	void printRoundDetails();
+
+	//Function to deal rounds for the current round
 	void dealForRound();
+
+	//Function for the two players to play in the round
 	void startRound();
-	void printPlayersDetails();
+	
+	//Function to display menu options and get user input
 	void menuOptions();
+
+	//Function to save the current state of game to a text file
 	void saveGame();
-	const int getHumanScore();
-	const int getComputerScore();
+
+	//Function to return the current score of human player
+	int getHumanScore();
+
+	//Function to return current score of computer player
+	int getComputerScore();
+
+	//Function to return the string of the next player
 	string getNextPlayer();
+	
+	//Default destructor
 	~Round();
 
 private:
-	//two players
+
 	Player * playersList[2];
 	string player_names[2];
 	int next_player_index;
 	Human human_player;
 	Computer computer_player;
-	//Deck deck;
-
 	int total_players_num;
 	bool verify_go_out_first;
 	bool verify_go_out_second;

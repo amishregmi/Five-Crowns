@@ -1,3 +1,12 @@
+/*
+************************************************************
+* Name:  Amish Regmi                                       *
+* Project : Project 1, Five Crowns (C++)                   *
+* Class : CMPS 366 01                                      *
+* Date : 10/22/2019                                        *
+************************************************************
+*/
+
 #pragma once
 #include "Round.h"
 #include "Deck.h"

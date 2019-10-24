@@ -1,3 +1,12 @@
+/*
+************************************************************
+* Name:  Amish Regmi                                       *
+* Project : Project 1, Five Crowns (C++)                   *
+* Class : CMPS 366 01                                      *
+* Date : 10/22/2019                                        *
+************************************************************
+*/
+
 #pragma once
 #include "Card.h"
 #include<vector>
@@ -11,6 +20,9 @@ public:
 	//Default constructor
 	Deck();
 	
+	//Resets the Deck for every round
+	static void resetDeck();
+
 	//print the current draw Pile
 	static void printDrawPile();
 
@@ -53,14 +65,10 @@ public:
 	//Add card to the discard pile
 	static void pushToDiscardPile(Card card);
 
-	//Resets the Deck for every round
-	static void resetDeck();
-
 	//Default destructor
 	~Deck();
 
-	//TODO below was public
-
+	
 private:
 	static vector<Card> drawPile;
 	static vector<Card> discardPile;

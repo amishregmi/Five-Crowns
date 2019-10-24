@@ -1,3 +1,12 @@
+/*
+************************************************************
+* Name:  Amish Regmi                                       *
+* Project : Project 1, Five Crowns (C++)                   *
+* Class : CMPS 366 01                                      *
+* Date : 10/22/2019                                        *
+************************************************************
+*/
+
 #pragma once
 #include "Card.h"
 #include "Deck.h"
@@ -9,94 +18,103 @@
 class Player
 {
 public:
+	//Default constructor for player class
 	Player();
-	
+
+	//Add a card to the hand
 	void addCardToHand(Card);
-	
-	void printCurrentHand();
-	
-	string getCurrentHand();
-	
-	virtual void pickCard();
-	
-	virtual void dropCard();
-	
-	virtual void pickCardHelp();
 
-	vector<vector<Card>> generatePossibleCombinations(vector<string>);
-	
-	void decreaseHandCardNum();
-	
-	int getWildcardsNum();
-	
-	void checkWildcards();
-	
-	int getJokersNum();
-	
-	void checkJokercards();
-	
-	bool goOut();
-	
-	void setCurrentRoundNum(int);
-	
-	const int getCurrentRoundNum();
-	
-	bool checkBook(vector<Card> handToCheck);
-	
-	bool checkRun(vector<Card> handToCheck);
-	
-	bool checkIfJoker(string);
-	
-	bool checkIfWildcard(string);
-	
-	
-	int calculateSumOfCards(vector<Card>);
-
-	int bestBookRunCombination(vector<Card>);
-
+	//function to set the current player hand
 	void setPlayerHand(vector<string>);
 
-	vector<vector<Card>> listBooksAndRuns(vector<vector<string>> possible_combinations);
+	//function to check the total number of jokers in the hand
+	void checkJokercards();
 
-	vector<string> handToStr(vector<Card>);
-	
-	vector<string> handWithoutWildcards(vector<Card>, int &);
-	
-	int facesMaxDiff(vector<int>, int);
+	//function to check the total number of wildcards in the hand and save the number
+	void checkWildcards();
 
-	const int getHandScore();
+	//set the current round number
+	void setCurrentRoundNum(int);
 
+	//function to print the current hand to the console
+	void printCurrentHand();
+
+	//virtual function pickCardHelp
+	virtual void pickCardHelp();
+
+	//virtual function pickCard
+	virtual void pickCard();
+
+	//virtual function dropCard
+	virtual void dropCard();
+
+	//function to check if a string representation of a card is a joker
+	bool checkIfJoker(string);
+
+	//function to check if a string representation of a card is a wildcard
+	bool checkIfWildcard(string);
+
+	//function to check if the current player can go out
+	bool goOut();
+
+	//get the current hand score
+	int getHandScore() const;
+
+	//function that returns the string representation of the current hand
+	string getCurrentHand();
+
+	//clear the current player's hand
 	void clearCurrentHand();
 
+	//function to print available books and runs to console
 	void printAvailableBooksandRuns();
 
+	//default destructor
 	~Player();
 
 protected:
 	vector<Card> current_player_hand;
-	
+
 	vector<string> current_player_hand_str;
-	
+
 	int total_cards_in_hand;
-	
-	int total_wildcards_num;
-	
-	int total_jokers_num;
-	
-	int current_round_num;
-	
-	int current_round_score;
 
-	//Used to keep track of combination of assembled cards with lowest score
-	int hand_score; 
-
-	//use to keep track of the best arrangement of cards for least points.
-	vector<vector<string>> recursive_bookrun_hands;
-	vector<vector<string>> best_combination;
-
-	//Amruth algo TODO remove name
 	vector<string> child_returning_smallest_sum;
-	
+
+private:
+
+	//To get a vector of string representation of any hand passed as argument
+	vector<string> handToStr(vector<Card>);
+
+	//Get a vector of strings representation of hand passed in as arguments without wildcards and jokers
+	vector<string> handWithoutWildcards(vector<Card>, int &);
+
+	//To check if hand passed is a book
+	bool checkBook(vector<Card> handToCheck);
+
+	//To check if the hand passed is a run
+	bool checkRun(vector<Card> handToCheck);
+
+	//Find max difference of minimum and max face values of the vector of integers passed as argument minus the face_values that fall in between those two faces in the hand.
+	int facesMaxDiff(vector<int>, int);
+
+	//Generate best combination of books and runs in the hand passed as argument and store sum of cards not in the combination 
+	int bestBookRunCombination(vector<Card>);
+
+	//Calculate sum of cards passed as arguments with the value that the cards represent in that round when calling calculate points function.
+	int calculateSumOfCards(vector<Card>);
+
+	//Generate a list of possible combinations of the cards from the current player's hand
+	vector<vector<Card>> generatePossibleCombinations(vector<string>);
+
+	//To return a list of books and runs from the vector of vector of strings passed as argument
+	vector<vector<Card>> listBooksAndRuns(vector<vector<string>> possible_combinations);
+
+	int hand_score;
+	int total_wildcards_num;
+	int total_jokers_num;
+	int current_round_num;
+	vector<vector<string>> recursive_bookrun_hands;
 
 };
 
